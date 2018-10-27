@@ -17,7 +17,7 @@ public class Servidor {
 		server = new ServerSocket(port);
 	}
 
-	private List<Cliente> diretorios = new ArrayList<>();
+	private List<Diretorio> diretorios = new ArrayList<>();
 
 	public void serve() throws IOException{
 		while(true){
