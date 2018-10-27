@@ -2,6 +2,8 @@ package pt.iscte.p2pdownload.theDirectory.domain;
 
 import java.util.List;
 
+
+// Esta classe não está a ser usada
 public class Diretorio {
 	private List<Cliente> listaDir;
 

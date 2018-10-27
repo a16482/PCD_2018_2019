@@ -17,17 +17,22 @@ public class Servidor {
 		server = new ServerSocket(port);
 	}
 
-	private List<Diretorio> diretorios = new ArrayList<>();
+	private List<Cliente> diretorio = new ArrayList<>();
 
 	public void serve() throws IOException{
 		while(true){
 			Socket s=server.accept();
-			new TrataCliente(s.getInputStream()).start();
+			new TrataMsg(s.getInputStream()).start();
 		}
 	}
 
-	public synchronized void adicionaDiretorio(Diretorio d) {
-		diretorios.add(d);
+	public synchronized void adicionaCliente(Cliente c) {
+		diretorio.add(c);
+	}
+	
+	// este método não está ainda a ser usado
+	public synchronized void removeCliente(Cliente c) {
+		diretorio.remove(c);
 	}
 
 	public static void main(String[] args) {
@@ -41,11 +46,11 @@ public class Servidor {
 		}
 	}
 
-	public class TrataCliente extends Thread {
+	public class TrataMsg extends Thread {
 		
 		private ObjectInputStream in;
 		
-		public TrataCliente(InputStream in) throws IOException {
+		public TrataMsg(InputStream in) throws IOException {
 			super();
 			this.in = new ObjectInputStream(in);
 		}
@@ -54,14 +59,21 @@ public class Servidor {
 		public void run() {
 			try {
 				while(true){
-					Diretorio d=(Diretorio)in.readObject();
-					adicionaDiretorio(d);
-					System.out.println("Recebido:"+d);
+					System.out.println("À espera...");
+					
+					// é preciso testar o conteúdo da msg
+					String msg=(String)in.readObject();
+					
+					//Cliente c=(Cliente)in.readObject();
+				
+					//adicionaCliente(c);
+					System.out.println("Recebido: " + msg);
 				}
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
 				// Não fazer nada... Leitura acabou
 				System.out.println("Cliente desligou-se.");
+				//removeCliente(c);
 			} finally{
 				try {
 					in.close();
