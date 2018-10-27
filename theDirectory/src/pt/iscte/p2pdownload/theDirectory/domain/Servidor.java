@@ -5,9 +5,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.ArrayList;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class Servidor {
 
@@ -18,12 +17,13 @@ public class Servidor {
 		server = new ServerSocket(port);
 	}
 
-	private List<Cliente> clientes = new ArrayList<>();
+	private List<Cliente> diretorios = new ArrayList<>();
 
 	public void serve() throws IOException{
 		while(true){
-		Socket s=server.accept();
-		new TrataCliente(s.getInputStream()).start();
+			Socket s=server.accept();
+			new TrataCliente(s.getInputStream()).start();
+		}
 	}
 
 	public synchronized void adicionaDiretorio(Diretorio d) {
