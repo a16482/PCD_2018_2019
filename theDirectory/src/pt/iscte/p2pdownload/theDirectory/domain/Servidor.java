@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Servidor {
 
-	public final static int port = 8090;
+	public final static int port = 8091;
 	private ServerSocket server;
 
 	public void init() throws IOException {
@@ -21,6 +21,8 @@ public class Servidor {
 
 	public void serve() throws IOException{
 		while(true){
+			System.out.println("Servidor iniciado:" + port);
+			
 			Socket s=server.accept();
 			new TrataMsg(s.getInputStream()).start();
 		}
@@ -61,8 +63,11 @@ public class Servidor {
 				while(true){
 					System.out.println("À espera...");
 					
-					// é preciso testar o conteúdo da msg
+					// é preciso testar o conteúdo da msg INSC
 					String msg=(String)in.readObject();
+					
+					//--> é preciso partir a string criada com o cast na classe msg
+					Msg m = new Msg(msg);
 					
 					//Cliente c=(Cliente)in.readObject();
 				
