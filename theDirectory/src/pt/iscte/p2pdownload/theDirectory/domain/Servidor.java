@@ -1,8 +1,11 @@
 package pt.iscte.p2pdownload.theDirectory.domain;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class Servidor {
 
@@ -21,8 +24,8 @@ public class Servidor {
 		new TrataCliente(s.getInputStream()).start();
 	}
 
-	public synchronized void adicionaCliente(Cliente c) {
-		clientes.add(t);s
+	public synchronized void adicionaDiretorio(Diretorio d) {
+		diretorios.add(d);
 	}
 
 	public static void main(String[] args) {
@@ -39,17 +42,19 @@ public class Servidor {
 	public class TrataCliente extends Thread {
 		
 		private ObjectInputStream in;
+		
 		public TrataCliente(InputStream in) throws IOException {
 			super();
 			this.in = new ObjectInputStream(in);
 		}
+		
 		@Override
 		public void run() {
 			try {
 				while(true){
-					Turno t=(Turno)in.readObject();
-					adicionaTurno(t);
-					System.out.println("Recebido:"+t);
+					Diretorio d=(Diretorio)in.readObject();
+					adicionaDiretorio(d);
+					System.out.println("Recebido:"+d);
 				}
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
@@ -62,5 +67,6 @@ public class Servidor {
 				}
 			}
 		}
+
 	}
 }
