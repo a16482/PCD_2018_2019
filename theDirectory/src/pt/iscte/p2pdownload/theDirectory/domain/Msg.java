@@ -53,12 +53,20 @@ public class Msg {
 	
 	public void setClienteMsg (String m) {
 		if (m.length() > 3 ) {
-			this.cliente = new Cliente(getIPcliente(m), getPortoCliente(m));
+			this.setCliente(new Cliente(getIPcliente(m), getPortoCliente(m)));
 		}
+	}
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 	public Cliente getClienteMsg (String m) {
 		Cliente cliente = new Cliente(getIPcliente(m), getPortoCliente(m));
+		return cliente;
+	}
+
+	public Cliente getCliente() {
 		return cliente;
 	}
 }
