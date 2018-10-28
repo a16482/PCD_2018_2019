@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.color.*;
+import java.awt.event.ActionEvent;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -19,14 +20,49 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicComboBoxUI.PropertyChangeHandler;
+import javax.swing.SwingWorker;
 
 
 
 public class Ligacao {
 	
+	//When the background task is complete, the task's done method resets the progress bar:
+	public void done() {
+	    //Tell progress listener to stop updating progress bar.
+	    done = true;
+	    Toolkit.getDefaultToolkit().beep();
+	    startButton.setEnabled(true);
+	    setCursor(null); //turn off the wait cursor
+	    progressBar.setValue(progressBar.getMinimum());
+	    taskOutput.append("Done!\n");
+	}
+	
+	public void propertyChange(PropertyChangeHandler evt) {
+	    if (!done) {
+	        int progress = task.getProgress();
+	        progressBar.setValue(progress);
+	        taskOutput.append(String.format(
+	                "Completed %d%% of task.\n", progress));
+	    }
+	    
+	    
+	//When the user clicks Start, an instance of the inner class Task is created and executed.
+	public void actionPerformed(ActionEvent evt) {
+	    startButton.setEnabled(false);
+	    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	    done = false;
+	    task = new Task();
+	    task.addPropertyChangeListener(this);
+	    task.execute();
+	}	
 	  
+	
+	    
+	    
 	  public static void main(String[] args)
 	  {
 		  JFrame myFrame = new JFrame("The ISCTE Bay");
