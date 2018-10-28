@@ -25,6 +25,9 @@ public class Ligacao {
 	  
 	  public static void main(String[] args)
 	  {
+
+
+		  
 		//JFrame frame = new JFrame("The ISCTE Bay");
 //		frame.setPreferredSize(new Dimension(800, 600));
 //		//frame.setTitle("The ISCTE Bay");
@@ -35,8 +38,10 @@ public class Ligacao {
 		
 		JFrame frame = new JFrame("The ISCTE Bay");
 	    Container c = frame.getContentPane();
-	    c.setPreferredSize(new Dimension(800, 600));
+	    c.setPreferredSize(new Dimension(400, 300));
 	    c.setBounds(20, 20, 200, 200);
+	    // this maximizes the jframe:
+	    // c.setSize(800, 600);
 	    //c.setBounds(x, y, width, height);
 	    c.setForeground(Color.black);
 	    c.setBackground(Color.red);
@@ -47,9 +52,9 @@ public class Ligacao {
 
 		frame.add(painelDasLigacoes);
 		
-    	//painelDasLigacoes.setLayout(new GridLayout(4, 2));
+		//painelDasLigacoes.setLayout(new GridLayout(4, 2));
     	
-    	
+
 	    // schedule this for the event dispatch thread (edt)
 	    SwingUtilities.invokeLater(new Runnable()
 	    {

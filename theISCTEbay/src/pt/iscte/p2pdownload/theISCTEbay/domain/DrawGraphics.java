@@ -22,10 +22,19 @@ public class DrawGraphics extends JFrame{
       setVisible(true);
     }
 
-    public void paint(Graphics draw){
-      //Here you can perform any drawing like an oval...
-      draw.fillOval(40, 40, 60, 50);
-
-      getContentPane().setBackground(new Color(70,80,70));
+    //you can override the paint method of JFrame and then fill that by your favorite color like this:
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.red);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
+    
+//    public nameOfTheClass()  {
+//
+//    	final Container c = this.getContentPane();
+//
+//    	  public void actionPerformed(ActionEvent e) {
+//    	    c.setBackground(Color.white); 
+//    	  }
+//    	}
 }
