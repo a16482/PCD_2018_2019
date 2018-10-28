@@ -19,13 +19,18 @@ public class Ligacao {
 	  public static void main(String[] args)
 	  {
 		JFrame frame = new JFrame("The ISCTE Bay");
-		frame.setPreferredSize(new Dimension(400, 300));
+		frame.setPreferredSize(new Dimension(800, 600));
+		
 	    // schedule this for the event dispatch thread (edt)
 	    SwingUtilities.invokeLater(new Runnable()
 	    {
 	      public void run()
 	      {
-	        //frame.displayJFrame();
+	    	//frame.setLayout(new BorderLayout());
+	    	JPanel painelDasLigacoes= new JPanel();
+	    	painelDasLigacoes.setLayout(new GridLayout(2, 1));
+	        
+	    	//frame.displayJFrame();
 	    	  frame.setVisible(true);
 	      }
 	    });
@@ -38,7 +43,7 @@ public class Ligacao {
 //			JFrame frame= new JFrame("The ISCTE Bay");
 //			frame.setPreferredSize(new Dimension(400, 300));
 //			
-//			frame.setLayout(new BorderLayout());
+//		
 //
 //			JPanel painel = new JPanel();
 //
