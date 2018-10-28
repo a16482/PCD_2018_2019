@@ -4,10 +4,11 @@ public class Msg {
 	private String msg;
 	
 	private String tipoMsg;
-	private Cliente cliente;
-	
+
 	private String ip;
 	private String porto;
+
+	private Cliente cliente;
 	
 	public Msg (String m) {
 		setMsg(m);
@@ -52,16 +53,12 @@ public class Msg {
 	
 	public void setClienteMsg (String m) {
 		if (m.length() > 3 ) {
-			Cliente c = new Cliente(getIPcliente(m), getPortoCliente(m));
-			this.cliente = c;
-		}
-		else {
-			this.cliente =null;
+			this.cliente = new Cliente(getIPcliente(m), getPortoCliente(m));
 		}
 	}
 	
 	public Cliente getClienteMsg (String m) {
-		Cliente c = new Cliente(getIPcliente(m), getPortoCliente(m));
-		return c;
+		Cliente cliente = new Cliente(getIPcliente(m), getPortoCliente(m));
+		return cliente;
 	}
 }
