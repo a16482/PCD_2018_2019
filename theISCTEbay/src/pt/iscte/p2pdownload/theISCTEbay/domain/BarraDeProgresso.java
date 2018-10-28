@@ -51,11 +51,12 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
     }
  
     public InterfaceGrafica() {
+    	
         super(new BorderLayout());
  
         //Create the demo's UI.
-        botaoDescarregar = new JButton("Start");
-        botaoDescarregar.setActionCommand("start");
+        botaoDescarregar = new JButton("Descarregar");
+        botaoDescarregar.setActionCommand("Descarregar");
         botaoDescarregar.addActionListener(this);
  
         barraDeProgresso = new JProgressBar(0, 100);
