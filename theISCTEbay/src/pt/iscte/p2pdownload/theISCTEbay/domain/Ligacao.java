@@ -39,8 +39,11 @@ public class Ligacao {
 		  JPanel painelDeProcura= new JPanel();
 		  painelDeProcura.setLayout(new BorderLayout());
 		  
-		  JPanel painelDeResutados= new JPanel();
-		  painelDeResutados.setLayout(new GridLayout(2, 1));
+		  JPanel painelDeResultados= new JPanel();
+		  painelDeResultados.setLayout(new BorderLayout());
+		  
+		  JPanel painelDeControlo= new JPanel();
+		  painelDeControlo.setLayout(new GridLayout(2, 1));
 		  
 		  //---------------------------------------------------------
 		  // PAINEL DE PROCURA: Label "Texto a Procurar"
@@ -71,12 +74,28 @@ public class Ligacao {
 		  //---------------------------------------------------------
 		  // PAINEL DE RESULTADOS: Botão com o texto "Procurar"
 		  //---------------------------------------------------------	
-		  JList listaResultados = new JList();
-		  for (int i = 0; i++; listaResultados.
+		  JList<String> listaResultados = new JList<String>();
+		  // o carregamento depende do servidor!
+		  painelDeResultados.add(listaResultados, BorderLayout.EAST);
 		  
-	
+		  //---------------------------------------------------------
+		  // PAINEL DE CONTOLO: Botão com o texto "Descarregar"
+		  //---------------------------------------------------------	
+		  JButton botaoDescarregar = new JButton("Descarregar");
+		  painelDeControlo.add(botaoDescarregar);
 		  
-		  //---------------------------------------------------------	 
+		  //---------------------------------------------------------
+		  // PAINEL DE CONTOLO: Botão com o texto "Descarregar"
+		  //---------------------------------------------------------	
+		  JProgressBar progressBar = new JProgressBar(0, task.getLengthOfTask());
+		  progressBar.setValue(0);
+		  progressBar.setStringPainted(true);
+		  //---------------------------------------------------------
+		  // colocar este código no local próprio para controlar a ProgressBar:
+		  //
+		  //---------------------------------------------------------
+		  
+		  
 //		  myFrame.setSize(300, 200);
 //		  myFrame.setLocation(200, 100);
 //		  myFrame.setResizable(false);
