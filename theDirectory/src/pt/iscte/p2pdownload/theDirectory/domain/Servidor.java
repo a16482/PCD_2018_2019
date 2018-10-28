@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Servidor {
 
@@ -18,6 +19,7 @@ public class Servidor {
 	}
 
 	private List<Cliente> diretorio = new ArrayList<>();
+
 
 	public void serve() throws IOException{
 		while(true){
@@ -36,6 +38,12 @@ public class Servidor {
 	public synchronized void removeCliente(Cliente c) {
 		diretorio.remove(c);
 	}
+	
+	public synchronized void informaDiretorio(Cliente c) { 
+		for (int i = 0; i < diretorio.size(); i++) {
+			System.out.println("CLI " + diretorio.get(i).devolveIPcliente(c) + " " + diretorio.get(i).devolvePortocliente(c));
+		}
+	}
 
 	public static void main(String[] args) {
 		final Servidor s = new Servidor();
@@ -47,10 +55,12 @@ public class Servidor {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public class TrataMsg extends Thread {
 		
 		private ObjectInputStream in;
+		private String tipoMsg;
 		
 		public TrataMsg(InputStream in) throws IOException {
 			super();
@@ -63,16 +73,27 @@ public class Servidor {
 				while(true){
 					System.out.println("À espera...");
 					
-					// é preciso testar o conteúdo da msg INSC
+					// RECEÇÃO da MSB:
 					String msg=(String)in.readObject();
-					
-					//--> é preciso partir a string criada com o cast na classe msg
-					Msg m = new Msg(msg);
-					
-					//Cliente c=(Cliente)in.readObject();
-				
-					//adicionaCliente(c);
 					System.out.println("Recebido: " + msg);
+					
+					//--> cria uma instância de Msg e VERIFICA o tipo de MSG:
+					Msg m = new Msg(msg);
+					tipoMsg = m.getTipoMsg(msg);
+					
+					//--> cria uma instância de Cliente e VERIFICA o IP e PORTO:
+					Cliente c = m.getCliente();
+					
+					switch (tipoMsg) {
+						case ("INSC"): 
+							adicionaCliente(c);
+							break;
+						case ("CLT"):
+							informaDiretorio(c);
+							break;
+						default:
+							break;
+					}
 				}
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
