@@ -5,6 +5,7 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Container.*;
 import java.awt.Component;
@@ -12,8 +13,11 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.color.*;
 
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -25,8 +29,71 @@ public class Ligacao {
 	  
 	  public static void main(String[] args)
 	  {
-
-
+		  JFrame myFrame = new JFrame("The ISCTE Bay");
+		  Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		  myFrame.setPreferredSize(dimension);
+		  // ou em alternativa...
+		  //Container c = myFrame.getContentPane();
+		  //c.setPreferredSize(new Dimension(400, 300));
+		  
+		  JPanel painelDeProcura= new JPanel();
+		  painelDeProcura.setLayout(new BorderLayout());
+		  
+		  JPanel painelDeResutados= new JPanel();
+		  painelDeResutados.setLayout(new GridLayout(2, 1));
+		  
+		  //---------------------------------------------------------
+		  // PAINEL DE PROCURA: Label "Texto a Procurar"
+		  //---------------------------------------------------------
+		  JLabel lblTexto = new JLabel("Texto a procurar:");
+		  Font fontLblTexto = new Font("LucidaSans", Font.PLAIN, 14);
+		  lblTexto.setFont(fontLblTexto);
+		  lblTexto.setForeground(Color.red);
+		  lblTexto.setBackground(Color.gray);
+		  lblTexto.setVerticalAlignment(JTextField.CENTER);
+		  lblTexto.setHorizontalAlignment(JTextField.LEFT);
+		  painelDeProcura.add(lblTexto, BorderLayout.EAST);
+		  //---------------------------------------------------------
+		  // PAINEL DE PROCURA: Caixa de texto "Texto a Procurar"
+		  //---------------------------------------------------------
+		  JTextField txtField = new JTextField();
+		  txtField.setText("");
+		  txtField.setFont(fontLblTexto);
+		  txtField.setHorizontalAlignment(JTextField.LEFT);
+		  txtField.setSelectedTextColor(Color.BLUE);
+		  painelDeProcura.add(txtField, BorderLayout.NORTH);
+		  //---------------------------------------------------------
+		  // PAINEL DE PROCURA: Botão com o texto "Procurar"
+		  //---------------------------------------------------------	  
+		  JButton botaoProcurar = new JButton("Procurar");
+		  painelDeProcura.add(botaoProcurar, BorderLayout.WEST);
+		  
+		  //---------------------------------------------------------
+		  // PAINEL DE RESULTADOS: Botão com o texto "Procurar"
+		  //---------------------------------------------------------	
+		  JList listaResultados = new JList();
+		  for (int i = 0; i++; listaResultados.
+		  
+	
+		  
+		  //---------------------------------------------------------	 
+//		  myFrame.setSize(300, 200);
+//		  myFrame.setLocation(200, 100);
+//		  myFrame.setResizable(false);
+		  
+		  myFrame.setVisible(true);
+		  
+		  
+		// painel ds ações
+//			JPanel painelDasAcções= new JPanel();
+//			painelDasAcções.setLayout(new GridLayout(2, 1));
+//			painelDasAcções.add(new JButton("C"));
+//			painelDasAcções.add(new JButton("="));
+//			painel.add(painelDasAcções);
+//			frame.add(painel, BorderLayout.CENTER);
+			
+	  }
+		  //myFrame.setSize(800, 600);
 		  
 		//JFrame frame = new JFrame("The ISCTE Bay");
 //		frame.setPreferredSize(new Dimension(800, 600));
@@ -36,44 +103,42 @@ public class Ligacao {
 //		frame.setBackground(bgColor);
 		//JFrame frame = new JFrame("The ISCTE Bay"); 
 		
-		JFrame frame = new JFrame("The ISCTE Bay");
-	    Container c = frame.getContentPane();
-	    c.setPreferredSize(new Dimension(400, 300));
-	    c.setBounds(20, 20, 200, 200);
+//		JFrame frame = new JFrame("The ISCTE Bay");
+//	    Container c = frame.getContentPane();
+//	    c.setPreferredSize(new Dimension(400, 300));
+//	    c.setBounds(20, 20, 200, 200);
 	    // this maximizes the jframe:
 	    // c.setSize(800, 600);
 	    //c.setBounds(x, y, width, height);
-	    c.setForeground(Color.black);
-	    c.setBackground(Color.red);
-	    
-		JPanel painelDasLigacoes= new JPanel();
-		painelDasLigacoes.setLayout(new BorderLayout());
-		painelDasLigacoes.add(new Button("Okay"), BorderLayout.SOUTH);
+		  
+//	    c.setForeground(Color.black);
+//	    c.setBackground(Color.red);
+//	    
+//		
 
-		frame.add(painelDasLigacoes);
+//		frame.add(painelDasLigacoes);
 		
 		//painelDasLigacoes.setLayout(new GridLayout(4, 2));
     	
 
 	    // schedule this for the event dispatch thread (edt)
-	    SwingUtilities.invokeLater(new Runnable()
-	    {
-	      public void run()
-	      {
+//	    SwingUtilities.invokeLater(new Runnable()
+//	    {
+//	      public void run()
+//	      {
+//
+//	    	
+//	        
+//	    	frame.displayJFrame();
+//	    	myFrame.setVisible(true);
+//	      }
+//	    });
+//	  }
 
-	    	
-	        
-	    	//frame.displayJFrame();
-	    	frame.setVisible(true);
-	      }
-	    });
-	  }
-
-	private static void add(JPanel painelDasLigacoes) {
-		// TODO Auto-generated method stub
-		
-	}
-}
+//	private static void add(JPanel painelDasLigacoes) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 //	  static void displayJFrame()
 //	  {
@@ -128,3 +193,4 @@ public class Ligacao {
 //			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //			frame.setVisible(true);
 //		}
+}
