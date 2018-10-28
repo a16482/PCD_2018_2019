@@ -73,7 +73,7 @@ public class Servidor {
 				while(true){
 					System.out.println("À espera...");
 					
-					// RECEÇÃO da MSB:
+					// RECEÇÃO da MSG:
 					String msg=(String)in.readObject();
 					System.out.println("Recebido: " + msg);
 					
