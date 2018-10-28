@@ -2,9 +2,9 @@ package pt.iscte.p2pdownload.theDirectory.domain;
 
 public class Cliente {
 	private String enderecoIP;
-	private int porto;
+	private String porto;
 
-	public Cliente(String ip, int p) {
+	public Cliente(String ip, String p) {
 		enderecoIP = ip;
 		porto = p;
 	}
@@ -13,7 +13,7 @@ public class Cliente {
 		return c.enderecoIP;
 	}
 
-	public Integer devolvePortocliente(Cliente c) {
+	public String devolvePortocliente(Cliente c) {
 		return c.porto;
 	}
 }
