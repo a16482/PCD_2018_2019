@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0188)https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ProgressBarDemoProject/src/components/ProgressBarDemo.java -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>ProgressBarDemo.java</title>
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+var urlParam; 
+var codeSampleURL;
+var codeSampleName;
+var fileType;
+
+function getCodeSampleUrl() {
+ var queryStrNV = document.location.search.split("=");
+ urlParam = decodeURI(queryStrNV[1]);
+ var origURL = urlParam;
+
+  if (!beginsWith("http://docs.oracle.com", urlParam) && 
+      !beginsWith("https://docs.oracle.com", urlParam))
+  {
+     urlParam = "";
+     fileType = " java" + " gutter: false;"
+     return;
+  } 
+ 
+ if ((!endsWith(".jnlp", urlParam)) && (!endsWith(".css", urlParam)) && (!endsWith(".java", urlParam))) {
+     urlParam = "";
+     fileType = " java" + " gutter: false;"
+     return;
+ }
+ 
+ urlParam = removeBadChrs(urlParam);
+ if (urlParam == origURL) {
+     codeSampleURL = urlParam;
+ }
+ 
+ codeSampleName = urlParam.split("/").pop();
+ fileType = codeSampleName.split(".").pop();
+ if (fileType == "jnlp") {
+     fileType = " xml";
+ } else if (fileType == "css") { 
+     fileType = " css";
+ } else {
+     fileType = " java";
+ }
+ fileType = fileType + " gutter: false;"
+ document.title = codeSampleName;
+ return codeSampleURL;
+}
+
+// new prototype defintion
+document.include = function () {
+ if ('undefined' == typeof(codeSampleURL)) return false;
+ var p,rnd;
+ if (document.all){
+   // For IE, create an ActiveX Object instance
+   p = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ else {
+   // For mozilla, create an instance of XMLHttpRequest.
+   p = new XMLHttpRequest();
+ }
+ // Prevent browsers from caching the included page
+ // by appending a random  number (optional)
+ rnd = Math.random().toString().substring(2);
+ codeSampleURL = codeSampleURL.indexOf('?')>-1 ? codeSampleURL+'&rnd='+rnd : codeSampleURL+'?rnd='+rnd;
+ // Open the codeSampleURL and write out the response
+ p.open("GET",codeSampleURL,false);
+ p.send(null);
+ var code =  encodeSpecialChars(p.responseText);
+ document.write( code );
+}
+
+var HTML_ESCAPE_CHARS = [["&", "&amp;"], ["<", "&lt;"], [">", "&gt;"]];
+function encodeSpecialChars(code) {
+    var re;
+    for (i=0; i <3; i++) {
+        re = new RegExp(HTML_ESCAPE_CHARS[i][0], "g");
+        code = code.replace(re, HTML_ESCAPE_CHARS[i][1]); 
+    }
+    return code;
+}
+
+function beginsWith(partStr, fullStr) {
+    return (fullStr.substr(0, partStr.length) == partStr);
+}
+
+function endsWith(partStr, fullStr) {    
+    var lastIndex = fullStr.lastIndexOf(partStr);
+    return (lastIndex != -1) && (lastIndex + partStr.length == fullStr.length);
+}
+
+function removeBadChrs(str) {    
+    str = str.replace(/\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-|\[|\]/g,""); 
+    return str;
+} 
+
+//]]>
+</script>
+
+<script type="text/javascript" src="./ProgressBarDemo.java_files/shCore.js.transferir">
+</script>
+
+<script type="text/javascript" src="./ProgressBarDemo.java_files/shBrushJava.js.transferir">
+</script>
+
+<script type="text/javascript" src="./ProgressBarDemo.java_files/shBrushXml.js.transferir">
+</script>
+
+<script type="text/javascript" src="./ProgressBarDemo.java_files/shBrushCss.js.transferir">
+</script>
+
+<link type="text/css" rel="stylesheet" href="./ProgressBarDemo.java_files/shCoreDefault.css">
+<script type="text/javascript">
+SyntaxHighlighter.all();
+</script>
+
+<style type="text/css">
+/*<![CDATA[*/
+/* styles specific to this page */
+
+.syntaxhighlighter { overflow-y: hidden !important; }
+
+.homepagediv {
+float: right;
+margin: 0px 15px 10px 3em;
+}
+.clear {
+clear:both;
+}
+/* styles specific to this page end */
+/* other standard tutorial styles start */
+body {
+        margin-left:10px;
+        margin-right:10px;
+        line-height: 1.5;
+        FONT-FAMILY: Arial, Helvetica, sans-serif; 
+        font-size: 0.8em;
+    }
+    
+    a:link{text-decoration:none; color:#09569d;}
+    a:visited{text-decoration:none; color: #3a87cf;}
+    a:hover{text-decoration:underline; }
+        
+    code{
+        font-size:12px;
+        font-family:Monaco,Courier,"Courier New";
+    }
+    
+    .header-container {
+        background-color: #fff;
+        border-bottom: 1px solid #C1CFDA;
+        -webkit-box-shadow: 0 2px 2px rgba(117, 163, 231, 0.1);
+        box-shadow: 0 2px 2px rgba(117, 163, 231, 0.1);
+    }
+    
+    .bookwrapper {
+        width: auto;
+        margin: auto;
+    }
+    
+    .clearfix {
+    }
+    
+    .clearfloat {
+        clear: both;
+        overflow: auto;
+        height: 0px;
+        font-size: 1px;
+        line-height: 0px;
+    }
+    
+    #brandProdName {
+        width: auto;
+        height: auto;
+    }
+    
+    #logocover {
+        display: block;
+        background: transparent url(images/oracle-java-logo.png) 0px 0px no-repeat;
+        height: 50px;
+        width: 229px;
+        float: left;
+    }
+    
+    #productName {
+        font-size: 16px;
+        position: relative;
+        top: 19px;
+        padding-left: 3px;
+        color: #457798;
+        white-space: nowrap;
+        width: 340px;
+    }
+
+
+
+    div#TopBar_bl {        
+        width: 100%;
+        height: 60px;
+    }
+    div#TopBar_br {
+        width: 100%;
+        height: 60px;
+    }
+    div#TopBar_tl {
+        margin-left: -110px;
+        margin-right: -100px;
+		align: left;
+        height: 60px;
+    }
+    div#TopBar_tr {
+        width: 100%;
+        height: 60px;
+    }
+    div#TopBar {
+        min-width:700px;
+        padding:25px 100px 10px;
+        margin-bottom:25px;
+        clear:both;
+        
+        border-bottom:1px solid #d2dde5;
+        border-radius: 3px;
+    
+        background:#efefef; /* Old browsers */
+        /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMmVmZjkiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top,  #ffffff 0%, #e2eff9 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e2eff9)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #ffffff 0%,#e2eff9 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #ffffff 0%,#e2eff9 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #ffffff 0%,#e2eff9 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #ffffff 0%,#e2eff9 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2eff9',GradientType=0 ); /* IE6-8 */
+        
+    }
+    #TopBar_left {
+        line-height: 14px;
+        position: absolute;
+        padding-top: 30px;
+        padding-right: 30px;
+        padding-left: 30px;
+        text-align: left;
+        font: 13px/20px Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        color: #333;
+    }
+    
+    #TopBar_right {
+        line-height: 12px;
+        float: right;
+        padding-top: 10px;
+        padding-right: 30px;
+        text-align: left;
+    }
+    
+    #TopBar_right a {
+        font-size: 10px;
+        margin: 3px;
+        padding: 0;
+    }
+   
+    div#PageTitle {          
+        margin: 0 5px 0.5em 0;
+        color: #F90000;
+        float: left;
+    }
+
+   
+    div#Footer {
+        padding-top: 10px;
+        padding-left: 10px;
+        margin-right: 10px;   
+    }
+  
+    .footertext {
+        font-size: 11px;
+        color: #454545
+    }
+    
+    div#TagNotes {
+        margin-top: 10px;
+        color: #35556B;
+    }
+    @media print {
+        span#TagNotes a:visited, span#TagNotes a:link {
+            text-decoration: none;
+        }
+    }
+    div#TutBody {
+        margin: 10px 3em 10px 3em;
+    }
+   
+    
+    h1, h2, h3, h4, h5 {
+        color: #333;
+        
+    }
+
+    h2 {
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    h3 {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    h4 {
+        font-size: 15px;
+    }
+
+    h5 {
+        font-size: 12px;
+    }
+
+    .thickhr {
+        color:#000000;
+        background-color:#000000;
+        height:3px;
+        border:none;
+    }
+/*]]>*/
+</style>
+<script>window.ohcglobal || document.write('<script src="/en/dcommon/js/global.js">\x3C/script>')</script><script src="./ProgressBarDemo.java_files/global.js.transferir"></script></head>
+<body>
+<!-- tutorial boiler plate start -->
+<div class="header-container">
+    <div class="bookwrapper  clearfix">       
+        <div id="brandProdName">
+            <div id="logocover"></div>
+            <div id="productName">Documentation</div>
+        </div> 
+        <br class="clearfloat">
+    </div>
+</div>
+<div id="TopBar">
+<div id="TopBar_tr">
+<div id="TopBar_tl">
+<div id="TopBar_br">
+<div id="TopBar_bl">
+<div id="TopBar_left">
+The Java™ Tutorials
+</div>
+<div id="TopBar_right"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- tutorial boiler plate end -->
+
+<div id="PageTitle">
+<h1>Java Tutorials Code Sample – 
+
+<script language="javascript" type="text/javascript">
+    getCodeSampleUrl();
+    document.write(codeSampleName);
+</script>ProgressBarDemo.java
+</h1>
+</div>
+
+<div class="homepagediv">
+<p><a href="https://docs.oracle.com/javase/tutorial/index.html">Home Page</a></p>
+</div>
+<div class="clear"></div>
+
+<div id="TutBody">
+<script language="javascript" type="text/javascript"> 
+//<![CDATA[
+    document.write("<p><a href='" + codeSampleURL + "'>Download<\/a> this sample.<\/p>");
+    document.write("<pre class='brush:" + fileType + "; '>");
+    document.include();
+    document.write("<\/pre>");
+//]]>
+</script><p><a href="https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ProgressBarDemoProject/src/components/ProgressBarDemo.java">Download</a> this sample.</p><div><div id="highlighter_928100" class="syntaxhighlighter nogutter  java"><div class="toolbar"><span><a href="https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ProgressBarDemoProject/src/components/ProgressBarDemo.java#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java comments">/*</code></div><div class="line number2 index1 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* Redistribution and use in source and binary forms, with or without</code></div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* modification, are permitted provided that the following conditions</code></div><div class="line number6 index5 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* are met:</code></div><div class="line number7 index6 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp; - Redistributions of source code must retain the above copyright</code></div><div class="line number9 index8 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp;&nbsp;&nbsp; notice, this list of conditions and the following disclaimer.</code></div><div class="line number10 index9 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*</code></div><div class="line number11 index10 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp; - Redistributions in binary form must reproduce the above copyright</code></div><div class="line number12 index11 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp;&nbsp;&nbsp; notice, this list of conditions and the following disclaimer in the</code></div><div class="line number13 index12 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp;&nbsp;&nbsp; documentation and/or other materials provided with the distribution.</code></div><div class="line number14 index13 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*</code></div><div class="line number15 index14 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp; - Neither the name of Oracle or the names of its</code></div><div class="line number16 index15 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp;&nbsp;&nbsp; contributors may be used to endorse or promote products derived</code></div><div class="line number17 index16 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">*&nbsp;&nbsp;&nbsp;&nbsp; from this software without specific prior written permission.</code></div><div class="line number18 index17 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*</code></div><div class="line number19 index18 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS</code></div><div class="line number20 index19 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</code></div><div class="line number21 index20 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</code></div><div class="line number22 index21 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* PURPOSE ARE DISCLAIMED.&nbsp; IN NO EVENT SHALL THE COPYRIGHT OWNER OR</code></div><div class="line number23 index22 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</code></div><div class="line number24 index23 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,</code></div><div class="line number25 index24 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR</code></div><div class="line number26 index25 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</code></div><div class="line number27 index26 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</code></div><div class="line number28 index27 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</code></div><div class="line number29 index28 alt2"><code class="java spaces">&nbsp;</code><code class="java comments">* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</code></div><div class="line number30 index29 alt1"><code class="java spaces">&nbsp;</code><code class="java comments">*/</code></div><div class="line number31 index30 alt2">&nbsp;</div><div class="line number32 index31 alt1"><code class="java keyword">package</code> <code class="java plain">components;</code></div><div class="line number33 index32 alt2">&nbsp;</div><div class="line number34 index33 alt1"><code class="java keyword">import</code> <code class="java plain">java.awt.*;</code></div><div class="line number35 index34 alt2"><code class="java keyword">import</code> <code class="java plain">java.awt.event.*;</code></div><div class="line number36 index35 alt1"><code class="java keyword">import</code> <code class="java plain">javax.swing.*;</code></div><div class="line number37 index36 alt2"><code class="java keyword">import</code> <code class="java plain">java.beans.*;</code></div><div class="line number38 index37 alt1"><code class="java keyword">import</code> <code class="java plain">java.util.Random;</code></div><div class="line number39 index38 alt2">&nbsp;</div><div class="line number40 index39 alt1"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">ProgressBarDemo </code><code class="java keyword">extends</code> <code class="java plain">JPanel</code></div><div class="line number41 index40 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">implements</code> <code class="java plain">ActionListener, </code></div><div class="line number42 index41 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">PropertyChangeListener {</code></div><div class="line number43 index42 alt2">&nbsp;</div><div class="line number44 index43 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java plain">JProgressBar progressBar;</code></div><div class="line number45 index44 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java plain">JButton startButton;</code></div><div class="line number46 index45 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java plain">JTextArea taskOutput;</code></div><div class="line number47 index46 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java plain">Task task;</code></div><div class="line number48 index47 alt1">&nbsp;</div><div class="line number49 index48 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">class</code> <code class="java plain">Task </code><code class="java keyword">extends</code> <code class="java plain">SwingWorker&lt;Void, Void&gt; {</code></div><div class="line number50 index49 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">/*</code></div><div class="line number51 index50 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">* Main task. Executed in background thread.</code></div><div class="line number52 index51 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">*/</code></div><div class="line number53 index52 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number54 index53 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java plain">Void doInBackground() {</code></div><div class="line number55 index54 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Random random = </code><code class="java keyword">new</code> <code class="java plain">Random();</code></div><div class="line number56 index55 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">int</code> <code class="java plain">progress = </code><code class="java value">0</code><code class="java plain">;</code></div><div class="line number57 index56 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Initialize progress property.</code></div><div class="line number58 index57 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">setProgress(</code><code class="java value">0</code><code class="java plain">);</code></div><div class="line number59 index58 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">while</code> <code class="java plain">(progress &lt; </code><code class="java value">100</code><code class="java plain">) {</code></div><div class="line number60 index59 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Sleep for up to one second.</code></div><div class="line number61 index60 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">try</code> <code class="java plain">{</code></div><div class="line number62 index61 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Thread.sleep(random.nextInt(</code><code class="java value">1000</code><code class="java plain">));</code></div><div class="line number63 index62 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">} </code><code class="java keyword">catch</code> <code class="java plain">(InterruptedException ignore) {}</code></div><div class="line number64 index63 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Make random progress.</code></div><div class="line number65 index64 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">progress += random.nextInt(</code><code class="java value">10</code><code class="java plain">);</code></div><div class="line number66 index65 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">setProgress(Math.min(progress, </code><code class="java value">100</code><code class="java plain">));</code></div><div class="line number67 index66 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number68 index67 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code> <code class="java keyword">null</code><code class="java plain">;</code></div><div class="line number69 index68 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number70 index69 alt1">&nbsp;</div><div class="line number71 index70 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">/*</code></div><div class="line number72 index71 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">* Executed in event dispatching thread</code></div><div class="line number73 index72 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">*/</code></div><div class="line number74 index73 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Override</code></div><div class="line number75 index74 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">done() {</code></div><div class="line number76 index75 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Toolkit.getDefaultToolkit().beep();</code></div><div class="line number77 index76 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">startButton.setEnabled(</code><code class="java keyword">true</code><code class="java plain">);</code></div><div class="line number78 index77 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">setCursor(</code><code class="java keyword">null</code><code class="java plain">); </code><code class="java comments">//turn off the wait cursor</code></div><div class="line number79 index78 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">taskOutput.append(</code><code class="java string">"Done!\n"</code><code class="java plain">);</code></div><div class="line number80 index79 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number81 index80 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number82 index81 alt1">&nbsp;</div><div class="line number83 index82 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java plain">ProgressBarDemo() {</code></div><div class="line number84 index83 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">super</code><code class="java plain">(</code><code class="java keyword">new</code> <code class="java plain">BorderLayout());</code></div><div class="line number85 index84 alt2">&nbsp;</div><div class="line number86 index85 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Create the demo's UI.</code></div><div class="line number87 index86 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">startButton = </code><code class="java keyword">new</code> <code class="java plain">JButton(</code><code class="java string">"Start"</code><code class="java plain">);</code></div><div class="line number88 index87 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">startButton.setActionCommand(</code><code class="java string">"start"</code><code class="java plain">);</code></div><div class="line number89 index88 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">startButton.addActionListener(</code><code class="java keyword">this</code><code class="java plain">);</code></div><div class="line number90 index89 alt1">&nbsp;</div><div class="line number91 index90 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">progressBar = </code><code class="java keyword">new</code> <code class="java plain">JProgressBar(</code><code class="java value">0</code><code class="java plain">, </code><code class="java value">100</code><code class="java plain">);</code></div><div class="line number92 index91 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">progressBar.setValue(</code><code class="java value">0</code><code class="java plain">);</code></div><div class="line number93 index92 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">progressBar.setStringPainted(</code><code class="java keyword">true</code><code class="java plain">);</code></div><div class="line number94 index93 alt1">&nbsp;</div><div class="line number95 index94 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">taskOutput = </code><code class="java keyword">new</code> <code class="java plain">JTextArea(</code><code class="java value">5</code><code class="java plain">, </code><code class="java value">20</code><code class="java plain">);</code></div><div class="line number96 index95 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">taskOutput.setMargin(</code><code class="java keyword">new</code> <code class="java plain">Insets(</code><code class="java value">5</code><code class="java plain">,</code><code class="java value">5</code><code class="java plain">,</code><code class="java value">5</code><code class="java plain">,</code><code class="java value">5</code><code class="java plain">));</code></div><div class="line number97 index96 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">taskOutput.setEditable(</code><code class="java keyword">false</code><code class="java plain">);</code></div><div class="line number98 index97 alt1">&nbsp;</div><div class="line number99 index98 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">JPanel panel = </code><code class="java keyword">new</code> <code class="java plain">JPanel();</code></div><div class="line number100 index99 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">panel.add(startButton);</code></div><div class="line number101 index100 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">panel.add(progressBar);</code></div><div class="line number102 index101 alt1">&nbsp;</div><div class="line number103 index102 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">add(panel, BorderLayout.PAGE_START);</code></div><div class="line number104 index103 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">add(</code><code class="java keyword">new</code> <code class="java plain">JScrollPane(taskOutput), BorderLayout.CENTER);</code></div><div class="line number105 index104 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">setBorder(BorderFactory.createEmptyBorder(</code><code class="java value">20</code><code class="java plain">, </code><code class="java value">20</code><code class="java plain">, </code><code class="java value">20</code><code class="java plain">, </code><code class="java value">20</code><code class="java plain">));</code></div><div class="line number106 index105 alt1">&nbsp;</div><div class="line number107 index106 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number108 index107 alt1">&nbsp;</div><div class="line number109 index108 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">/**</code></div><div class="line number110 index109 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">* Invoked when the user presses the start button.</code></div><div class="line number111 index110 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">*/</code></div><div class="line number112 index111 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">actionPerformed(ActionEvent evt) {</code></div><div class="line number113 index112 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">startButton.setEnabled(</code><code class="java keyword">false</code><code class="java plain">);</code></div><div class="line number114 index113 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</code></div><div class="line number115 index114 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Instances of javax.swing.SwingWorker are not reusuable, so</code></div><div class="line number116 index115 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//we create new instances as needed.</code></div><div class="line number117 index116 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">task = </code><code class="java keyword">new</code> <code class="java plain">Task();</code></div><div class="line number118 index117 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">task.addPropertyChangeListener(</code><code class="java keyword">this</code><code class="java plain">);</code></div><div class="line number119 index118 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">task.execute();</code></div><div class="line number120 index119 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number121 index120 alt2">&nbsp;</div><div class="line number122 index121 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">/**</code></div><div class="line number123 index122 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">* Invoked when task's progress property changes.</code></div><div class="line number124 index123 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">*/</code></div><div class="line number125 index124 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">propertyChange(PropertyChangeEvent evt) {</code></div><div class="line number126 index125 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">if</code> <code class="java plain">(</code><code class="java string">"progress"</code> <code class="java plain">== evt.getPropertyName()) {</code></div><div class="line number127 index126 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">int</code> <code class="java plain">progress = (Integer) evt.getNewValue();</code></div><div class="line number128 index127 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">progressBar.setValue(progress);</code></div><div class="line number129 index128 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">taskOutput.append(String.format(</code></div><div class="line number130 index129 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java string">"Completed %d%% of task.\n"</code><code class="java plain">, task.getProgress()));</code></div><div class="line number131 index130 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">} </code></div><div class="line number132 index131 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number133 index132 alt2">&nbsp;</div><div class="line number134 index133 alt1">&nbsp;</div><div class="line number135 index134 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">/**</code></div><div class="line number136 index135 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">* Create the GUI and show it. As with all GUI code, this must run</code></div><div class="line number137 index136 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">* on the event-dispatching thread.</code></div><div class="line number138 index137 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java preprocessor">*/</code></div><div class="line number139 index138 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">private</code> <code class="java keyword">static</code> <code class="java keyword">void</code> <code class="java plain">createAndShowGUI() {</code></div><div class="line number140 index139 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Create and set up the window.</code></div><div class="line number141 index140 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">JFrame frame = </code><code class="java keyword">new</code> <code class="java plain">JFrame(</code><code class="java string">"ProgressBarDemo"</code><code class="java plain">);</code></div><div class="line number142 index141 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</code></div><div class="line number143 index142 alt2">&nbsp;</div><div class="line number144 index143 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Create and set up the content pane.</code></div><div class="line number145 index144 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">JComponent newContentPane = </code><code class="java keyword">new</code> <code class="java plain">ProgressBarDemo();</code></div><div class="line number146 index145 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">newContentPane.setOpaque(</code><code class="java keyword">true</code><code class="java plain">); </code><code class="java comments">//content panes must be opaque</code></div><div class="line number147 index146 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">frame.setContentPane(newContentPane);</code></div><div class="line number148 index147 alt1">&nbsp;</div><div class="line number149 index148 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Display the window.</code></div><div class="line number150 index149 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">frame.pack();</code></div><div class="line number151 index150 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">frame.setVisible(</code><code class="java keyword">true</code><code class="java plain">);</code></div><div class="line number152 index151 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number153 index152 alt2">&nbsp;</div><div class="line number154 index153 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">static</code> <code class="java keyword">void</code> <code class="java plain">main(String[] args) {</code></div><div class="line number155 index154 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//Schedule a job for the event-dispatching thread:</code></div><div class="line number156 index155 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java comments">//creating and showing this application's GUI.</code></div><div class="line number157 index156 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">javax.swing.SwingUtilities.invokeLater(</code><code class="java keyword">new</code> <code class="java plain">Runnable() {</code></div><div class="line number158 index157 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">void</code> <code class="java plain">run() {</code></div><div class="line number159 index158 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">createAndShowGUI();</code></div><div class="line number160 index159 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number161 index160 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">});</code></div><div class="line number162 index161 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number163 index162 alt2"><code class="java plain">}</code></div></div></td></tr></tbody></table></div></div>
+</div>
+<div class="clear"></div>
+<!-- tutorial boiler plate start -->
+<hr>
+<div id="Footer">
+<p class="footertext">
+<a href="http://www.oracle.com/corporate/index.html">About Oracle</a> | 
+<a href="http://www.oracle.com/us/corporate/contact/index.html">Contact Us</a> |
+<a href="http://www.oracle.com/us/legal/index.html">Legal Notices</a> | 
+<a href="http://www.oracle.com/us/legal/terms/index.html">Terms of Use</a> |
+<a href="http://www.oracle.com/us/legal/privacy/index.html">Your Privacy Rights</a></p>
+<p class="footertext"><a href="http://www.oracle.com/pls/topic/lookup?ctx=cpyr&amp;id=en-US">
+Copyright © 1995, 2017 Oracle and/or its affiliates. All rights reserved.</a></p>
+</div>
+<!-- tutorial boiler plate end -->
+<!-- Start SiteCatalyst code -->
+<script type="application/javascript" src="./ProgressBarDemo.java_files/ora_docs.js.transferir"></script><script src="./ProgressBarDemo.java_files/ora_code_docs.js.transferir"></script><script src="./ProgressBarDemo.java_files/ora_code.js.transferir"></script>
+<!-- End SiteCatalyst code --> 
+
+
+
+
+</body></html>

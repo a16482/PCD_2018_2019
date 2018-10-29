@@ -13,6 +13,8 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
     private JButton botaoDescarregar;
     private JTextArea outputTarefa;
     private Task tarefa;
+    private JLabel lblTexto;
+    private JTextField txtField;
  
     class Task extends SwingWorker<Void, Void> {
         @Override
@@ -55,35 +57,29 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
        	//Experiência:
        	//---------------------------------------------------
     	
-  
+        //Criação da Interface com o utilizador (GUI).
         super(new BorderLayout());
-        
-        JLabel lblTexto = new JLabel("Texto a procurar:");
+             
+        lblTexto = new JLabel("Texto a procurar:");
 		Font fontLblTexto = new Font("LucidaSans", Font.PLAIN, 14);
 		lblTexto.setFont(fontLblTexto);
 		lblTexto.setForeground(Color.red);
 		lblTexto.setBackground(Color.gray);
 		lblTexto.setVerticalAlignment(JTextField.CENTER);
 		lblTexto.setHorizontalAlignment(JTextField.LEFT);
-	
-		//---------------------------------------------------------
-		// PAINEL DE PROCURA: Caixa de texto "Texto a Procurar"
-		//---------------------------------------------------------
-		JTextField txtField = new JTextField();
+		
+		txtField = new JTextField();
 		txtField.setText("");
 		txtField.setFont(fontLblTexto);
 		txtField.setHorizontalAlignment(JTextField.LEFT);
 		txtField.setSelectedTextColor(Color.BLUE);
-	
 		  
-		JPanel painelDeProcura= new JPanel();
-		painelDeProcura.setLayout(new BorderLayout());
-		painelDeProcura.add(lblTexto, BorderLayout.EAST);
-		painelDeProcura.add(txtField, BorderLayout.NORTH);
-    	//---------------------------------------------------
-        //super(new BorderLayout());
- 
-        //Criação da Interface com o utilizador (GUI).
+		JPanel painelProcura= new JPanel();
+		painelProcura.setLayout(new GridLayout(1, 2));
+		painelProcura.add(lblTexto);
+		painelProcura.add(txtField);
+  
+        //Criação dos elementos da GUI relacionados com a barra de progresso..
         botaoDescarregar = new JButton("Descarregar");
         botaoDescarregar.setActionCommand("Descarregar");
         botaoDescarregar.addActionListener(this);
@@ -95,14 +91,21 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         outputTarefa = new JTextArea(5, 20);
         outputTarefa.setMargin(new Insets(5,5,5,5));
         outputTarefa.setEditable(false);
+       
  
-        JPanel painel1 = new JPanel();
-        painel1.add(botaoDescarregar);
-        painel1.add(barraDeProgresso);
- 
-        add(painel1, BorderLayout.PAGE_START);
+        JPanel painelProgresso = new JPanel();
+        painelProgresso.setLayout(new GridLayout(2, 2));
+        painelProgresso.add(botaoDescarregar);
+        painelProgresso.add(barraDeProgresso);
         add(new JScrollPane(outputTarefa), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+ 
+        add(painelProcura, BorderLayout.NORTH);
+        add(painelProgresso, BorderLayout.SOUTH);
+        
+        //add(painel1, BorderLayout.PAGE_START);
+//        add(new JScrollPane(outputTarefa), BorderLayout.CENTER);
+//        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
  
     }
  

@@ -61,6 +61,7 @@ public class Servidor {
 		
 		private ObjectInputStream in;
 		private String tipoMsg;
+		private Cliente cliente;
 		
 		public TrataMsg(InputStream in) throws IOException {
 			super();
@@ -79,17 +80,15 @@ public class Servidor {
 					
 					//--> cria uma instância de Msg e VERIFICA o tipo de MSG:
 					Msg m = new Msg(msg);
-					tipoMsg = m.getTipoMsg(msg);
-					
-					//--> cria uma instância de Cliente e VERIFICA o IP e PORTO:
-					Cliente c = m.getCliente();
+					tipoMsg = m.getTipoMsg();
+					cliente = m.getClienteMsg();
 					
 					switch (tipoMsg) {
 						case ("INSC"): 
-							adicionaCliente(c);
+							adicionaCliente(cliente);
 							break;
 						case ("CLT"):
-							informaDiretorio(c);
+							informaDiretorio(cliente);
 							break;
 						default:
 							break;

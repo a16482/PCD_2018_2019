@@ -1,72 +1,40 @@
 package pt.iscte.p2pdownload.theDirectory.domain;
 
 public class Msg {
-	private String msg;
+	//private String msg;
 	
 	private String tipoMsg;
-
 	private String ip;
 	private String porto;
 
 	private Cliente cliente;
 	
-	public Msg (String m) {
-		setMsg(m);
+	public Msg (String s) {
+		tipoMsg=s.substring(0, 4);
+		if (s.length() > 3 ) {
+			ip= s.substring(4,19);
+			porto= s.substring(20,24);
+			setClienteMsg();
+		}
 	}
 
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public String getTipoMsg(String m) {
-		tipoMsg=m.substring(0, 4);
+	public String getTipoMsg() {
 		return tipoMsg;
 	}
 
-	public void setTipoMsg(String m) {
-		this.tipoMsg=m.substring(0, 4);
-	}
-
-	public String getIPcliente (String m) {
-		if (m.length() > 3 ) {
-			ip= m.substring(4,19);
-		}
-		else{
-			ip =null;
-		}
+	public String getIP () {
 		return ip;
 	}
 			
-	public String getPortoCliente (String m) {
-		if (m.length() > 3 ) {
-			porto= m.substring(20,24);
-		}
-		else{
-			porto =null;
-		}
+	public String getPorto() {
 		return porto;
 	}
 	
-	public void setClienteMsg (String m) {
-		if (m.length() > 3 ) {
-			this.setCliente(new Cliente(getIPcliente(m), getPortoCliente(m)));
-		}
+	public void setClienteMsg () {
+		cliente = new Cliente(getIP(), getPorto());
 	}
 	
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
-	public Cliente getClienteMsg (String m) {
-		Cliente cliente = new Cliente(getIPcliente(m), getPortoCliente(m));
-		return cliente;
-	}
-
-	public Cliente getCliente() {
+	public Cliente getClienteMsg () {
 		return cliente;
 	}
 }
