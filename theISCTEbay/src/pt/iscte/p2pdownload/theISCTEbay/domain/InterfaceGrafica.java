@@ -222,14 +222,6 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         frame.setAlwaysOnTop(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-//        JFrame frame = new JFrame();
-//        frame.setTitle ("The ISCTE Bay") ;
-//        frame.setSize ( H , W ) ;
-//        //frame.setLayout(new FlowLayout());
-//        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-//        //createContent();
-//        //frame.setVisible(true);
- 
         //Cria e configura o painael de conteúdos.
         JComponent newContentPane = new InterfaceGrafica();
         newContentPane.setOpaque(true); //Os painéis de conteúdos devem ser opacos !!!
