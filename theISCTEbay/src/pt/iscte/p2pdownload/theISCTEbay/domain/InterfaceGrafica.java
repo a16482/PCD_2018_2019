@@ -37,7 +37,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
 	private JProgressBar barraDeProgresso;
     private JButton botaoDescarregar;
     private JButton botaoProcurar;
-    private JTextArea outputTarefa;
+    private JTextArea tarefaOutput;
     private Task tarefa;
     private JLabel lblTexto;
     private JLabel lblTitulo;
@@ -76,7 +76,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
             Toolkit.getDefaultToolkit().beep();
             botaoDescarregar.setEnabled(true);
             setCursor(null); //turn off the wait cursor
-            outputTarefa.append("Feito!\n");
+            tarefaOutput.append("Feito!\n");
         }
     }
  
@@ -149,16 +149,17 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         barraDeProgresso.setValue(0);
         barraDeProgresso.setStringPainted(true);
  
-        outputTarefa = new JTextArea(5, 20);
-        outputTarefa.setMargin(new Insets(5,5,5,5));
-        outputTarefa.setEditable(false);
+        tarefaOutput = new JTextArea(5, 20);
+        tarefaOutput.setMargin(new Insets(5,5,5,5));
+        tarefaOutput.setEditable(false);
        
  
         JPanel painelProgresso = new JPanel();
-        painelProgresso.setLayout(new GridLayout(2, 2));
+        painelProgresso.setLayout(new GridLayout(1, 3));
         painelProgresso.add(botaoDescarregar);
         painelProgresso.add(barraDeProgresso);
-        add(new JScrollPane(outputTarefa), BorderLayout.CENTER);
+        add(new JScrollPane(tarefaOutput)); // GridLayout
+        //add(new JScrollPane(tarefaOutput), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
  
         add(painelProcura, BorderLayout.NORTH);
@@ -206,7 +207,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
             int progress = (Integer) evt.getNewValue();
             barraDeProgresso.setValue(progress);
             // VER ISTO!
-            outputTarefa.append(String.format("%d%% da tarefa completa.\n", tarefa.getProgress()));
+            tarefaOutput.append(String.format("%d%% da tarefa completa.\n", tarefa.getProgress()));
         } 
     }
  
