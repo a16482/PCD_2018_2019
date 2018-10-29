@@ -18,19 +18,19 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         @Override
         public Void doInBackground() {
         	//--------------------------------------
-            Random random = new Random();  //--> ver!
+            Random random = new Random();  //--> ALTERAR!
             //--------------------------------------
             
             int progresso = 0;
-            //Inicializa a propriedade progress.
+            //Inicializa a propriedade "progress".
             setProgress(0);
             while (progresso < 100) {
-                //Sleep for up to one second.
+                //Sleep até 1 segundo.
                 try {
                     Thread.sleep(random.nextInt(1000));
                 } catch (InterruptedException ignore) {}
-                //-->
-                //Make random progress.
+                //--> ALTERAR ISTO!
+                //Tornar o progresso random.
                 progresso += random.nextInt(10);
                 setProgress(Math.min(progresso, 100));
             }
@@ -46,15 +46,44 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
             Toolkit.getDefaultToolkit().beep();
             botaoDescarregar.setEnabled(true);
             setCursor(null); //turn off the wait cursor
-            outputTarefa.append("Done!\n");
+            outputTarefa.append("Feito!\n");
         }
     }
  
     public InterfaceGrafica() {
+       	//---------------------------------------------------
+       	//Experiência:
+       	//---------------------------------------------------
     	
+  
         super(new BorderLayout());
+        
+        JLabel lblTexto = new JLabel("Texto a procurar:");
+		Font fontLblTexto = new Font("LucidaSans", Font.PLAIN, 14);
+		lblTexto.setFont(fontLblTexto);
+		lblTexto.setForeground(Color.red);
+		lblTexto.setBackground(Color.gray);
+		lblTexto.setVerticalAlignment(JTextField.CENTER);
+		lblTexto.setHorizontalAlignment(JTextField.LEFT);
+	
+		//---------------------------------------------------------
+		// PAINEL DE PROCURA: Caixa de texto "Texto a Procurar"
+		//---------------------------------------------------------
+		JTextField txtField = new JTextField();
+		txtField.setText("");
+		txtField.setFont(fontLblTexto);
+		txtField.setHorizontalAlignment(JTextField.LEFT);
+		txtField.setSelectedTextColor(Color.BLUE);
+	
+		  
+		JPanel painelDeProcura= new JPanel();
+		painelDeProcura.setLayout(new BorderLayout());
+		painelDeProcura.add(lblTexto, BorderLayout.EAST);
+		painelDeProcura.add(txtField, BorderLayout.NORTH);
+    	//---------------------------------------------------
+        //super(new BorderLayout());
  
-        //Create the demo's UI.
+        //Criação da Interface com o utilizador (GUI).
         botaoDescarregar = new JButton("Descarregar");
         botaoDescarregar.setActionCommand("Descarregar");
         botaoDescarregar.addActionListener(this);
@@ -67,64 +96,64 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         outputTarefa.setMargin(new Insets(5,5,5,5));
         outputTarefa.setEditable(false);
  
-        JPanel panel = new JPanel();
-        panel.add(botaoDescarregar);
-        panel.add(barraDeProgresso);
+        JPanel painel1 = new JPanel();
+        painel1.add(botaoDescarregar);
+        painel1.add(barraDeProgresso);
  
-        add(panel, BorderLayout.PAGE_START);
+        add(painel1, BorderLayout.PAGE_START);
         add(new JScrollPane(outputTarefa), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
  
     }
  
-    /**
-     * Invoked when the user presses the start button.
-     */
+     //----------------------------------------------------------
+     // Invocado quando o utilizador carrega no botão "Descarregar".
+     //---------------------------------------------------------------------
     public void actionPerformed(ActionEvent evt) {
         botaoDescarregar.setEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        //Instances of javax.swing.SwingWorker are not reusuable, so
-        //we create new instances as needed.
+        //As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+        //Por isso, cria-se uma nova, à medida do necessário.
         tarefa = new Task();
         tarefa.addPropertyChangeListener(this);
         tarefa.execute();
     }
  
     /**
-     * Invoked when task's progress property changes.
+     * Invocado quando a propriedade de progresso da tarefa é alterada.
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
             barraDeProgresso.setValue(progress);
-            outputTarefa.append(String.format(
-                    "Completed %d%% of task.\n", tarefa.getProgress()));
+            // VER ISTO!
+            outputTarefa.append(String.format("%d%% da tarefa completa.\n", tarefa.getProgress()));
         } 
     }
  
  
     /**
-     * Create the GUI and show it. As with all GUI code, this must run
-     * on the event-dispatching thread.
+     * Ciação do GUI e colocação em funcionamento.
+     * Corre no evento que despacha a thread.
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("ProgressBarDemo");
+        JFrame frame = new JFrame("The ISCTE Bay");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
-        //Create and set up the content pane.
+        //Cria e configura o painael de conteúdos.
         JComponent newContentPane = new InterfaceGrafica();
-        newContentPane.setOpaque(true); //content panes must be opaque
+        newContentPane.setOpaque(true); //Os painéis de conteúdos devem ser opacos !!!
         frame.setContentPane(newContentPane);
  
-        //Display the window.
+        //Mostra a janela.
         frame.pack();
         frame.setVisible(true);
     }
  
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
+       	//Agenda um job para o evento de despachar a thread.
+        //Cria e mostra o GUI desta aplicação.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
