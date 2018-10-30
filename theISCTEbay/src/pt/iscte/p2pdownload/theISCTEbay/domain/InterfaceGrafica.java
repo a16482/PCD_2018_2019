@@ -3,6 +3,7 @@ package pt.iscte.p2pdownload.theISCTEbay.domain;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -31,8 +32,8 @@ import javax.swing.SwingWorker;
 public class InterfaceGrafica extends JPanel implements ActionListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 	
-	private static int W = 800 ;
-	private static int H = 600 ;
+	private static int  W = 800 ;
+	private static int H = 400 ;
 	
 	private JProgressBar barraDeProgresso;
     private JButton botaoDescarregar;
@@ -43,6 +44,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
     private JLabel lblTitulo;
     private JTextField txtField;
     private JList<String> listaFiles;
+//    private JScrollPane listScroller;
  
     class Task extends SwingWorker<Void, Void> {
         @Override
@@ -76,7 +78,9 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
             Toolkit.getDefaultToolkit().beep();
             botaoDescarregar.setEnabled(true);
             setCursor(null); //turn off the wait cursor
-            tarefaOutput.append("Feito!\n");
+//            -----------------------------------------------------         
+//  	      Recuperar as linhas seguintes para a mensagem final!           
+//            tarefaOutput.append("Feito!\n");
         }
     }
  
@@ -88,35 +92,41 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
         super(new BorderLayout());
              
         lblTexto = new JLabel("Texto a procurar: ");
-		Font fontLblTexto = new Font("LucidaSans", Font.PLAIN, 14);
+		Font fontLblTexto = new Font("Arial", Font.BOLD, 16);
 		lblTexto.setFont(fontLblTexto);
-		lblTexto.setForeground(Color.red);
-		lblTexto.setBackground(Color.gray);
+		lblTexto.setForeground(Color.DARK_GRAY);
 		lblTexto.setVerticalAlignment(JTextField.CENTER);
 		lblTexto.setHorizontalAlignment(JTextField.LEFT);
 		
 		txtField = new JTextField();
-		txtField.setText("Insira aqui um argumento de pesquisa");
-		txtField.setPreferredSize(size());
-		txtField.setFont(fontLblTexto);
+		Font fonttxtField = new Font("Lucida Sans Serif", Font.PLAIN, 16);
+		txtField.setFont(fonttxtField);
+		txtField.setText("Argumento de pesquisa");
+		//txtField.setPreferredSize(new Dimension (300, 40));
 		txtField.setHorizontalAlignment(JTextField.LEFT);
-		txtField.setSelectedTextColor(Color.BLUE);
+		txtField.setSelectedTextColor(Color.DARK_GRAY);
 		
 		botaoProcurar = new JButton("Procurar");
+		Font fontBotaoProcurar = new Font("Lucida Sans Serif", Font.BOLD, 16);
+		botaoProcurar.setFont(fontBotaoProcurar);
 		botaoProcurar.setActionCommand("Procurar");
+		botaoProcurar.setPreferredSize(new Dimension (300, 40));
 		botaoProcurar.addActionListener(this);
 	 
 		  
 		JPanel painelProcura= new JPanel();
-		painelProcura.setLayout(new GridLayout(1, 3));
-		painelProcura.add(lblTexto);
-		painelProcura.add(txtField);
-		painelProcura.add(botaoProcurar);
+		//painelProcura.setLayout(new GridLayout(1, 3));
+		painelProcura.setLayout(new BorderLayout());
+		painelProcura.add(lblTexto,BorderLayout.WEST);
+		painelProcura.add(txtField,BorderLayout.CENTER);
+		painelProcura.add(botaoProcurar,BorderLayout.EAST);
+		painelProcura.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		
 		
 		//Criação dos elementos da GUI relacionados com a lista de ficheiros
 		//Titulo
 		lblTitulo = new JLabel("Titulo");
-		Font fontLblTitulo = new Font("LucidaSans", Font.PLAIN, 14);
+		Font fontLblTitulo = new Font("Lucida Sans Serif", Font.PLAIN, 14);
 		lblTitulo.setFont(fontLblTitulo);
 		lblTitulo.setForeground(Color.red);
 		lblTitulo.setBackground(Color.gray);
@@ -132,39 +142,60 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
 		listaFiles.setVisibleRowCount(-1); 		
 //		...
-//		JScrollPane listScroller = new JScrollPane(list);
-//		listScroller.setPreferredSize(new Dimension(250, 80));
+		JScrollPane listScroller = new JScrollPane(listaFiles);
+		listScroller.setPreferredSize(new Dimension(250, 80));
 //		...
 		JPanel painelFicheiros = new JPanel();
-		painelFicheiros.setLayout(new GridLayout(2, 1));
-		painelFicheiros.add(lblTitulo);		
-		painelFicheiros.add(listaFiles);
-        
+		//painelFicheiros.setLayout(new GridLayout(2, 1));
+//		painelFicheiros.add(lblTitulo);		
+//		painelFicheiros.add(listaFiles);
+		
+		painelFicheiros.setLayout(new BorderLayout());
+		//painelFicheiros.add(lblTitulo,BorderLayout.NORTH);
+		painelFicheiros.add(listaFiles,BorderLayout.SOUTH);
+		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		
         //Criação dos elementos da GUI relacionados com a barra de progresso..
         botaoDescarregar = new JButton("Descarregar");
+        Font fontBotaoDescarregar = new Font("Lucida Sans Serif", Font.BOLD, 16);
+        botaoDescarregar.setFont(fontBotaoDescarregar);
         botaoDescarregar.setActionCommand("Descarregar");
+        botaoDescarregar.setPreferredSize(new Dimension (300, 100));
         botaoDescarregar.addActionListener(this);
  
         barraDeProgresso = new JProgressBar(0, 100);
+        Font fontbarraDeProgresso = new Font("Lucida Sans Serif", Font.BOLD, 18);
+        barraDeProgresso.setFont(fontbarraDeProgresso);
         barraDeProgresso.setValue(0);
+        barraDeProgresso.setPreferredSize(new Dimension (300, 100));
+        barraDeProgresso.setForeground(Color.LIGHT_GRAY);
         barraDeProgresso.setStringPainted(true);
- 
-        tarefaOutput = new JTextArea(5, 20);
-        tarefaOutput.setMargin(new Insets(5,5,5,5));
-        tarefaOutput.setEditable(false);
-       
+//      -----------------------------------------------------  
+//      -----------------------------------------------------         
+//		  Recuperar as linhas seguintes para a mensagem final!   
+//        Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
+//        Exemplo:
+//        (ícone I) Descarga completa.
+//		  Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
+//		  Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
+//        -----------------------------------------------------        
+//        tarefaOutput = new JTextArea(5, 20);
+//        tarefaOutput.setMargin(new Insets(5,5,5,5));
+//        tarefaOutput.setEditable(false);
+//      -----------------------------------------------------  
+//      ----------------------------------------------------- 
  
         JPanel painelProgresso = new JPanel();
-        painelProgresso.setLayout(new GridLayout(1, 3));
+        painelProgresso.setLayout(new GridLayout(2, 1));
         painelProgresso.add(botaoDescarregar);
         painelProgresso.add(barraDeProgresso);
-        add(new JScrollPane(tarefaOutput)); // GridLayout
+        //add(new JScrollPane(tarefaOutput)); //aqui no GridLayout
         //add(new JScrollPane(tarefaOutput), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
  
         add(painelProcura, BorderLayout.NORTH);
-//        add(painelFicheiros, BorderLayout.EAST);
-        add(painelProgresso, BorderLayout.SOUTH);
+        //add(painelFicheiros, BorderLayout.WEST);
+        add(painelProgresso, BorderLayout.EAST);
         
         //add(painel1, BorderLayout.PAGE_START);
 //        add(new JScrollPane(outputTarefa), BorderLayout.CENTER);
@@ -207,7 +238,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
             int progress = (Integer) evt.getNewValue();
             barraDeProgresso.setValue(progress);
             // VER ISTO!
-            tarefaOutput.append(String.format("%d%% da tarefa completa.\n", tarefa.getProgress()));
+            //tarefaOutput.append(String.format("%d%% da tarefa completa.\n", tarefa.getProgress()));
         } 
     }
  
@@ -219,7 +250,7 @@ public class InterfaceGrafica extends JPanel implements ActionListener, Property
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("The ISCTE Bay");
-        frame.setSize ( H , W ) ; // Isto não está a funcionar!
+        frame.setPreferredSize( new Dimension ( W ,  H ) ) ;  // Isto não está a funcionar!
         frame.setAlwaysOnTop(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
