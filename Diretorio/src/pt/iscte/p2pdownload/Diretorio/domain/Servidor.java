@@ -1,17 +1,12 @@
 package pt.iscte.p2pdownload.Diretorio.domain;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.List;
-import java.util.ArrayList;
-//import java.util.Iterator;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class Servidor {
 
-	public final static int port = 8091;
+	private static int port;
 	private ServerSocket server;
 
 	public void init() throws IOException {
@@ -26,6 +21,7 @@ public class Servidor {
 			System.out.println("Servidor iniciado:" + port);
 			
 			Socket s=server.accept();
+			System.out.println("Ligação efetuada");
 			new TrataMsg(s.getInputStream()).start();
 		}
 	}
@@ -46,6 +42,7 @@ public class Servidor {
 	}
 
 	public static void main(String[] args) {
+		port = Integer.parseInt(args[0]);
 		final Servidor s = new Servidor();
 		try {
 			s.init();
@@ -72,7 +69,7 @@ public class Servidor {
 		public void run() {
 			try {
 				while(true){
-					System.out.println("À espera...");
+					System.out.println("à espera...");
 					
 					// RECEÇÃO da MSG:
 					String msg=(String)in.readObject();
@@ -95,6 +92,7 @@ public class Servidor {
 					}
 				}
 			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
 				// Não fazer nada... Leitura acabou
 				System.out.println("Cliente desligou-se.");
@@ -103,6 +101,7 @@ public class Servidor {
 				try {
 					in.close();
 				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 		}

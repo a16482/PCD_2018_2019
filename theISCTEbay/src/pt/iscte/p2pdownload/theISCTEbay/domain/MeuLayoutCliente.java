@@ -1,4 +1,4 @@
-package pt.iscte.p2pdownload.theISCTEbay.domain;
+package pt.ISCTE.p2pdownload.TheISCTEBay.domain;
 
 import java.awt.Color;
 import java.awt.Container;
