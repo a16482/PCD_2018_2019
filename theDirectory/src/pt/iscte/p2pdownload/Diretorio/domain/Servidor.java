@@ -1,4 +1,4 @@
-package pt.iscte.p2pdownload.theDirectory.domain;
+package pt.iscte.p2pdownload.Diretorio.domain;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 
 public class Servidor {
 

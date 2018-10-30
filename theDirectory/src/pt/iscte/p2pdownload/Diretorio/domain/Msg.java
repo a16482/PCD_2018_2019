@@ -1,4 +1,4 @@
-package pt.iscte.p2pdownload.theDirectory.domain;
+package pt.iscte.p2pdownload.Diretorio.domain;
 
 public class Msg {
 	//private String msg;
