@@ -24,8 +24,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-//import javax.swing.JScrollPane;
-//import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
@@ -69,8 +68,7 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
             }
             return null;
         }
-        
- 
+              
     	//---------------------------------------------------
         // Executado no evento de despachar a thread
      	//---------------------------------------------------
@@ -87,6 +85,8 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 //          ----------------------------------------------------- 
 //            tarefaOutput.append("Feito!\n");
 //          ----------------------------------------------------- 
+            MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");
+            
         }
     }
  
