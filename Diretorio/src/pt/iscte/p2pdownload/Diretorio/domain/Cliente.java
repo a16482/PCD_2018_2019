@@ -9,12 +9,12 @@ public class Cliente {
 		porto = p;
 	}
 
-	public String devolveIPcliente(Cliente c) {
-		return c.enderecoIP;
+	public String ipCliente() {
+		return enderecoIP;
 	}
 
-	public String devolvePortocliente(Cliente c) {
-		return c.porto;
+	public String portoCliente() {
+		return porto;
 	}
 	
 
