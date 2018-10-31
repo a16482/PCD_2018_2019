@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
 //import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -44,7 +45,7 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
     //private JLabel lblTitulo;
     private JTextField txtField;
     private JList<String> listaFiles;
-//    private JScrollPane listScroller;
+    private JScrollPane listScroller;
  
     class Task extends SwingWorker<Void, Void> {
         @Override
@@ -131,23 +132,24 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		//--------------------------------------------------------------------------------------------
 		// Substituir pelo processo de carregamento....
 		//--------------------------------------------------------------------------------------------
-		String[] searchResult = {"aaaa", "bbbbb","aaaa", "bbbbb","aaaa", "bbbbb"}; // Array de Strings
+		String[] searchResult = {"aaaa", "bbbbb","ccccc", "ddddddddddd","eeee", "f", "gggggggggggggg", "hhhhh"}; // Array de Strings
 		//--------------------------------------------------------------------------------------------
+		listScroller = new JScrollPane();
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// 3 hipóteses: a)SINGLE_SELECTION; b) SINGLE_INTERVAL_SELECTION; c) MULTIPLE_INTERVAL_SELECTION
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
 		listaFiles.setVisibleRowCount(-1); 	
 		listaFiles.setFixedCellHeight(H/10);
-//		...
-//		JScrollPane listScroller = new JScrollPane(listaFiles);
-//		listScroller.setPreferredSize(new Dimension(250, 80));
-//		...
+		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 14));
+		listScroller.setViewportView(listaFiles);
+		listScroller.setPreferredSize(new Dimension (W/8*3, H/3*2-10));
+    	//...
 		JPanel painelFicheiros = new JPanel();
-		painelFicheiros.setPreferredSize(new Dimension(W/2, H));
+		painelFicheiros.setPreferredSize(new Dimension(W/2+60, H));
 		painelFicheiros.setLayout(new BorderLayout());
-		painelFicheiros.add(listaFiles,BorderLayout.NORTH);
-		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		painelFicheiros.add(listScroller,BorderLayout.NORTH);
+		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
 		
         //Criação dos elementos da GUI relacionados com a barra de progresso..
         botaoDescarregar = new JButton("Descarregar");
