@@ -16,6 +16,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -47,7 +49,9 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
     private JScrollPane listScroller;
  
     class Task extends SwingWorker<Void, Void> {
-        @Override
+        private Object icon;
+
+		@Override
         public Void doInBackground() {
         	//--------------------------------------
             Random random = new Random();  //--> ALTERAR!
@@ -85,9 +89,16 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 //          ----------------------------------------------------- 
 //            tarefaOutput.append("Feito!\n");
 //          ----------------------------------------------------- 
-            MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");
+                       	
+//            ImageIcon icon = createImageIcon("Icon\\Info-icon.png");
+//            MsgBox.show("YOUR INFORMATION HERE", "TITLE BAR MESSAGE", icon);
             
         }
+
+//		private ImageIcon createImageIcon(String string) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
     }
  
     public TheISCTEBay() {
