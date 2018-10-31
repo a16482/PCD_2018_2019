@@ -14,7 +14,23 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.Random;
 
+<<<<<<< HEAD
 import javax.swing.*;
+=======
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
+>>>>>>> 2beafa01cde5399d497fefde370f70cc40bf8137
 
 public class TheISCTEBay extends JPanel implements ActionListener, PropertyChangeListener {
 	private static String enderecoDiretorio;
@@ -30,6 +46,7 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 	private static int H = 400;
 
 	private JProgressBar barraDeProgresso;
+<<<<<<< HEAD
 	private JButton botaoDescarregar;
 	private JButton botaoProcurar;
 	// private JTextArea tarefaOutput;
@@ -75,11 +92,58 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 			txtField.setEnabled(true);
 			listaFiles.setEnabled(true);
 			setCursor(null); // desliga o wait do cursor
+=======
+    private JButton botaoDescarregar;
+    private JButton botaoProcurar;
+    //private JTextArea tarefaOutput;
+    private Task tarefa;
+    private JLabel lblTexto;
+    //private JLabel lblTitulo;
+    private JTextField txtField;
+    private JList<String> listaFiles;
+    private JScrollPane listScroller;
+ 
+    class Task extends SwingWorker<Void, Void> {
+        @Override
+        public Void doInBackground() {
+        	//--------------------------------------
+            Random random = new Random();  //--> ALTERAR!
+            //--------------------------------------
+            
+            int progresso = 0;
+            //Inicializa a propriedade "progress".
+            setProgress(0);
+            while (progresso < 100) {
+                //Sleep até 1 segundo.
+                try {
+                    Thread.sleep(random.nextInt(1000));
+                } catch (InterruptedException ignore) {}
+                //--> ALTERAR ISTO!
+                //Tornar o progresso random.
+                progresso += random.nextInt(10);
+                setProgress(Math.min(progresso, 100));
+            }
+            return null;
+        }
+              
+    	//---------------------------------------------------
+        // Executado no evento de despachar a thread
+     	//---------------------------------------------------
+        @Override
+        public void done() {
+            Toolkit.getDefaultToolkit().beep();
+            botaoDescarregar.setEnabled(true);
+            botaoProcurar.setEnabled(true);
+            txtField.setEnabled(true);
+            listaFiles.setEnabled(true);
+            setCursor(null); //desliga o wait do cursor
+>>>>>>> 2beafa01cde5399d497fefde370f70cc40bf8137
 //            -----------------------------------------------------         
 //  	      Recuperar as linhas seguintes para a mensagem final!
 //          ----------------------------------------------------- 
 //            tarefaOutput.append("Feito!\n");
 //          ----------------------------------------------------- 
+<<<<<<< HEAD
 		}
 	}
 
@@ -91,6 +155,21 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		super(new BorderLayout());
 
 		lblTexto = new JLabel("Texto a procurar: ");
+=======
+            MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");
+            
+        }
+    }
+ 
+    public TheISCTEBay() {
+       	//---------------------------------------------------
+        //Criação da Interface com o utilizador (GUI)
+       	//---------------------------------------------------
+    	
+        super(new BorderLayout());
+             
+        lblTexto = new JLabel("Texto a procurar: ");
+>>>>>>> 2beafa01cde5399d497fefde370f70cc40bf8137
 		Font fontLblTexto = new Font("Lucida Sans Serif", Font.BOLD, 16);
 		lblTexto.setFont(fontLblTexto);
 		lblTexto.setForeground(Color.DARK_GRAY);
@@ -122,14 +201,22 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		// Criação dos elementos da GUI relacionados com a lista de ficheiros
 		// --------------------------------------------------------------------------------------------
 		// Substituir pelo processo de carregamento....
+<<<<<<< HEAD
 		// --------------------------------------------------------------------------------------------
 		String[] searchResult = { "aaaa", "bbbbb", "aaaa", "bbbbb", "aaaa", "bbbbb" }; // Array de Strings
 		// --------------------------------------------------------------------------------------------
+=======
+		//--------------------------------------------------------------------------------------------
+		String[] searchResult = {"aaaa", "bbbbb","ccccc", "ddddddddddd","eeee", "f", "gggggggggggggg", "hhhhh"}; // Array de Strings
+		//--------------------------------------------------------------------------------------------
+		listScroller = new JScrollPane();
+>>>>>>> 2beafa01cde5399d497fefde370f70cc40bf8137
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// 3 hipóteses: a)SINGLE_SELECTION; b) SINGLE_INTERVAL_SELECTION; c)
 		// MULTIPLE_INTERVAL_SELECTION
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
+<<<<<<< HEAD
 		listaFiles.setVisibleRowCount(-1);
 		listaFiles.setFixedCellHeight(H / 10);
 //		...
@@ -157,6 +244,35 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		barraDeProgresso.setPreferredSize(new Dimension(W / 8 * 3, H / 4));
 		barraDeProgresso.setForeground(Color.LIGHT_GRAY);
 		barraDeProgresso.setStringPainted(true);
+=======
+		listaFiles.setVisibleRowCount(-1); 	
+		listaFiles.setFixedCellHeight(H/10);
+		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 14));
+		listScroller.setViewportView(listaFiles);
+		listScroller.setPreferredSize(new Dimension (W/8*3, H/3*2-10));
+    	//...
+		JPanel painelFicheiros = new JPanel();
+		painelFicheiros.setPreferredSize(new Dimension(W/2+60, H));
+		painelFicheiros.setLayout(new BorderLayout());
+		painelFicheiros.add(listScroller,BorderLayout.NORTH);
+		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
+		
+        //Criação dos elementos da GUI relacionados com a barra de progresso..
+        botaoDescarregar = new JButton("Descarregar");
+        Font fontBotaoDescarregar = new Font("Lucida Sans Serif", Font.BOLD, 16);
+        botaoDescarregar.setFont(fontBotaoDescarregar);
+        botaoDescarregar.setActionCommand("Descarregar");
+        botaoDescarregar.setPreferredSize(new Dimension (W/8*3, H/4));
+        botaoDescarregar.addActionListener(this);
+ 
+        barraDeProgresso = new JProgressBar(0, 100);
+        Font fontbarraDeProgresso = new Font("Lucida Sans Serif", Font.BOLD, 18);
+        barraDeProgresso.setFont(fontbarraDeProgresso);
+        barraDeProgresso.setValue(0);
+        barraDeProgresso.setPreferredSize(new Dimension (W/8*3, H/4));
+        barraDeProgresso.setForeground(Color.LIGHT_GRAY);
+        barraDeProgresso.setStringPainted(true);
+>>>>>>> 2beafa01cde5399d497fefde370f70cc40bf8137
 //      -----------------------------------------------------  
 //      -----------------------------------------------------         
 //		  Recuperar as linhas seguintes para a mensagem final!   
