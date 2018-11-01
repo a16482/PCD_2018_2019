@@ -51,7 +51,7 @@ public class Diretorio {
 		} catch (Exception e) {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
-			MsgBox.erro(msgErro, enderecoUtilizador);
+			MsgBox.erro(msgErro);
 		}
 	}
 
@@ -76,7 +76,9 @@ public class Diretorio {
 			utilizadores.close();
 			socketLista.close();		
 		} catch (Exception e) {
-			System.out.println("Erro: " + e.getMessage());
+			msgErro = "Erro: " + e.getMessage();
+			System.out.println(msgErro); 
+			MsgBox.erro(msgErro);
 		}
 	}
 	

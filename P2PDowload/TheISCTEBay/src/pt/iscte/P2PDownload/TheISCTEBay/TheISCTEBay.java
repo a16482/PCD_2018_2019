@@ -13,7 +13,7 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
-	private String msgErro;
+	//private String msgErro;
 	//--------------------------------------------	
 	// Variaveis e Constantes da IG
 	//--------------------------------------------
@@ -46,7 +46,7 @@ public class TheISCTEBay {
 			String msgErro = "São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "
 					+ "<Pasta para transferências>";
 			System.err.println(msgErro);
-			MsgBox.erro(msgErro, MsgBox.oNomeDoMetodoQueMeChamou());
+			MsgBox.erro(msgErro);
 			System.exit(1);
 		}
 		
