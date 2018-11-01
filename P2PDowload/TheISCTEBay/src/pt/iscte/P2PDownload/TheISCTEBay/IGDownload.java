@@ -101,7 +101,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		
 		super(new BorderLayout());
 		//---------------------------------------------------
-		//Criação da Interface com o utilizador (GUI)
+		//Criação da Interface IGDownload
 		//---------------------------------------------------
 		//Painel superior     
 		lblTexto = new JLabel("Texto a procurar: ");
@@ -160,6 +160,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		botaoDescarregar.setFont(fontBotaoDescarregar);
 		botaoDescarregar.setActionCommand("Descarregar");
 		botaoDescarregar.setPreferredSize(new Dimension(W / 8 * 3, H / 4));
+		botaoDescarregar.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		botaoDescarregar.addActionListener(this);
 
 		barraDeProgresso = new JProgressBar(0, 100);
@@ -172,10 +173,13 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 		listaFiles.setVisibleRowCount(-1); 	
 		listaFiles.setFixedCellHeight(H/10);
+		//listaFiles.setPreferredSize(new Dimension (W/12*4, H/6*4));
+		//listaFiles.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 80));
 		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
 		listScroller.setViewportView(listaFiles);
 		listScroller.setPreferredSize(new Dimension (W/8*3, H/3*2-10));
-
+		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
+		
 		JPanel painelProgresso = new JPanel();
 		painelProgresso.setLayout(new GridLayout(2, 1));
 		painelProgresso.add(botaoDescarregar);
@@ -186,7 +190,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		add(painelFicheiros, BorderLayout.WEST);
 		add(painelProgresso, BorderLayout.EAST);
 		//---------------------------------------------------
-		//Fim do GUI ----------------------------------------
+		//Fim da definição da janela IGDownload -------------
 		//---------------------------------------------------
 	}
 	// ------------------------------------------------------------------------
@@ -223,12 +227,4 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 	}
 	
-//	// Agenda um job para o evento de despachar a thread.
-//	// Cria e mostra o GUI desta aplicação.
-//	public void javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//		@Override
-//		public void run() {
-//			criaEmostraGUI();
-//		}
-//	});
 }
