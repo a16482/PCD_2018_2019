@@ -18,7 +18,7 @@ public class TheISCTEBay {
 	//--------------------------------------------
 	private static int W = 800;
 	private static int H = 400;
-	
+	//
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
