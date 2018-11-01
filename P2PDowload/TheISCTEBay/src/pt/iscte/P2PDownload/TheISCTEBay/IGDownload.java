@@ -27,15 +27,9 @@ import javax.swing.SwingConstants;
 
 import pt.iscte.P2PDownload.TheISCTEBay.TheISCTEBay.Task;
 
-//import pt.iscte.P2PDownload.TheISCTEBay.TheISCTEBay.Task;
-
-//public class IGCliente extends JFrame {
 public class IGDownload extends JPanel implements ActionListener, PropertyChangeListener {
-
-	super(new BorderLayout());
-	
 	private static final long serialVersionUID = 1L;
-	
+
 	//--------------------------------------------	
 	// Variaveis e Constantes da IGDownload
 	//--------------------------------------------
@@ -51,15 +45,14 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JTextArea tarefaOutput;
 	private Task tarefa;
 	//--------------------------------------------
-	
-	
+
 	class IGDownload() {
+		
+		super(new BorderLayout());
 		//---------------------------------------------------
 		//Criação da Interface com o utilizador (GUI)
 		//---------------------------------------------------
-	
-		
-		//Painel suoerior     
+		//Painel superior     
 		lblTexto = new JLabel("Texto a procurar: ");
 		Font fontLblTexto = new Font("Lucida Sans Serif", Font.BOLD, 16);
 		lblTexto.setFont(fontLblTexto);
@@ -146,7 +139,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		//Fim do GUI ----------------------------------------
 		//---------------------------------------------------
 	}
- 	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
 	// ------------------------------------------------------------------------
 	@Override
@@ -167,7 +160,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 		}
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Invocado sempre que a propriedade de progresso da tarefa é alterada
 	// ------------------------------------------------------------------------
@@ -177,6 +170,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			int progress = (Integer) evt.getNewValue();
 			barraDeProgresso.setValue(progress);
 		}
-	
+
 	}
 }
