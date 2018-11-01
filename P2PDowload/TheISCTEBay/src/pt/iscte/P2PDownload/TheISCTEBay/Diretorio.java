@@ -52,6 +52,7 @@ public class Diretorio {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
+			MsgBox.erro(msgErro, MsgBox.oNomeDoMetodoQueMeChamou());
 		}
 	}
 
@@ -79,6 +80,7 @@ public class Diretorio {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
+			MsgBox.erro(msgErro, MsgBox.oNomeDoMetodoQueMeChamou());
 		}
 	}
 	
