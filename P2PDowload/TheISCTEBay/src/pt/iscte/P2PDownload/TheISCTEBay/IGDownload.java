@@ -91,9 +91,8 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
     		//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
     		//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
     		//-----------------------------------------------------
-//    		 ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
-    		//ImageIcon iconeInfo = createImageIcon("../Icon/iconInfo.png", "Informação");
-    		 MsgBox.show("YOUR INFORMATION HERE", "TITLE BAR MESSAGE", 0);    
+
+    		 MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");    
     	}
     }
 	    	

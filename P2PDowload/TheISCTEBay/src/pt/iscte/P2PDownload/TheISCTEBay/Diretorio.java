@@ -11,7 +11,9 @@ public class Diretorio {
 	private String enderecoUtilizador;
 	private int portoUtilizador;
 	private List<Utilizador> listaUtilizadores = new ArrayList<>();
-
+	private String msgInfo;
+	private String msgErro;
+	
 	public Diretorio(String eDiretorio, int pDiretorio,int pUtilizador){
 		enderecoDiretorio = eDiretorio;
 		portoDiretorio = pDiretorio;
@@ -21,9 +23,11 @@ public class Diretorio {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		portoUtilizador = pUtilizador;
-		System.out.println("Endereço do Utilizador= " + enderecoUtilizador); 
+		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
+		System.out.println(msgInfo); 
+		MsgBox.info(msgInfo);
 	}
 
 
@@ -37,13 +41,17 @@ public class Diretorio {
 			ObjectInputStream confirmacao = new ObjectInputStream(socket.getInputStream());
 			String conf = (String)confirmacao.readObject();
 			if (conf.equals("ok")) {
-				System.out.println("Registo no Diretório efetuado com sucesso");
+				msgInfo = "Registo no Diretório efetuado com sucesso" ;
+				System.out.println(msgInfo); 
+				MsgBox.info(msgInfo, enderecoUtilizador);
 			}
 			registo.close();
 			confirmacao.close();
 			socket.close();		
 		} catch (Exception e) {
-			System.out.println("Erro: " + e.getMessage());
+			msgErro = "Erro: " + e.getMessage();
+			System.out.println(msgErro); 
+			MsgBox.erro(msgErro, enderecoUtilizador);
 		}
 	}
 

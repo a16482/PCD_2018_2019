@@ -9,26 +9,26 @@ public final class MsgBox
 {
 		
     public static void info(String message) {
-        info(message, theNameOfTheMethodThatCalledMe());
+        info(message, oNomeDoMetodoQueMeChamou());
     }
     public static void info(String message, String caller) {
-        show(message, caller, JOptionPane.INFORMATION_MESSAGE);
+        mostra(message, caller, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    static void error(String message) {
-        error(message, theNameOfTheMethodThatCalledMe());
+    static void erro(String message) {
+        erro(message, oNomeDoMetodoQueMeChamou());
     }
-    public static void error(String message, String caller) {
-        show(message, caller, JOptionPane.ERROR_MESSAGE);
+    public static void erro(String message, String caller) {
+        mostra(message, caller, JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void show(String message, String title, int iconId) {
+    public static void mostra(String message, String title, int iconId) {
         setClipboard(title+":"+NEW_LINE+message);
         JOptionPane.showMessageDialog(null, message, title, iconId);
     }
     private static final String NEW_LINE = System.lineSeparator();
 
-    public static String theNameOfTheMethodThatCalledMe() {
+    public static String oNomeDoMetodoQueMeChamou() {
         return Thread.currentThread().getStackTrace()[3].getMethodName();
     }
 

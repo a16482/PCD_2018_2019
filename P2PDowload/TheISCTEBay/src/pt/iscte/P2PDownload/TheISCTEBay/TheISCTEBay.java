@@ -13,6 +13,7 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
+	private String msgErro;
 	//--------------------------------------------	
 	// Variaveis e Constantes da IG
 	//--------------------------------------------
@@ -42,9 +43,10 @@ public class TheISCTEBay {
 	public static void main(String[] args) {
 		//Verifica se a aplicação iniciou com os 4 argumentos:<IP do Diretório> <Porto do Diretório> <Porto do Utilizador> <Pasta para transferências>
 		if (args.length < 4) {
-			System.err.println(
-					"São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "
-							+ "<Pasta para transferências>");
+			String msgErro = "São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "
+					+ "<Pasta para transferências>";
+			System.err.println(msgErro);
+			MsgBox.erro(msgErro, MsgBox.oNomeDoMetodoQueMeChamou());
 			System.exit(1);
 		}
 		
