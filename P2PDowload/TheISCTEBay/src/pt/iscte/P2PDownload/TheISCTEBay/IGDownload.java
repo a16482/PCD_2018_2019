@@ -2,30 +2,28 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-
-import pt.iscte.P2PDownload.TheISCTEBay.TheISCTEBay.Task;
+import javax.swing.SwingWorker;
 
 public class IGDownload extends JPanel implements ActionListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -42,11 +40,64 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JTextField txtField;
 	private JList<String> listaFiles;
 	private JScrollPane listScroller;
-	private JTextArea tarefaOutput;
 	private Task tarefa;
 	//--------------------------------------------
 
-	class IGDownload() {
+
+    class Task extends SwingWorker<Void, Void> {
+        //private Object icon;
+
+    	@Override
+    	public Void doInBackground() {
+    		//--------------------------------------
+    		Random random = new Random();  //--> ALTERAR!
+    		//--------------------------------------
+
+    		int progresso = 0;
+    		//Inicializa a propriedade "progress".
+    		setProgress(0);
+    		while (progresso < 100) {
+    			//Sleep até 1 segundo.
+    			try {
+    				Thread.sleep(random.nextInt(1000));
+    			} catch (InterruptedException ignore) {}
+    			//--> ALTERAR ISTO!
+    			//Tornar o progresso random.
+    			progresso += random.nextInt(10);
+    			setProgress(Math.min(progresso, 100));
+    		}
+    		return null;
+    	}
+              
+    	//---------------------------------------------------
+        // Executado no evento de despachar a thread
+     	//---------------------------------------------------
+    	@Override
+    	public void done() { //Feito!!!
+    		Toolkit.getDefaultToolkit().beep();
+    		botaoDescarregar.setEnabled(true);
+    		botaoProcurar.setEnabled(true);
+    		txtField.setEnabled(true);
+    		listaFiles.setEnabled(true);
+    		setCursor(null); //desliga o wait do cursor
+    		// Mostra o que foi feito ao Cliente:
+    		//ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
+
+    		//-----------------------------------------------------         
+    		//Recuperar as linhas seguintes para a mensagem final!   
+    		//Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
+    		//Exemplo:
+    		//(ícone I) Descarga completa.
+    		//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
+    		//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
+    		//-----------------------------------------------------
+//    		 ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
+    		//ImageIcon iconeInfo = createImageIcon("../Icon/iconInfo.png", "Informação");
+    		 MsgBox.show("YOUR INFORMATION HERE", "TITLE BAR MESSAGE", 0);    
+    	}
+    }
+	    	
+	public IGDownload() {
 		
 		super(new BorderLayout());
 		//---------------------------------------------------
@@ -59,7 +110,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		lblTexto.setForeground(Color.DARK_GRAY);
 		lblTexto.setVerticalAlignment(SwingConstants.CENTER);
 		lblTexto.setHorizontalAlignment(SwingConstants.LEFT);
-
 		txtField = new JTextField();
 		Font fonttxtField = new Font("Lucida Sans Serif", Font.PLAIN, 16);
 		txtField.setFont(fonttxtField);
@@ -172,4 +222,13 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		}
 
 	}
+	
+//	// Agenda um job para o evento de despachar a thread.
+//	// Cria e mostra o GUI desta aplicação.
+//	public void javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//		@Override
+//		public void run() {
+//			criaEmostraGUI();
+//		}
+//	});
 }
