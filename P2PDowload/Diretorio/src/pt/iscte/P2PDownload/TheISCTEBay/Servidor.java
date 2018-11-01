@@ -61,15 +61,15 @@ public class Servidor {
 
 	public class TrataMsg extends Thread {
 
-		private ObjectInputStream in;
-		private ObjectOutputStream out;
+		private ObjectInputStream inStream;
+		private ObjectOutputStream outStream;
 		private String tipoMsg;
 		private Cliente cliente;
 
 		public TrataMsg(InputStream in, OutputStream out) throws IOException {
 			super();
-			this.in = new ObjectInputStream(in);
-			this.out = new ObjectOutputStream(out);
+			this.inStream = new ObjectInputStream(in);
+			this.outStream = new ObjectOutputStream(out);
 		}
 
 		@Override
@@ -79,7 +79,7 @@ public class Servidor {
 					System.out.println("à espera...");
 
 					// RECEÇÃO da MSG:
-					String msg=(String)in.readObject();
+					String msg=(String)inStream.readObject();
 					System.out.println("Recebido: " + msg);
 
 					//--> cria uma instância de Msg e VERIFICA o tipo de MSG:
@@ -90,23 +90,23 @@ public class Servidor {
 					switch (tipoMsg) {
 						case ("INSC"): 
 							adicionaCliente(cliente);
-							out.flush();
-							out.writeObject(new String("ok"));
-							out.close();
+							outStream.flush();  //limpeza
+							outStream.writeObject(new String("ok"));
+							outStream.close();
 							break;
 						case ("CLT"):
-							out.flush();
+							outStream.flush();
 							for (Cliente d : diretorio) {
-								out.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
+								outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
 							}
-							out.writeObject("END");
-							out.close();
+							outStream.writeObject("END");
+							outStream.close();
 							informaDiretorio(cliente);
 							break;
 						default:
-							out.flush();
-							out.writeObject(new String("Mensagem com formato desconhecido"));
-							out.close();
+							outStream.flush();
+							outStream.writeObject(new String("Mensagem com formato desconhecido"));
+							outStream.close();
 							System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
 							break;
 					}
@@ -120,7 +120,7 @@ public class Servidor {
 				//removeCliente(c);
 			} finally{
 				try {
-					in.close();
+					inStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
