@@ -15,7 +15,7 @@ public class Msg {
 		tipoMsg = parte[0];
 		System.out.println("tipoMsg: " + tipoMsg);
 		
-		if(s.length() > 1) {
+		if(parte.length > 1) {
 			ip = parte[1];
 			porto= parte[2];
 		}

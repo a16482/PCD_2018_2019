@@ -35,12 +35,7 @@ public class Servidor {
 	public synchronized void removeCliente(Cliente c) {
 		diretorio.remove(c);
 	}
-
-	public synchronized void informaDiretorio(Cliente c) { 
-		for (int i = 0; i < diretorio.size(); i++) {
-			System.out.println("CLI " + diretorio.get(i).ipCliente() + " " + diretorio.get(i).portoCliente());
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		if (args.length < 1) {
@@ -72,6 +67,30 @@ public class Servidor {
 			this.outStream = new ObjectOutputStream(out);
 		}
 
+	    // VER ISTO!!!
+		public synchronized void informaDiretorio() { 
+			try {	
+				for (int i = 0; i < diretorio.size(); i++) {
+					System.out.println("CLI " + diretorio.get(i).ipCliente() + " " + diretorio.get(i).portoCliente());
+				}
+				outStream.flush();
+				for (Cliente d : diretorio) {
+					outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
+				}
+				outStream.writeObject("END");
+				outStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally{
+				try {
+					inStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		
 		@Override
 		public void run() {
 			try {
@@ -86,29 +105,24 @@ public class Servidor {
 					Msg m = new Msg(msg);
 					tipoMsg = m.getTipoMsg();
 					cliente = m.getClienteMsg();
-
-					switch (tipoMsg) {
-						case ("INSC"): 
-							adicionaCliente(cliente);
-							outStream.flush();  //limpeza
-							outStream.writeObject(new String("ok"));
-							outStream.close();
-							break;
-						case ("CLT"):
-							outStream.flush();
-							for (Cliente d : diretorio) {
-								outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
-							}
-							outStream.writeObject("END");
-							outStream.close();
-							informaDiretorio(cliente);
-							break;
-						default:
-							outStream.flush();
-							outStream.writeObject(new String("Mensagem com formato desconhecido"));
-							outStream.close();
-							System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
-							break;
+					synchronized (diretorio) {
+						switch (tipoMsg) {
+							case ("INSC"): 
+								adicionaCliente(cliente);
+								outStream.flush();  //limpeza
+								outStream.writeObject(new String("ok"));
+								outStream.close();
+								break;
+							case ("CLT"):
+								informaDiretorio();
+								break;
+							default:
+								outStream.flush();
+								outStream.writeObject(new String("Mensagem com formato desconhecido"));
+								outStream.close();
+								System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
+								break;
+						}
 					}
 					System.out.println("....................");
 				}
