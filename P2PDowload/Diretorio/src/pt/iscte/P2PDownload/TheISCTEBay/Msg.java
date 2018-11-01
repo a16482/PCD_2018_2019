@@ -4,26 +4,22 @@ public class Msg {
 	//private String msg;
 
 	private String tipoMsg;
-	private String ip="";
+	private String ip;
 	private String porto;
 	private Cliente cliente;
 
 	public Msg (String s) {
-		if(s.length() < 4) {
-			tipoMsg=s;
-		}else {
-			tipoMsg=s.substring(0, 4);
-		}
+		
+		String parte[]= s.split(" ");
+		
+		tipoMsg = parte[0];
 		System.out.println("tipoMsg: " + tipoMsg);
-		int inicioPorto=0;
-		if (s.length() > 3 ) {
-			for(int i = 5;s.charAt(i) != ' '; i++) {
-				ip += s.charAt(i);
-				inicioPorto = i+2;
-			}
-			porto= s.substring(inicioPorto,inicioPorto+4);
-			setClienteMsg();
+		
+		if(s.length() > 1) {
+			ip = parte[1];
+			porto= parte[2];
 		}
+		setClienteMsg();
 	}
 
 	public String getTipoMsg() {
