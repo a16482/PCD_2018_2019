@@ -3,13 +3,10 @@ package pt.ISCTE.p2pdownload.TheISCTEBay.domain;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public final class MsgBox
 {
-		
     public static void info(String message) {
         info(message, theNameOfTheMethodThatCalledMe());
     }

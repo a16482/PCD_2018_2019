@@ -14,10 +14,12 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.Random;
 
-import javax.swing.*;
-import javax.swing.ImageIcon;
+
+//import javax.swing.*;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -42,7 +44,7 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 	private static int portoDiretorio;
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
-//	private static Diretorio d;
+    private static Diretorio d;
 
 	private JProgressBar barraDeProgresso;
 	private JButton botaoDescarregar;
@@ -56,61 +58,121 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 	
 	//-------------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------------
-
+	//-------------------------------------------------------------------------------------------------------
+//	class Task extends SwingWorker<Void, Void> {
+//		@Override
+//		public Void doInBackground() {
+//			// --------------------------------------
+//			Random random = new Random(); // --> ALTERAR!
+//			// --------------------------------------
+//
+//			int progresso = 0;
+//			// Inicializa a propriedade "progress".
+//			setProgress(0);
+//			while (progresso < 100) {
+//				// Sleep até 1 segundo.
+//				try {
+//					Thread.sleep(random.nextInt(1000));
+//				} catch (InterruptedException ignore) {
+//				}
+//				// --> ALTERAR ISTO!
+//				// Tornar o progresso random.
+//				progresso += random.nextInt(10);
+//				setProgress(Math.min(progresso, 100));
+//			}
+//			return null;
+//		}
+//
+//		// ---------------------------------------------------
+//		// Executado no evento de despachar a thread
+//		// ---------------------------------------------------
+//		@Override
+//		public void done() {
+//			Toolkit.getDefaultToolkit().beep();
+//			botaoDescarregar.setEnabled(true);
+//			botaoProcurar.setEnabled(true);
+//			txtField.setEnabled(true);
+//			listaFiles.setEnabled(true);
+//			setCursor(null); // desliga o wait do cursor
+//		}
+//		
+		
+//	    private JButton botaoDescarregar;
+//	    private JButton botaoProcurar;
+//	    //private JTextArea tarefaOutput;
+//	    private Task tarefa;
+//	    private JLabel lblTexto;
+//	    //private JLabel lblTitulo;
+//	    private JTextField txtField;
+//	    private JList<String> listaFiles;
+//	    private JScrollPane listScroller;
+//		-------------------------------------------------------------------------------------------------------
+//		-------------------------------------------------------------------------------------------------------
+//		-------------------------------------------------------------------------------------------------------
+	 
     class Task extends SwingWorker<Void, Void> {
         //private Object icon;
 
-    	@Override
-    	public Void doInBackground() {
-    		//--------------------------------------
-    		Random random = new Random();  //--> ALTERAR!
-    		//--------------------------------------
-
-    		int progresso = 0;
-    		//Inicializa a propriedade "progress".
-    		setProgress(0);
-    		while (progresso < 100) {
-    			//Sleep até 1 segundo.
-    			try {
-    				Thread.sleep(random.nextInt(1000));
-    			} catch (InterruptedException ignore) {}
-    			//--> ALTERAR ISTO!
-    			//Tornar o progresso random.
-    			progresso += random.nextInt(10);
-    			setProgress(Math.min(progresso, 100));
-    		}
-    		return null;
-    	}
+		@Override
+        public Void doInBackground() {
+        	//--------------------------------------
+            Random random = new Random();  //--> ALTERAR!
+            //--------------------------------------
+            
+            int progresso = 0;
+            //Inicializa a propriedade "progress".
+            setProgress(0);
+            while (progresso < 100) {
+                //Sleep até 1 segundo.
+                try {
+                    Thread.sleep(random.nextInt(1000));
+                } catch (InterruptedException ignore) {}
+                //--> ALTERAR ISTO!
+                //Tornar o progresso random.
+                progresso += random.nextInt(10);
+                setProgress(Math.min(progresso, 100));
+            }
+            return null;
+        }
               
     	//---------------------------------------------------
         // Executado no evento de despachar a thread
      	//---------------------------------------------------
-    	@Override
-    	public void done() { //Feito!!!
-    		Toolkit.getDefaultToolkit().beep();
-    		botaoDescarregar.setEnabled(true);
-    		botaoProcurar.setEnabled(true);
-    		txtField.setEnabled(true);
-    		listaFiles.setEnabled(true);
-    		setCursor(null); //desliga o wait do cursor
-    		// Mostra o que foi feito ao Cliente:
-    		//ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
+        @Override
+        public void done() { //Feito!!!
+            Toolkit.getDefaultToolkit().beep();
+            botaoDescarregar.setEnabled(true);
+            botaoProcurar.setEnabled(true);
+            txtField.setEnabled(true);
+            listaFiles.setEnabled(true);
+            setCursor(null); //desliga o wait do cursor
+            // Mostra o que foi feito ao Cliente:
+            //ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
+            ImageIcon iconeInfo = createImageIcon("../Icon/iconInfo.png", "Informação");
+            MsgBox.show("YOUR INFORMATION HERE", "TITLE BAR MESSAGE", 0);    
+		}
+	}
 
-    		//-----------------------------------------------------         
-    		//Recuperar as linhas seguintes para a mensagem final!   
-    		//Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
-    		//Exemplo:
-    		//(ícone I) Descarga completa.
-    		//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
-    		//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
-    		//-----------------------------------------------------
-//    		 ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
-    		//ImageIcon iconeInfo = createImageIcon("../Icon/iconInfo.png", "Informação");
-    		 MsgBox.show("YOUR INFORMATION HERE", "TITLE BAR MESSAGE", 0);    
-    	}
-    }
+//	public TheISCTEBay() {
+//		// ---------------------------------------------------
+//		// Criação da Interface com o utilizador (GUI)
+//		// ---------------------------------------------------
+//
+//		super(new BorderLayout());
 
+//	lblTexto = new JLabel("Texto a procurar: ");
+//
+//        MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");
+//
+//        
+//    }
 
+//		private ImageIcon createImageIcon(String string) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//    }
+ 
     public TheISCTEBay() {
        	//---------------------------------------------------
         //Criação da Interface com o utilizador (GUI)
@@ -145,10 +207,11 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		painelProcura.add(txtField, BorderLayout.CENTER);
 		painelProcura.add(botaoProcurar, BorderLayout.EAST);
 		painelProcura.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-		// -----------------------------------------------------------------------
+
 		// Criação dos elementos da GUI relacionados com a lista de ficheiros
 		// --------------------------------------------------------------------------------------------
-		// ATENÇÃO: Substituir o array de string no processo de carregamento....
+		// Substituir pelo processo de carregamento....
+		//String[] searchResult = {"aaaa", "bbbbb","ccccc", "ddddddddddd","eeee", "f", "gggggggggggggg", "hhhhh"}; // Array de Strings
 		//--------------------------------------------------------------------------------------------
 		String[] searchResult = {};
 		listScroller = new JScrollPane();
@@ -165,9 +228,8 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		painelFicheiros.setLayout(new BorderLayout());
 		painelFicheiros.add(listScroller, BorderLayout.NORTH);
 		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-		// -----------------------------------------------------------------------
+		//...
 		// Criação dos elementos da GUI relacionados com a barra de progresso..
-		// -----------------------------------------------------------------------
 		botaoDescarregar = new JButton("Descarregar");
 		Font fontBotaoDescarregar = new Font("Lucida Sans Serif", Font.BOLD, 16);
 		botaoDescarregar.setFont(fontBotaoDescarregar);
@@ -185,25 +247,57 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 
 		listaFiles.setVisibleRowCount(-1); 	
 		listaFiles.setFixedCellHeight(H/10);
-		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
+		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 14));
 		listScroller.setViewportView(listaFiles);
 		listScroller.setPreferredSize(new Dimension (W/8*3, H/3*2-10));
- 
+    	//...
+        //-----------------------------------------------------  
+        //-----------------------------------------------------         
+		  //Recuperar as linhas seguintes para a mensagem final!   
+        //Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
+        //Exemplo:
+        //(ícone I) Descarga completa.
+		  //Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
+		  //Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
+        //-----------------------------------------------------        
+        //tarefaOutput = new JTextArea(5, 20);
+        //tarefaOutput.setMargin(new Insets(5,5,5,5));
+        //tarefaOutput.setEditable(false);
+        //-----------------------------------------------------  
+        //----------------------------------------------------- 
+
 		JPanel painelProgresso = new JPanel();
 		painelProgresso.setLayout(new GridLayout(2, 1));
 		painelProgresso.add(botaoDescarregar);
 		painelProgresso.add(barraDeProgresso);
+		// add(new JScrollPane(tarefaOutput)); //aqui no GridLayout
+		// add(new JScrollPane(tarefaOutput), BorderLayout.CENTER);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		add(painelProcura, BorderLayout.NORTH);
 		add(painelFicheiros, BorderLayout.WEST);
 		add(painelProgresso, BorderLayout.EAST);
        	//---------------------------------------------------
-        //Fim do GUI ----------------------------------------
+        //Fim da criação da Interface com o utilizador (GUI)
        	//---------------------------------------------------
 	}
     
-    // ------------------------------------------------------------------------
+
+//    public void valueChanged(ListSelectionEvent e) {
+//        if (e.getValueIsAdjusting() == false) {
+//
+//            if (listaFiles.getSelectedIndex() == -1) {
+//            //Nada selecionado, disable botão de fire
+//                fireButton.setEnabled(false);
+//
+//            } else {
+//            // Selecionado, enable do botao fire.
+//                fireButton.setEnabled(true);
+//            }
+//        }
+//    }
+
+	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
 	// ------------------------------------------------------------------------
 	@Override
@@ -275,20 +369,20 @@ public class TheISCTEBay extends JPanel implements ActionListener, PropertyChang
 		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
 				+ "\nPorto do Utilizador: " + portoUtilizador + "\nPasta para transferências: " + pastaTransferencias);
 		
-//		//Instancia um diretório
-//		d = new Diretorio (enderecoDiretorio, portoDiretorio, portoUtilizador);
-//		
-//		//Regista-se no Diretório
-//		d.registoDiretorio();
-//		
-//		//Consulta a lista de utilizadores no Diretório
-//		d.consultaUtilizadores();
-//		
-//		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
-//		
-//		for (Utilizador u : listaUtilizadores) {
-//			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
-//		}
+		//Instancia um diretório
+		d = new Diretorio (enderecoDiretorio, portoDiretorio, portoUtilizador);
+		
+		//Regista-se no Diretório
+		d.registoDiretorio();
+		
+		//Consulta a lista de utilizadores no Diretório
+		d.consultaUtilizadores();
+		
+		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
+		
+		for (Utilizador u : listaUtilizadores) {
+			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
+		}
 		
 		// Agenda um job para o evento de despachar a thread.
 		// Cria e mostra o GUI desta aplicação.
