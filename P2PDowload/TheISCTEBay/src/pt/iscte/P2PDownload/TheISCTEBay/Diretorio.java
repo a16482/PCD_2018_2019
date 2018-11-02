@@ -27,7 +27,7 @@ public class Diretorio {
 		portoUtilizador = pUtilizador;
 		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
 		System.out.println(msgInfo); 
-		MsgBox.info(msgInfo);
+		IGMsgBox.info(msgInfo);
 	}
 
 
@@ -43,7 +43,7 @@ public class Diretorio {
 			if (conf.equals("ok")) {
 				msgInfo = "Registo no Diretório efetuado com sucesso" ;
 				System.out.println(msgInfo); 
-				MsgBox.info(msgInfo, enderecoUtilizador);
+				IGMsgBox.info(msgInfo, enderecoUtilizador);
 			}
 			registo.close();
 			confirmacao.close();
@@ -51,7 +51,7 @@ public class Diretorio {
 		} catch (Exception e) {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
-			MsgBox.erro(msgErro);
+			IGMsgBox.erro(msgErro);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class Diretorio {
 		} catch (Exception e) {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
-			MsgBox.erro(msgErro);
+			IGMsgBox.erro(msgErro);
 		}
 	}
 	

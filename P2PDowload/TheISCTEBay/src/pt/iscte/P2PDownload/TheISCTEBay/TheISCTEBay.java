@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 public class TheISCTEBay {
 
@@ -18,24 +21,50 @@ public class TheISCTEBay {
 	// Variaveis e Constantes da IG
 	//--------------------------------------------
 	private static int W = 800;
-	private static int H = 400;
+	private static int H = 600;
+	
+	//private JMenuBar menuBar;
 	//
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
 	// ------------------------------------------------------------------------
 	private static void criaEmostraGUI() {
+		// ---------------- Painel de Download -----------------------------
 		JFrame frame = new JFrame("The ISCTE Bay");
 		frame.setPreferredSize(new Dimension(W, H)); // Isto não está a funcionar!
 		frame.setAlwaysOnTop(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Cria e configura o painel de conteúdos.
-		JComponent newContentPane = new IGDownload();
-		newContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
-		frame.setContentPane(newContentPane);
+		JComponent DownloadContentPane = new IGDownload(W,H);
+		DownloadContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
+		frame.setContentPane(DownloadContentPane);
+		
+		// ---------------- Fim do Painel de Download ------------------------
+		
+		// ------------------------------------------------
+		// PopUp Menu 
+		// ------------------------------------------------
+		// menu "pai"
+		JPopupMenu pmenu = new JPopupMenu("Menu");
 
-		// Mostra a janela.
+		//sub menu
+		JMenu sectionsMenu = new JMenu("Opções");
+		JMenuItem menuItem1 = new JMenuItem("Porto para o Diretorio");
+		sectionsMenu .add(menuItem1 );
+		JMenuItem menuItem2 = new JMenuItem("Porto '''default'''");
+		sectionsMenu .add(menuItem2 );
+		pmenu.add(sectionsMenu);
+
+		//regular menu item
+		JMenuItem menuItem = new JMenuItem("Utilizadores");
+		pmenu.add(menuItem);
+		DownloadContentPane.setComponentPopupMenu(pmenu);
+		// ------------------------------------------------
+		// Fim do PopUp Menu
+		// ------------------------------------------------	
+		frame.setSize(W, H);
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -46,7 +75,7 @@ public class TheISCTEBay {
 			String msgErro = "São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "
 					+ "<Pasta para transferências>";
 			System.err.println(msgErro);
-			MsgBox.erro(msgErro);
+			IGMsgBox.erro(msgErro);
 			System.exit(1);
 		}
 		

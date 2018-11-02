@@ -25,14 +25,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
-public class IGDownload extends JPanel implements ActionListener, PropertyChangeListener {
+public class IGDownload extends JPanel implements ActionListener, PropertyChangeListener  {
 	private static final long serialVersionUID = 1L;
 
 	//--------------------------------------------	
 	// Variaveis e Constantes da IGDownload
 	//--------------------------------------------
-	private static int W = 800;
-	private static int H = 400;
+//	private static int W = 800; 
+//	private static int H = 400;
 	private JProgressBar barraDeProgresso;
 	private JButton botaoDescarregar;
 	private JButton botaoProcurar;
@@ -42,9 +42,8 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JScrollPane listScroller;
 	private Task tarefa;
 	//--------------------------------------------
-
-
-    class Task extends SwingWorker<Void, Void> {
+	
+	class Task extends SwingWorker<Void, Void> {
         //private Object icon;
 
     	@Override
@@ -92,11 +91,11 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
     		//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
     		//-----------------------------------------------------
 
-    		 MsgBox.info("YOUR INFORMATION HERE", "TITLE BAR MESSAGE");    
+    		 IGMsgBox.info("fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253", "Descarga completa");    
     	}
     }
 	    	
-	public IGDownload() {
+	public IGDownload( int W,  int H) {
 		
 		super(new BorderLayout());
 		//---------------------------------------------------
@@ -136,18 +135,21 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		// --------------------------------------------------------------------------------------------
 		// ATENÇÃO: Substituir o array de string no processo de carregamento....
 		//--------------------------------------------------------------------------------------------
-		String[] searchResult = {};
+		String[] searchResult = {"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l" +
+				"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
 		listScroller = new JScrollPane();
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		// 3 hipóteses: a)SINGLE_SELECTION; b) SINGLE_INTERVAL_SELECTION; c)
-		// MULTIPLE_INTERVAL_SELECTION
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
-		listaFiles.setVisibleRowCount(-1);
-		listaFiles.setFixedCellHeight(H / 10);
-
+		listaFiles.setVisibleRowCount(-1); 	
+		//listaFiles.setFixedCellHeight(H/10);
+		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
+		listScroller.setViewportView(listaFiles);
+		listScroller.setPreferredSize(new Dimension (W/9*5, H));
+		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
+		
 		JPanel painelFicheiros = new JPanel();
-		painelFicheiros.setPreferredSize(new Dimension(W / 2+60, H));
+		painelFicheiros.setPreferredSize(new Dimension((W / 9 * 5), (H/2)));
 		painelFicheiros.setLayout(new BorderLayout());
 		painelFicheiros.add(listScroller, BorderLayout.NORTH);
 		painelFicheiros.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
@@ -159,26 +161,19 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		botaoDescarregar.setFont(fontBotaoDescarregar);
 		botaoDescarregar.setActionCommand("Descarregar");
 		botaoDescarregar.setPreferredSize(new Dimension(W / 8 * 3, H / 4));
-		botaoDescarregar.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		botaoDescarregar.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
 		botaoDescarregar.addActionListener(this);
-
+			
 		barraDeProgresso = new JProgressBar(0, 100);
 		Font fontbarraDeProgresso = new Font("Lucida Sans Serif", Font.BOLD, 18);
 		barraDeProgresso.setFont(fontbarraDeProgresso);
 		barraDeProgresso.setValue(0);
 		barraDeProgresso.setPreferredSize(new Dimension(W / 8 * 3, H / 4));
+		barraDeProgresso.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		barraDeProgresso.setForeground(Color.LIGHT_GRAY);
 		barraDeProgresso.setStringPainted(true);
 
-		listaFiles.setVisibleRowCount(-1); 	
-		listaFiles.setFixedCellHeight(H/10);
-		//listaFiles.setPreferredSize(new Dimension (W/12*4, H/6*4));
-		//listaFiles.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 80));
-		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
-		listScroller.setViewportView(listaFiles);
-		listScroller.setPreferredSize(new Dimension (W/8*3, H/3*2-10));
-		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
-		
+
 		JPanel painelProgresso = new JPanel();
 		painelProgresso.setLayout(new GridLayout(2, 1));
 		painelProgresso.add(botaoDescarregar);
@@ -210,7 +205,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			tarefa.execute();
 		} else {
 			// botão "Procurar"
-
+			IGMsgBox.info("ui");
 		}
 	}
 

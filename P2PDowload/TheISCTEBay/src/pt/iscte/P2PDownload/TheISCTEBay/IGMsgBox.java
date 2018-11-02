@@ -5,7 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.JOptionPane;
 
-public final class MsgBox
+public final class IGMsgBox
 {
 		
     public static void info(String message) {
@@ -34,8 +34,6 @@ public final class MsgBox
 
     public static void setClipboard(String message) {
         CLIPBOARD.setContents(new StringSelection(message), null);
-        // nb: we don't respond to the "your content was splattered"
-        //     event, so it's OK to pass a null owner.
     }
     private static final Toolkit AWT_TOOLKIT = Toolkit.getDefaultToolkit();
     private static final Clipboard CLIPBOARD = AWT_TOOLKIT.getSystemClipboard();
