@@ -85,4 +85,18 @@ public class Diretorio {
 	public List<Utilizador> getListaUtilizadores() {
 		return listaUtilizadores;
 	}
+	
+//	public List<String> getListaUtilizString() {
+//		List<Utilizador> listInUtiliz = getListaUtilizadores();
+//		List<String> listOutUtiliz = new ArrayList<String>();
+//		
+//		int i = 0;
+//		while (i < listInUtiliz.size()) {
+//			Utilizador uIn = listInUtiliz.get(i);
+//			String uOut = uIn.ipUtilizador() + " " + uIn.portoUtilizador();
+//			listOutUtiliz.add(uOut);
+//			i++;
+//		}
+//		return listOutUtiliz;
+//	}
 }

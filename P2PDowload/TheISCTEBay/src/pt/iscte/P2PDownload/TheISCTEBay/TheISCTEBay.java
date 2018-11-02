@@ -21,7 +21,7 @@ public class TheISCTEBay {
 	// Variaveis e Constantes da IG
 	//--------------------------------------------
 	private static int W = 800;
-	private static int H = 600;
+	private static int H = 400;
 	
 	//private JMenuBar menuBar;
 	//

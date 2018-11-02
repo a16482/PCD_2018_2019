@@ -2,11 +2,8 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -14,13 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-
-import pt.iscte.P2PDownload.TheISCTEBay.IGDownload.Task;
 
 public class IGUtilizadores extends JPanel {
 
@@ -60,8 +53,11 @@ public class IGUtilizadores extends JPanel {
 		// ATENÇÃO: Substituir o array de string no processo de carregamento....
 		//----------------------------------------------------------------------------------
 		String[] searchResult = {};
+
+//		String[] searchResult = getListaUtilizString();
 		JScrollPane lUtilizadoresScroller = new JScrollPane();
 		JList<String> listaUtilizadores = new JList<String>(searchResult);
+		
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
 		listaUtilizadores.setVisibleRowCount(-1);
@@ -87,5 +83,16 @@ public class IGUtilizadores extends JPanel {
 		//---------------------------------------------------
 	}
 		
-
+//	public List<String> getListaUtilizString() {
+//	public void getListaUtilizString() {
+//	List listInUtiliz = new List<Utilizador>();
+//	List listOutUtiliz = new List<String>();
+//	
+//	int i = 0;
+//	while (i < listInUtiliz.size()) {
+//		Utilizador uIn = listInUtiliz.get(i);
+//		String uOut = uIn.ipUtilizador() + " " + uIn.portoUtilizador();
+//		listOutUtiliz.add(uOut);
+//		i++;
+//	}
 }
