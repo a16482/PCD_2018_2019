@@ -41,6 +41,8 @@ public class TheISCTEBay {
 		
 		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
 		pmenu = IGDownload.setPopUpMenu();
+	   
+
 		DownloadContentPane.setComponentPopupMenu(pmenu);
 
 		frame.setSize(W, H);
@@ -56,7 +58,7 @@ public class TheISCTEBay {
 			String msgErro = "São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "
 					+ "<Pasta para transferências>";
 			System.err.println(msgErro);
-			IGMsgBox.erro(msgErro);
+			MsgBox.erro(msgErro);
 			System.exit(1);
 		}
 		

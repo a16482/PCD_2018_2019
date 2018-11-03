@@ -41,6 +41,8 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JList<String> listaFiles;
 	private JScrollPane listScroller;
 	private Task tarefa;
+	
+	private static final String newLine = "%n";
 	//--------------------------------------------
 
 	class Task extends SwingWorker<Void, Void> {
@@ -79,19 +81,14 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			txtField.setEnabled(true);
 			listaFiles.setEnabled(true);
 			setCursor(null); //desliga o wait do cursor
-			// Mostra o que foi feito ao Cliente:
-			//ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
 
-			//-----------------------------------------------------         
-			//Recuperar as linhas seguintes para a mensagem final!   
-			//Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
-			//Exemplo:
-			//(ícone I) Descarga completa.
-			//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
-			//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
-			//-----------------------------------------------------
-
-			IGMsgBox.info("fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253", "Descarga completa");    
+			MsgBox.info(
+					"Descarga completa." + 
+					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
+					, "Descarga completa");    
 		}
 	}
 
@@ -185,64 +182,49 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		// ---------------------------------------------
 		//Fim da definição do corpo da janela IGDownload 
 		// ---------------------------------------------
-	
-		
-	}	
-	
+	}
 	public static JPopupMenu setPopUpMenu(){
 
 		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
+		ActionListener actionListener = new PopUpActionListener();
+		
 		JMenuItem menuItem1 = new JMenuItem("Utilizadores");
 		menuItem1.setActionCommand("Utilizadores");
+		menuItem1.addActionListener(actionListener);
 		pmenu.add(menuItem1);
-		// Só em caso de ser necessário um sub menu
-		// JMenu sectionsMenu = new JMenu("Opções");
-		// JMenuItem menuItem1 = new JMenuItem("Porto para o Diretorio");
-		// sectionsMenu .add(menuItem1 );
-		// JMenuItem menuItem2 = new JMenuItem("Porto '''default'''");
-		// sectionsMenu .add(menuItem2 );
-		// pmenu.add(sectionsMenu);
-		// ...
+	    pmenu.addSeparator();
 		JMenuItem menuItem2 = new JMenuItem("Configurações");
 		menuItem2.setActionCommand("Configurações");
+		menuItem2.addActionListener(actionListener);
 		pmenu.add(menuItem2);
+		
 		return pmenu;
 	}
 	
-	public class PopupActionListener implements ActionListener {
-		  public void actionPerformed(ActionEvent actionEvent) {
-		    System.out.println("Selected: " + actionEvent.getActionCommand());
-		  }
-	}
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
 	// ------------------------------------------------------------------------
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		switch(evt.getActionCommand()) {
-		case ("Descarregar"): 
-			botaoDescarregar.setEnabled(false);
-			botaoProcurar.setEnabled(false);
-			txtField.setEnabled(false);
-			listaFiles.setEnabled(false);
-			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-			// Por isso, cria-se uma nova, à medida do necessário.
-			tarefa = new Task();
-			tarefa.addPropertyChangeListener(this); // sentinela
-			tarefa.execute();
-			break;
-		case ("Procurar"): 
-			IGMsgBox.info("ui");
-			break;
-		case ("Utilizadores"):
-			IGMsgBox.info("Utilizadores");
-			break;
-		case ("Configurações"):
-			IGMsgBox.info("Configurações");
-			break;
-		default:
-			break;
+			case ("Descarregar"): 
+				botaoDescarregar.setEnabled(false);
+				botaoProcurar.setEnabled(false);
+				txtField.setEnabled(false);
+				listaFiles.setEnabled(false);
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+				// Por isso, cria-se uma nova, à medida do necessário.
+				tarefa = new Task();
+				tarefa.addPropertyChangeListener(this); // sentinela
+				tarefa.execute();
+				break;
+			case ("Procurar"): 
+				MsgBox.info("ui");
+				break;
+			default:
+				// nada a fazer
+				break;
 		}
 	}
 

@@ -5,7 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.JOptionPane;
 
-public final class IGMsgBox
+public final class MsgBox
 {
 		
     public static void info(String message) {
