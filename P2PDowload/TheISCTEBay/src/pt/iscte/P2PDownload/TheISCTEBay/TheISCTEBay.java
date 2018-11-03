@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 public class TheISCTEBay {
@@ -23,8 +21,7 @@ public class TheISCTEBay {
 	private static int W = 800;
 	private static int H = 400;
 	
-	//private JMenuBar menuBar;
-	//
+	
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
@@ -36,40 +33,24 @@ public class TheISCTEBay {
 		frame.setAlwaysOnTop(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		
 		// Cria e configura o painel de conteúdos.
 		JComponent DownloadContentPane = new IGDownload(W,H);
 		DownloadContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
 		frame.setContentPane(DownloadContentPane);
 		
-		// ---------------- Fim do Painel de Download ------------------------
-		
-		// ------------------------------------------------
-		// PopUp Menu 
-		// ------------------------------------------------
-		// menu "pai"
-		JPopupMenu pmenu = new JPopupMenu("Menu");
-
-		//sub menu
-		JMenu sectionsMenu = new JMenu("Opções");
-		JMenuItem menuItem1 = new JMenuItem("Porto para o Diretorio");
-		sectionsMenu .add(menuItem1 );
-		JMenuItem menuItem2 = new JMenuItem("Porto '''default'''");
-		sectionsMenu .add(menuItem2 );
-		pmenu.add(sectionsMenu);
-
-		//regular menu item
-		JMenuItem menuItem = new JMenuItem("Utilizadores");
-		pmenu.add(menuItem);
+		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
+		pmenu = IGDownload.setPopUpMenu();
 		DownloadContentPane.setComponentPopupMenu(pmenu);
-		// ------------------------------------------------
-		// Fim do PopUp Menu
-		// ------------------------------------------------	
+
 		frame.setSize(W, H);
 		frame.pack();
 		frame.setVisible(true);
 	}
-
+	
+	
 	public static void main(String[] args) {
+
 		//Verifica se a aplicação iniciou com os 4 argumentos:<IP do Diretório> <Porto do Diretório> <Porto do Utilizador> <Pasta para transferências>
 		if (args.length < 4) {
 			String msgErro = "São necessários 4 argumentos: <IP do Diretório> <Porto do Diretório> <Porto do Utilizador> "

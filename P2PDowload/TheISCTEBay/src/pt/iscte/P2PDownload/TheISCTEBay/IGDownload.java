@@ -17,7 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -31,8 +33,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	//--------------------------------------------	
 	// Variaveis e Constantes da IGDownload
 	//--------------------------------------------
-//	private static int W = 800; 
-//	private static int H = 400;
 	private JProgressBar barraDeProgresso;
 	private JButton botaoDescarregar;
 	private JButton botaoProcurar;
@@ -42,61 +42,61 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JScrollPane listScroller;
 	private Task tarefa;
 	//--------------------------------------------
-	
+
 	class Task extends SwingWorker<Void, Void> {
-        //private Object icon;
+		//private Object icon;
 
-    	@Override
-    	public Void doInBackground() {
-    		//--------------------------------------
-    		Random random = new Random();  //--> ALTERAR!
-    		//--------------------------------------
+		@Override
+		public Void doInBackground() {
+			//--------------------------------------
+			Random random = new Random();  //--> ALTERAR!
+			//--------------------------------------
 
-    		int progresso = 0;
-    		//Inicializa a propriedade "progress".
-    		setProgress(0);
-    		while (progresso < 100) {
-    			//Sleep até 1 segundo.
-    			try {
-    				Thread.sleep(random.nextInt(1000));
-    			} catch (InterruptedException ignore) {}
-    			//--> ALTERAR ISTO!
-    			//Tornar o progresso random.
-    			progresso += random.nextInt(10);
-    			setProgress(Math.min(progresso, 100));
-    		}
-    		return null;
-    	}
-              
-    	//---------------------------------------------------
-        // Executado no evento de despachar a thread
-     	//---------------------------------------------------
-    	@Override
-    	public void done() { //Feito!!!
-    		Toolkit.getDefaultToolkit().beep();
-    		botaoDescarregar.setEnabled(true);
-    		botaoProcurar.setEnabled(true);
-    		txtField.setEnabled(true);
-    		listaFiles.setEnabled(true);
-    		setCursor(null); //desliga o wait do cursor
-    		// Mostra o que foi feito ao Cliente:
-    		//ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
+			int progresso = 0;
+			//Inicializa a propriedade "progress".
+			setProgress(0);
+			while (progresso < 100) {
+				//Sleep até 1 segundo.
+				try {
+					Thread.sleep(random.nextInt(1000));
+				} catch (InterruptedException ignore) {}
+				//--> ALTERAR ISTO!
+				//Tornar o progresso random.
+				progresso += random.nextInt(10);
+				setProgress(Math.min(progresso, 100));
+			}
+			return null;
+		}
 
-    		//-----------------------------------------------------         
-    		//Recuperar as linhas seguintes para a mensagem final!   
-    		//Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
-    		//Exemplo:
-    		//(ícone I) Descarga completa.
-    		//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
-    		//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
-    		//-----------------------------------------------------
+		//---------------------------------------------------
+		// Executado no evento de despachar a thread
+		//---------------------------------------------------
+		@Override
+		public void done() { //Feito!!!
+			Toolkit.getDefaultToolkit().beep();
+			botaoDescarregar.setEnabled(true);
+			botaoProcurar.setEnabled(true);
+			txtField.setEnabled(true);
+			listaFiles.setEnabled(true);
+			setCursor(null); //desliga o wait do cursor
+			// Mostra o que foi feito ao Cliente:
+			//ImageIcon icon = createImageIcon("images/middle.gif","this is a caption");
 
-    		 IGMsgBox.info("fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253", "Descarga completa");    
-    	}
-    }
-	    	
+			//-----------------------------------------------------         
+			//Recuperar as linhas seguintes para a mensagem final!   
+			//Formato da msg final: Fornecedor{endereço=ip, porto=p]: blocos
+			//Exemplo:
+			//(ícone I) Descarga completa.
+			//Fornecedor[endereço=/127.0.0.1, porto=8082]:253 
+			//Fornecedor[endereço=/127.0.0.1, porto=8081]:251 
+			//-----------------------------------------------------
+
+			IGMsgBox.info("fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253", "Descarga completa");    
+		}
+	}
+
 	public IGDownload( int W,  int H) {
-		
+
 		super(new BorderLayout());
 		//---------------------------------------------------
 		//Criação da Interface IGDownload
@@ -147,7 +147,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		listScroller.setViewportView(listaFiles);
 		listScroller.setPreferredSize(new Dimension (W/9*5, H));
 		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
-		
+
 		JPanel painelFicheiros = new JPanel();
 		painelFicheiros.setPreferredSize(new Dimension((W / 9 * 5), (H/2)));
 		painelFicheiros.setLayout(new BorderLayout());
@@ -163,7 +163,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		botaoDescarregar.setPreferredSize(new Dimension(W / 8 * 3, H / 4));
 		botaoDescarregar.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
 		botaoDescarregar.addActionListener(this);
-			
+
 		barraDeProgresso = new JProgressBar(0, 100);
 		Font fontbarraDeProgresso = new Font("Lucida Sans Serif", Font.BOLD, 18);
 		barraDeProgresso.setFont(fontbarraDeProgresso);
@@ -172,7 +172,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		barraDeProgresso.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		barraDeProgresso.setForeground(Color.LIGHT_GRAY);
 		barraDeProgresso.setStringPainted(true);
-
 
 		JPanel painelProgresso = new JPanel();
 		painelProgresso.setLayout(new GridLayout(2, 1));
@@ -183,16 +182,45 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		add(painelProcura, BorderLayout.NORTH);
 		add(painelFicheiros, BorderLayout.WEST);
 		add(painelProgresso, BorderLayout.EAST);
-		//---------------------------------------------------
-		//Fim da definição da janela IGDownload -------------
-		//---------------------------------------------------
+		// ---------------------------------------------
+		//Fim da definição do corpo da janela IGDownload 
+		// ---------------------------------------------
+	
+		
+	}	
+	
+	public static JPopupMenu setPopUpMenu(){
+
+		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
+		JMenuItem menuItem1 = new JMenuItem("Utilizadores");
+		menuItem1.setActionCommand("Utilizadores");
+		pmenu.add(menuItem1);
+		// Só em caso de ser necessário um sub menu
+		// JMenu sectionsMenu = new JMenu("Opções");
+		// JMenuItem menuItem1 = new JMenuItem("Porto para o Diretorio");
+		// sectionsMenu .add(menuItem1 );
+		// JMenuItem menuItem2 = new JMenuItem("Porto '''default'''");
+		// sectionsMenu .add(menuItem2 );
+		// pmenu.add(sectionsMenu);
+		// ...
+		JMenuItem menuItem2 = new JMenuItem("Configurações");
+		menuItem2.setActionCommand("Configurações");
+		pmenu.add(menuItem2);
+		return pmenu;
+	}
+	
+	public class PopupActionListener implements ActionListener {
+		  public void actionPerformed(ActionEvent actionEvent) {
+		    System.out.println("Selected: " + actionEvent.getActionCommand());
+		  }
 	}
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
 	// ------------------------------------------------------------------------
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if (evt.getActionCommand() == "Descarregar") {
+		switch(evt.getActionCommand()) {
+		case ("Descarregar"): 
 			botaoDescarregar.setEnabled(false);
 			botaoProcurar.setEnabled(false);
 			txtField.setEnabled(false);
@@ -203,9 +231,18 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			tarefa = new Task();
 			tarefa.addPropertyChangeListener(this); // sentinela
 			tarefa.execute();
-		} else {
-			// botão "Procurar"
+			break;
+		case ("Procurar"): 
 			IGMsgBox.info("ui");
+			break;
+		case ("Utilizadores"):
+			IGMsgBox.info("Utilizadores");
+			break;
+		case ("Configurações"):
+			IGMsgBox.info("Configurações");
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -220,5 +257,5 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		}
 
 	}
-	
+
 }

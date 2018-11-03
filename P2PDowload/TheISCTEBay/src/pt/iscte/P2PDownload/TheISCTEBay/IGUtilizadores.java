@@ -81,18 +81,7 @@ public class IGUtilizadores extends JPanel {
 		//---------------------------------------------------
 		//Fim da definição da janela IGUtilizadores
 		//---------------------------------------------------
+		
 	}
 		
-//	public List<String> getListaUtilizString() {
-//	public void getListaUtilizString() {
-//	List listInUtiliz = new List<Utilizador>();
-//	List listOutUtiliz = new List<String>();
-//	
-//	int i = 0;
-//	while (i < listInUtiliz.size()) {
-//		Utilizador uIn = listInUtiliz.get(i);
-//		String uOut = uIn.ipUtilizador() + " " + uIn.portoUtilizador();
-//		listOutUtiliz.add(uOut);
-//		i++;
-//	}
 }
