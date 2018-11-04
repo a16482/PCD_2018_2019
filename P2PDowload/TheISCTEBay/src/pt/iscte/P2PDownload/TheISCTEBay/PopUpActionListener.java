@@ -25,7 +25,7 @@ public class PopUpActionListener implements ActionListener {
 	}
 	
 	private static void criaEmostraIGUtilizadores() {
-		JFrame frame = new JFrame("Utilizadores");
+		JFrame frame = new JFrame("The ISCTE Bay - Utilizadores");
 		frame.setAlwaysOnTop(true);
 		JComponent UtilizadoresContentPane = new IGUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 

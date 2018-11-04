@@ -112,7 +112,7 @@ public class TheISCTEBay {
 		}
 		
 		// Agenda um job para o evento de despachar a thread.
-		// Cria e mostra o GUI desta aplicação.
+		// Cria e mostra a GUI principal desta aplicação.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
