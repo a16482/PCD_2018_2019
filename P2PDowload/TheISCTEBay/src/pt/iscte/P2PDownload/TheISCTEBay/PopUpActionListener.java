@@ -19,7 +19,6 @@ public class PopUpActionListener implements ActionListener {
 		case ("Configurações"):
 			break;
 		default: 
-			// nada para fazer...
 			break;
 		}
 	}
@@ -29,12 +28,15 @@ public class PopUpActionListener implements ActionListener {
 		frame.setAlwaysOnTop(true);
 		JComponent UtilizadoresContentPane = new IGUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 
+		
 		frame.setContentPane(UtilizadoresContentPane);
-		frame.pack();
 		frame.setSize(400, 400);
-		frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+        frame.setLocationRelativeTo(null);
+
 	}
 
 	@SuppressWarnings("unused")

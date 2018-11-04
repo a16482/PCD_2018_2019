@@ -33,11 +33,11 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int W = 400;
-	private static final int H = 400;
+	private static final int W = 500;
+	private static final int H = 500;
 
 	private JList<String> listaUtilizadores = new JList<String>();
-	private JScrollPane scrollListaUtilizadores = new JScrollPane();
+	private JScrollPane scrollerListaUtilizadores = new JScrollPane();
 	private Task tarefa;
 	private JProgressBar barraDeProgresso = new JProgressBar(0, 100); 
 	private JLabel lblTitulo = new JLabel();
@@ -77,6 +77,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 			e.printStackTrace(); 
 			MsgBox.erro(e.getMessage());
 		}
+//		JList<String> listaUtilizadores = new JList<String>(model);
 		return progressoAtual;
 	}
 	
@@ -103,8 +104,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 			} catch (InterruptedException ignore) {}
 
 			mostraBarraDeProgresso(false);
-//			JList<String> listaUtilizadores = new JList<String>(model);
-//			scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
+
 			return null;
 		}
 		
@@ -186,14 +186,16 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		listaUtilizadores.setVisibleRowCount(-1);
 		//listaUtilizadores.setFixedCellHeight(H / 10);
 		listaUtilizadores.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
-		scrollListaUtilizadores.setViewportView(listaUtilizadores);
-		scrollListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)));
-		scrollListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); //cima;esquerda;baixo;direita
+		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
+		scrollerListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)));
+		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); //cima;esquerda;baixo;direita
 
+		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
+		
 		JPanel painelUtilizadores = new JPanel();
 		painelUtilizadores.setPreferredSize(new Dimension(W , H / 10 * 9));
 		painelUtilizadores.setLayout(new BorderLayout());
-		painelUtilizadores.add(scrollListaUtilizadores, BorderLayout.NORTH);
+		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.NORTH);
 		painelUtilizadores.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelBase , insideBorder ));
 		
