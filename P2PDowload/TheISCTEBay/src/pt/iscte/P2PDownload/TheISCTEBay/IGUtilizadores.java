@@ -63,10 +63,34 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 //	}
 //	
 	
-	public synchronized int setValorBarraDeProgresso() {
-		int progresso=0;
-		
+	public synchronized int setValorBarraDeProgresso(int nElementos, int totalElementos) {
+		int progresso;
+		progresso = (nElementos / totalElementos * 100);
+//		setProgress(Math.min(progresso,100));
+
+
 		return progresso;
+	}
+	
+	public synchronized int loadListaUtilizadores() {
+		int totalElementos;
+		int elementoAtual=0;
+		int progressoAtual =0;
+		ArrayList<String> pesquisa = new ArrayList<String>();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		try {
+			pesquisa =TheISCTEBay.devolveListaUtilizadoresArrayStr();
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			MsgBox.erro(e.getMessage());
+		} 
+		totalElementos = pesquisa.size();
+		for(String s:pesquisa){
+			model.addElement(s);
+			elementoAtual += 1;
+			progressoAtual = setValorBarraDeProgresso(elementoAtual,totalElementos);
+		}
+		return progressoAtual;
 	}
 	
 	class Task extends SwingWorker<Void, Void> {
@@ -74,26 +98,15 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		@Override
 		public Void doInBackground() {
 			// Carrega utilizadores
-			int nElementos = 0;
-			int progresso = 0;
 			barraDeProgresso.setVisible(true);
-			ArrayList<String> searchResult = TheISCTEBay.devolveListaUtilizadoresArrayStr();
-			DefaultListModel<String> model = new DefaultListModel<String>();
-			for(String s:searchResult){
-				model.addElement(s);
-				nElementos += 1;
-				progresso = (nElementos / searchResult.size() * 100);
-				setProgress(Math.min(progresso,100));
-
-//				JList<String> listaUtilizadores = new JList<String>(model);
-//				scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
-//
-//				setProgress(Math.min(progresso, 100));
-//				try {
-//					Thread.sleep(100);
-//				} catch (InterruptedException ignore) {}
-			}
-			
+			int progresso = loadListaUtilizadores();
+			setProgress(Math.min(progresso, 100));
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ignore) {}
+			barraDeProgresso.setVisible(false);
+//			JList<String> listaUtilizadores = new JList<String>(model);
+//			scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
 			return null;
 		}
 		
