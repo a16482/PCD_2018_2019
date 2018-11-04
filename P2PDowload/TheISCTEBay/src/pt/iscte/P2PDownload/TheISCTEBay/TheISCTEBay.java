@@ -1,6 +1,7 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -18,8 +19,8 @@ public class TheISCTEBay {
 	//--------------------------------------------	
 	// Variaveis e Constantes da IG
 	//--------------------------------------------
-	private static int W = 800;
-	private static int H = 400;
+	private static final int W = 800;
+	private static final int H = 400;
 	
 	
 	// ------------------------------------------------------------------------
@@ -50,6 +51,29 @@ public class TheISCTEBay {
 		frame.setVisible(true);
 	}
 	
+	public static String devolveEnderecoDirectorio () {
+		return enderecoDiretorio;
+	}
+	
+	public static int devolvePortoDiretorio() {
+		return portoDiretorio;
+	}
+	
+	public static int devolvePortoUtilizador() {
+		return portoUtilizador;
+	}
+	
+	public static int devolveNumeroUtilizadores() {
+		return d.getTotalUtilizadores();
+	}
+	
+	public static List<String> devolveListaUtilizadoresStr(){
+		return d.getListaUtilizadoresStr();
+	}
+	
+	public static ArrayList<String> devolveListaUtilizadoresArrayStr(){
+		return d.getListaUtilizadoresArrayStr();
+	}
 	
 	public static void main(String[] args) {
 

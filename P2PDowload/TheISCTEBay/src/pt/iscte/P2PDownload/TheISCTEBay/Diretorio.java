@@ -14,7 +14,7 @@ public class Diretorio {
 	private String msgInfo;
 	private String msgErro;
 	
-	public Diretorio(String eDiretorio, int pDiretorio,int pUtilizador){
+	public Diretorio(String eDiretorio, int pDiretorio, int pUser){
 		enderecoDiretorio = eDiretorio;
 		portoDiretorio = pDiretorio;
 
@@ -24,10 +24,10 @@ public class Diretorio {
 			e.printStackTrace();
 		}
 		
-		portoUtilizador = pUtilizador;
+		portoUtilizador = pUser;
 		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
 		System.out.println(msgInfo); 
-		MsgBox.info(msgInfo);
+//		MsgBox.info(msgInfo);
 	}
 
 
@@ -43,11 +43,11 @@ public class Diretorio {
 			if (conf.equals("ok")) {
 				msgInfo = "Registo no Diretório efetuado com sucesso" ;
 				System.out.println(msgInfo); 
-				MsgBox.info(msgInfo, enderecoUtilizador);
+//				MsgBox.info(msgInfo, enderecoUtilizador);
 			}
 			registo.close();
 			confirmacao.close();
-			socket.close();		
+			socket.close();	// --------- GRANDE DÚVIDA!! -----------
 		} catch (Exception e) {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
@@ -86,17 +86,37 @@ public class Diretorio {
 		return listaUtilizadores;
 	}
 	
-//	public List<String> getListaUtilizString() {
-//		List<Utilizador> listInUtiliz = getListaUtilizadores();
-//		List<String> listOutUtiliz = new ArrayList<String>();
-//		
-//		int i = 0;
-//		while (i < listInUtiliz.size()) {
-//			Utilizador uIn = listInUtiliz.get(i);
-//			String uOut = uIn.ipUtilizador() + " " + uIn.portoUtilizador();
-//			listOutUtiliz.add(uOut);
-//			i++;
-//		}
-//		return listOutUtiliz;
-//	}
+	public int getTotalUtilizadores() {
+		return listaUtilizadores.size();
+	}
+	
+	public Utilizador getUtilizadorNDaLista(int n) {
+		return listaUtilizadores.get(n);
+	}
+	
+	public List<String> getListaUtilizadoresStr() {
+		List<String> listaUtilizadoresStr = new ArrayList<String>();
+		listaUtilizadoresStr.clear();
+		String membro ="";
+		int i = 0;
+		while (i < listaUtilizadores.size()) {
+			membro = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
+			listaUtilizadoresStr.add(membro);
+			i++;		
+		}
+		return listaUtilizadoresStr;
+	}
+	
+	public ArrayList<String> getListaUtilizadoresArrayStr() {
+		ArrayList<String> listaUtilizadoresArrayStr = new ArrayList<String>();
+		listaUtilizadoresArrayStr.clear();
+		String elemento ="";
+		int i = 0;
+		while (i < listaUtilizadores.size()) {
+			elemento = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
+			listaUtilizadoresArrayStr.add(elemento);
+			i++;		
+		}
+		return listaUtilizadoresArrayStr;
+	}
 }

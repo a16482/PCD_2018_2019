@@ -41,11 +41,14 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JList<String> listaFiles;
 	private JScrollPane listScroller;
 	private Task tarefa;
+	private static final String NEWLINE = "%n";
 	
-	private static final String newLine = "%n";
+	//private static final String newLine = "%n";
 	//--------------------------------------------
 
 	class Task extends SwingWorker<Void, Void> {
+	
+
 		//private Object icon;
 
 		@Override
@@ -84,10 +87,10 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 			MsgBox.info(
 					"Descarga completa." + 
-					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					newLine + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
+					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
 					, "Descarga completa");    
 		}
 	}

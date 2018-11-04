@@ -19,6 +19,7 @@ public class PopUpActionListener implements ActionListener {
 		case ("Configurações"):
 			break;
 		default: 
+			// nada para fazer...
 			break;
 		}
 	}
@@ -26,27 +27,18 @@ public class PopUpActionListener implements ActionListener {
 	private static void criaEmostraIGUtilizadores() {
 		JFrame frame = new JFrame("Utilizadores");
 		frame.setAlwaysOnTop(true);
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		JComponent UtilizadoresContentPane = new IGUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 
 		frame.setContentPane(UtilizadoresContentPane);
-
-		frame.setSize(800, 400);
 		frame.pack();
+		frame.setSize(400, 400);
+		frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-
 	}
 
 	@SuppressWarnings("unused")
 	private static void criaEmostraIGConfig() {
 		// to do
-
-	}
-
-	@SuppressWarnings("unused")
-	private static void criaEmostraDefault() {
-		// to do
-
 	}
 }
