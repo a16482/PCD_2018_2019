@@ -30,9 +30,9 @@ public class TheISCTEBay {
 	private static void criaEmostraGUI() {
 		// ---------------- Painel de Download -----------------------------
 		JFrame frame = new JFrame("The ISCTE Bay");
-		frame.setPreferredSize(new Dimension(W, H)); // Isto não está a funcionar!
-		frame.setAlwaysOnTop(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setPreferredSize(new Dimension(W, H)); // Isto não está a funcionar!
+//		frame.setAlwaysOnTop(true);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		
 		// Cria e configura o painel de conteúdos.
@@ -46,9 +46,16 @@ public class TheISCTEBay {
 
 		DownloadContentPane.setComponentPopupMenu(pmenu);
 
-		frame.setSize(W, H);
-		frame.pack();
+//		frame.setSize(W, H);
+//		frame.pack();
+//		frame.setVisible(true);
+
+		frame.setSize(600, 400);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+        frame.setLocationRelativeTo(null);
 	}
 	
 	public static String devolveEnderecoDirectorio () {
@@ -92,7 +99,7 @@ public class TheISCTEBay {
 		portoUtilizador = Integer.parseInt(args[2]);
 		pastaTransferencias = args[3];
 		
-		//Mostra os arumentos recebidos na consola
+		//Mostra os argumentos recebidos na consola
 		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
 				+ "\nPorto do Utilizador: " + portoUtilizador + "\nPasta para transferências: " + pastaTransferencias);
 		
@@ -111,7 +118,7 @@ public class TheISCTEBay {
 			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
 		}
 		
-		// Agenda um job para o evento de despachar a thread.
+		// Agenda um job para o evento de despacho da thread.
 		// Cria e mostra a GUI principal desta aplicação.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override

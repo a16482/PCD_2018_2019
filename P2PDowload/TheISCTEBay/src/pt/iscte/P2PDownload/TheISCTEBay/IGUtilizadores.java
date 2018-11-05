@@ -41,9 +41,10 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 	private Task tarefa;
 	private JProgressBar barraDeProgresso = new JProgressBar(0, 100); 
 	private JLabel lblTitulo = new JLabel();
+	private JFrame smallFrame = new JFrame(); 
+	private int progresso; // recurso comum
 	
 	public synchronized int getValorDeProgresso(int nElementos, int totalElementos) {
-		int progresso = 0;
 		try {
 			progresso = (nElementos / totalElementos * 100);
 		} catch (Exception e) {
@@ -53,10 +54,32 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		return progresso;
 	}
 	
-	public synchronized int loadListaUtilizadores() {
+	public synchronized int getTotalUtilizadores() {
+		int i =0;
+		i = TheISCTEBay.devolveNumeroUtilizadores();
+		return i;
+	}
+
+	public synchronized void mostraBarraDeProgresso(boolean b) {
+		boolean bNegado =!b;   
+		try {
+			barraDeProgresso.setVisible(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgBox.erro(e.getMessage());
+		}
+		try {
+			lblTitulo.setVisible(bNegado);
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgBox.erro(e.getMessage());
+		}
+	}
+	
+	public synchronized Void loadListaUtilizadores() {
 		int totalElementos;
 		int elementoAtual=0;
-		int progressoAtual =0;
+		progresso =0;
 		ArrayList<String> pesquisa = new ArrayList<String>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		try {
@@ -71,40 +94,40 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 			for(String s:pesquisa){
 				model.addElement(s);
 				elementoAtual += 1;
-				progressoAtual = getValorDeProgresso(elementoAtual,totalElementos);
+				progresso = getValorDeProgresso(elementoAtual,totalElementos);
+//				notifyAll();
 			}
 		} catch (Exception e) {
 			e.printStackTrace(); 
-			MsgBox.erro(e.getMessage());
+			//MsgBox.erro(e.getMessage());
 		}
-//		JList<String> listaUtilizadores = new JList<String>(model);
-		return progressoAtual;
-	}
-	
-	public void mostraBarraDeProgresso(boolean b) {
-		boolean bNegado =!b;   
-		barraDeProgresso.setVisible(b);
-		lblTitulo.setVisible(bNegado);
+		listaUtilizadores.setModel(model);
+		// JList<String> listaUtilizadores = new JList<String>(model);
+		return null;
 	}
 	
 	class Task extends SwingWorker<Void, Void> {
-
+		
 		@Override
 		public Void doInBackground() {
 			// Carrega utilizadores
-			mostraBarraDeProgresso(true);
-			
-			try {
-				int progresso = loadListaUtilizadores();
-				this.wait();
-				setProgress(Math.min(progresso, 100));
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException ignore) {}
-			} catch (InterruptedException ignore) {}
-
-			mostraBarraDeProgresso(false);
-
+			progresso = 0;
+			setProgress(0);
+			barraDeProgresso.setVisible(true);
+//			mostraBarraDeProgresso(true);
+			loadListaUtilizadores();
+//			if (smallFrame.isVisible()) {
+//				smallFrame.setVisible(false);
+//			}
+//			try {			
+//				while (progresso < 100) {
+////					wait();
+//					setProgress(Math.min(progresso, 100));
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace(); 
+//			}
+//			mostraBarraDeProgresso(false);
 			return null;
 		}
 		
@@ -113,21 +136,17 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		//---------------------------------------------------
 		@Override
 		public void done() { //Feito!!!
-			mostraBarraDeProgresso(false);
+//			mostraBarraDeProgresso(false);
 			Toolkit.getDefaultToolkit().beep();
 			setCursor(null); //desliga o wait do cursor
 		}
 	}
-	public int getTotalUtilizadores() {
-		int i =0;
-		i = TheISCTEBay.devolveNumeroUtilizadores();
-		return i;
-	}
 	
+	// Construtor da IG
 	public IGUtilizadores() {
 
 		super(new BorderLayout());
-
+		
 		// elementos da IGUtilizadores
 		if(getTotalUtilizadores()== 1) {
 			lblTitulo.setText(getTotalUtilizadores() + " Utilizador Ligado");
@@ -162,7 +181,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		painelBase.setBackground(Color.darkGray);
 		painelBase.setPreferredSize(new Dimension(W, H));
 		painelBase.setLayout(new BorderLayout());
-		Border borderPainelBase = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+		Border borderPainelBase = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		
 		// Painel só para o lado esquerdo de cima - texto sobrepõe barra de progresso
 		JFrame smallFrame = new JFrame(); 
@@ -180,24 +199,33 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		painelRefrescar.add(botaoRefrescar, BorderLayout.EAST);
 
 		// Criação dos elementos da lista de utilizadores
-
+		
+		// teste a partir daqui ----
+		String[] searchResult = {"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l" +
+				"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
+		scrollerListaUtilizadores = new JScrollPane();
+		listaUtilizadores = new JList<String>(searchResult);
+		
+		// teste até aqui ----
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
+		listaUtilizadores.setSize(new Dimension ((W), (H / 10 * 9)));
 		listaUtilizadores.setVisibleRowCount(-1);
 		//listaUtilizadores.setFixedCellHeight(H / 10);
+		listaUtilizadores.setFixedCellWidth((W / 10 * 9)+ 20);
 		listaUtilizadores.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
 		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-		scrollerListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)));
-		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); //cima;esquerda;baixo;direita
+		scrollerListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)-+ 10));
+		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); //cima;esquerda;baixo;direita
 
 		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
 		
 		JPanel painelUtilizadores = new JPanel();
-		painelUtilizadores.setPreferredSize(new Dimension(W , H / 10 * 9));
+		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9)+20));
 		painelUtilizadores.setLayout(new BorderLayout());
-		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.NORTH);
-		painelUtilizadores.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelBase , insideBorder ));
+		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
+		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
 		
 		// Criação dos elementos da GUI relacionados Utilizadores
 		add(painelRefrescar, BorderLayout.NORTH);
@@ -214,14 +242,16 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 	public void actionPerformed(ActionEvent evt) {
 		switch(evt.getActionCommand()) {
 		case ("Refrescar"): 
+			MsgBox.info("Refrescar");
+			
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-		// Por isso, cria-se uma nova, à medida do necessário.
-		tarefa = new Task();
-		tarefa.execute();
-		break;
+			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+			// Por isso, cria-se uma nova, à medida do necessário.
+			tarefa = new Task();
+			tarefa.execute();
+			break;
 		default:
-			// nada a fazer
+			// nada para fazer
 			break;
 		}
 	}
