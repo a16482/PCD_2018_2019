@@ -43,9 +43,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private Task tarefa;
 	private static final String NEWLINE = "%n";
 	
-	//private static final String newLine = "%n";
-	//--------------------------------------------
-
 	class Task extends SwingWorker<Void, Void> {
 	
 

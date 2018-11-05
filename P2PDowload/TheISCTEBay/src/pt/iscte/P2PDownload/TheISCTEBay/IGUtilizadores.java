@@ -29,10 +29,9 @@ import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-public class IGUtilizadores extends JPanel implements ActionListener, PropertyChangeListener   {
-
-	private static final long serialVersionUID = 1L;
-
+public class IGUtilizadores extends JPanel implements ActionListener, PropertyChangeListener {
+	private static final long serialVersionUID = -736174911678774149L;
+	
 	private static final int W = 500;
 	private static final int H = 500;
 
@@ -41,10 +40,49 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 	private Task tarefa;
 	private JProgressBar barraDeProgresso = new JProgressBar(0, 100); 
 	private JLabel lblTitulo = new JLabel();
-	private JFrame smallFrame = new JFrame(); 
+//	private JFrame smallFrame = new JFrame(); 
 	private int progresso; // recurso comum
 	
-	public synchronized int getValorDeProgresso(int nElementos, int totalElementos) {
+	class Task extends SwingWorker<Void, Void> {
+		
+		@Override
+		public Void doInBackground() {
+			// Carrega utilizadores
+			progresso = 0;
+			setProgress(0);
+//			barraDeProgresso.setVisible(true);
+			MsgBox.info("no background");
+//			mostraBarraDeProgresso(true);
+			loadListaUtilizadores();
+//			if (smallFrame.isVisible()) {
+//				smallFrame.setVisible(false);
+//			}
+//			try {			
+//				while (progresso < 100) {
+////					wait();
+//					setProgress(Math.min(progresso, 100));
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace(); 
+//			}
+//			mostraBarraDeProgresso(false);
+			return null;
+		}
+		
+		//---------------------------------------------------
+		// Executado no evento de despacho da thread
+		//---------------------------------------------------
+		@Override
+		public void done() { //Feito!!!
+//			mostraBarraDeProgresso(false);
+			MsgBox.info("done!");
+			Toolkit.getDefaultToolkit().beep();
+			setCursor(null); //desliga o wait do cursor
+		}
+	}
+	
+	
+	public int getValorDeProgresso(int nElementos, int totalElementos) {
 		try {
 			progresso = (nElementos / totalElementos * 100);
 		} catch (Exception e) {
@@ -54,13 +92,13 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		return progresso;
 	}
 	
-	public synchronized int getTotalUtilizadores() {
+	public int getTotalUtilizadores() {
 		int i =0;
 		i = TheISCTEBay.devolveNumeroUtilizadores();
 		return i;
 	}
 
-	public synchronized void mostraBarraDeProgresso(boolean b) {
+	public void mostraBarraDeProgresso(boolean b) {
 		boolean bNegado =!b;   
 		try {
 			barraDeProgresso.setVisible(b);
@@ -76,7 +114,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		}
 	}
 	
-	public synchronized Void loadListaUtilizadores() {
+	public Void loadListaUtilizadores() {
 		int totalElementos;
 		int elementoAtual=0;
 		progresso =0;
@@ -106,43 +144,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		return null;
 	}
 	
-	class Task extends SwingWorker<Void, Void> {
-		
-		@Override
-		public Void doInBackground() {
-			// Carrega utilizadores
-			progresso = 0;
-			setProgress(0);
-			barraDeProgresso.setVisible(true);
-//			mostraBarraDeProgresso(true);
-			loadListaUtilizadores();
-//			if (smallFrame.isVisible()) {
-//				smallFrame.setVisible(false);
-//			}
-//			try {			
-//				while (progresso < 100) {
-////					wait();
-//					setProgress(Math.min(progresso, 100));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace(); 
-//			}
-//			mostraBarraDeProgresso(false);
-			return null;
-		}
-		
-		//---------------------------------------------------
-		// Executado no evento de despacho da thread
-		//---------------------------------------------------
-		@Override
-		public void done() { //Feito!!!
-//			mostraBarraDeProgresso(false);
-			Toolkit.getDefaultToolkit().beep();
-			setCursor(null); //desliga o wait do cursor
-		}
-	}
-	
-	// Construtor da IG
+	// Construtor desta parte da IG
 	public IGUtilizadores() {
 
 		super(new BorderLayout());
@@ -201,10 +203,10 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		// Criação dos elementos da lista de utilizadores
 		
 		// teste a partir daqui ----
-		String[] searchResult = {"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l" +
-				"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
-		scrollerListaUtilizadores = new JScrollPane();
-		listaUtilizadores = new JList<String>(searchResult);
+//		String[] searchResult = {"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l" +
+//				"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
+//		scrollerListaUtilizadores = new JScrollPane();
+//		listaUtilizadores = new JList<String>(searchResult);
 		
 		// teste até aqui ----
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -215,13 +217,13 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		listaUtilizadores.setFixedCellWidth((W / 10 * 9)+ 20);
 		listaUtilizadores.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
 		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-		scrollerListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)-+ 10));
+		scrollerListaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)+ 40));
 		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); //cima;esquerda;baixo;direita
 
 		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
 		
 		JPanel painelUtilizadores = new JPanel();
-		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9)+20));
+		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
 		painelUtilizadores.setLayout(new BorderLayout());
 		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
