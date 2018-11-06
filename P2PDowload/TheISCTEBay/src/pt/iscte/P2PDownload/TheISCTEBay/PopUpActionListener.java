@@ -14,33 +14,53 @@ public class PopUpActionListener implements ActionListener {
 		//...
 		switch(evt.getActionCommand()) {
 		case ("Utilizadores"):
-			criaEmostraIGUtilizadores();
+			try {
+				criaEmostraIGUtilizadores();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		break;
 		case ("Configurações"):
+			try {
+				criaEmostraIGConfig();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		default: 
+			MsgBox.info(evt.getActionCommand());
 			break;
 		}
 	}
 	
-	private static void criaEmostraIGUtilizadores() {
+	private static void criaEmostraIGUtilizadores() throws InterruptedException {
 		JFrame frame = new JFrame("The ISCTE Bay - Utilizadores");
 		frame.setAlwaysOnTop(true);
 		JComponent UtilizadoresContentPane = new IGUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 
 		
 		frame.setContentPane(UtilizadoresContentPane);
-		frame.setSize(400, 400);
+		frame.setSize(500, 500);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
         frame.setLocationRelativeTo(null);
 
 	}
-
-	@SuppressWarnings("unused")
-	private static void criaEmostraIGConfig() {
-		// to do
+	
+	private static void criaEmostraIGConfig() throws InterruptedException {
+		JFrame frameConfig = new JFrame("The ISCTE Bay - Configurações");
+		frameConfig.setAlwaysOnTop(true);
+		JComponent ConfigContentPane = new WinPopUpConfig();
+		ConfigContentPane.setOpaque(true); 
+		
+		frameConfig.setContentPane(ConfigContentPane);
+		frameConfig.setSize(600, 600);
+		frameConfig.setVisible(true);
+		frameConfig.setResizable(false);
+		frameConfig.pack();
+		frameConfig.setLocationRelativeTo(null);
 	}
 }

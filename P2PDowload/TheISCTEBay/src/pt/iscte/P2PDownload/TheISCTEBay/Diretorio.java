@@ -83,15 +83,15 @@ public class Diretorio {
 	}
 	
 	public List<Utilizador> getListaUtilizadores() {
-		return listaUtilizadores;
+		return this.listaUtilizadores;
 	}
 	
 	public int getTotalUtilizadores() {
-		return listaUtilizadores.size();
+		return this.listaUtilizadores.size();
 	}
 	
 	public Utilizador getUtilizadorNDaLista(int n) {
-		return listaUtilizadores.get(n);
+		return this.listaUtilizadores.get(n);
 	}
 	
 	public List<String> getListaUtilizadoresStr() {
@@ -99,7 +99,7 @@ public class Diretorio {
 		listaUtilizadoresStr.clear();
 		String membro ="";
 		int i = 0;
-		while (i < listaUtilizadores.size()) {
+		while (i < this.listaUtilizadores.size()) {
 			membro = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
 			listaUtilizadoresStr.add(membro);
 			i++;		
@@ -112,7 +112,7 @@ public class Diretorio {
 		listaUtilizadoresArrayStr.clear();
 		String elemento ="";
 		int i = 0;
-		while (i < listaUtilizadores.size()) {
+		while (i < getTotalUtilizadores()) {
 			elemento = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
 			listaUtilizadoresArrayStr.add(elemento);
 			i++;		

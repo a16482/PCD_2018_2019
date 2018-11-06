@@ -29,10 +29,6 @@ public class TheISCTEBay {
 	private static void criaEmostraGUI() {
 		// ---------------- Painel de Download -----------------------------
 		JFrame frame = new JFrame("The ISCTE Bay");
-//		frame.setPreferredSize(new Dimension(W, H)); // Isto não está a funcionar!
-//		frame.setAlwaysOnTop(true);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		
 		// Cria e configura o painel de conteúdos.
 		JComponent DownloadContentPane = new IGDownload(W,H);
@@ -44,10 +40,6 @@ public class TheISCTEBay {
 	   
 
 		DownloadContentPane.setComponentPopupMenu(pmenu);
-
-//		frame.setSize(W, H);
-//		frame.pack();
-//		frame.setVisible(true);
 
 		frame.setSize(600, 400);
 		frame.setVisible(true);

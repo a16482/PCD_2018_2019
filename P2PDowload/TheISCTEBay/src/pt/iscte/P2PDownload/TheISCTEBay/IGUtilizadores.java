@@ -12,10 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +27,8 @@ import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-public class IGUtilizadores extends JPanel implements ActionListener, PropertyChangeListener {
+public class IGUtilizadores extends JPanel implements ActionListener, PropertyChangeListener  {
+
 	private static final long serialVersionUID = -736174911678774149L;
 	
 	private static final int W = 500;
@@ -41,19 +40,19 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 	private JProgressBar barraDeProgresso = new JProgressBar(0, 100); 
 	private JLabel lblTitulo = new JLabel();
 //	private JFrame smallFrame = new JFrame(); 
-	private int progresso; // recurso comum
+//	private int progresso; // recurso comum
 	
 	class Task extends SwingWorker<Void, Void> {
 		
 		@Override
 		public Void doInBackground() {
 			// Carrega utilizadores
-			progresso = 0;
+//			progresso = 0;
 			setProgress(0);
 //			barraDeProgresso.setVisible(true);
 			MsgBox.info("no background");
 //			mostraBarraDeProgresso(true);
-			loadListaUtilizadores();
+//			loadListaUtilizadores();
 //			if (smallFrame.isVisible()) {
 //				smallFrame.setVisible(false);
 //			}
@@ -81,68 +80,68 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		}
 	}
 	
-	
-	public int getValorDeProgresso(int nElementos, int totalElementos) {
-		try {
-			progresso = (nElementos / totalElementos * 100);
-		} catch (Exception e) {
-			e.printStackTrace();
-			MsgBox.erro(e.getMessage());
-		}
-		return progresso;
-	}
-	
+//	
+//	public int getValorDeProgresso(int nElementos, int totalElementos) {
+//		try {
+//			progresso = (nElementos / totalElementos * 100);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			MsgBox.erro(e.getMessage());
+//		}
+//		return progresso;
+//	}
+//	
 	public int getTotalUtilizadores() {
 		int i =0;
 		i = TheISCTEBay.devolveNumeroUtilizadores();
 		return i;
 	}
-
-	public void mostraBarraDeProgresso(boolean b) {
-		boolean bNegado =!b;   
-		try {
-			barraDeProgresso.setVisible(b);
-		} catch (Exception e) {
-			e.printStackTrace();
-			MsgBox.erro(e.getMessage());
-		}
-		try {
-			lblTitulo.setVisible(bNegado);
-		} catch (Exception e) {
-			e.printStackTrace();
-			MsgBox.erro(e.getMessage());
-		}
-	}
-	
-	public Void loadListaUtilizadores() {
-		int totalElementos;
-		int elementoAtual=0;
-		progresso =0;
-		ArrayList<String> pesquisa = new ArrayList<String>();
-		DefaultListModel<String> model = new DefaultListModel<String>();
-		try {
-			pesquisa =TheISCTEBay.devolveListaUtilizadoresArrayStr();
-		} catch (Exception e) {
-			e.printStackTrace(); 
-			MsgBox.erro(e.getMessage());
-		} 
-		
-		totalElementos = pesquisa.size();	
-		try {
-			for(String s:pesquisa){
-				model.addElement(s);
-				elementoAtual += 1;
-				progresso = getValorDeProgresso(elementoAtual,totalElementos);
-//				notifyAll();
-			}
-		} catch (Exception e) {
-			e.printStackTrace(); 
-			//MsgBox.erro(e.getMessage());
-		}
-		listaUtilizadores.setModel(model);
-		// JList<String> listaUtilizadores = new JList<String>(model);
-		return null;
-	}
+//
+//	public void mostraBarraDeProgresso(boolean b) {
+//		boolean bNegado =!b;   
+//		try {
+//			barraDeProgresso.setVisible(b);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			MsgBox.erro(e.getMessage());
+//		}
+//		try {
+//			lblTitulo.setVisible(bNegado);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			MsgBox.erro(e.getMessage());
+//		}
+//	}
+//	
+//	public Void loadListaUtilizadores() {
+//		int totalElementos;
+//		int elementoAtual=0;
+//		progresso =0;
+//		ArrayList<String> pesquisa = new ArrayList<String>();
+//		DefaultListModel<String> model = new DefaultListModel<String>();
+//		try {
+//			pesquisa =TheISCTEBay.devolveListaUtilizadoresArrayStr();
+//		} catch (Exception e) {
+//			e.printStackTrace(); 
+//			MsgBox.erro(e.getMessage());
+//		} 
+//		
+//		totalElementos = pesquisa.size();	
+//		try {
+//			for(String s:pesquisa){
+//				model.addElement(s);
+//				elementoAtual += 1;
+//				progresso = getValorDeProgresso(elementoAtual,totalElementos);
+////				notifyAll();
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace(); 
+//			//MsgBox.erro(e.getMessage());
+//		}
+//		listaUtilizadores.setModel(model);
+//		// JList<String> listaUtilizadores = new JList<String>(model);
+//		return null;
+//	}
 	
 	// Construtor desta parte da IG
 	public IGUtilizadores() {
@@ -211,9 +210,9 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		// teste até aqui ----
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
-		listaUtilizadores.setSize(new Dimension ((W), (H / 10 * 9)));
+		//listaUtilizadores.setSize(new Dimension ((W), (H / 10 * 9)));	
+		listaUtilizadores.setPreferredSize(new Dimension ((W), (H / 10 * 9)));
 		listaUtilizadores.setVisibleRowCount(-1);
-		//listaUtilizadores.setFixedCellHeight(H / 10);
 		listaUtilizadores.setFixedCellWidth((W / 10 * 9)+ 20);
 		listaUtilizadores.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
 		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
@@ -223,6 +222,7 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
 		
 		JPanel painelUtilizadores = new JPanel();
+
 		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
 		painelUtilizadores.setLayout(new BorderLayout());
 		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
@@ -240,21 +240,24 @@ public class IGUtilizadores extends JPanel implements ActionListener, PropertyCh
 	// -----------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Refrescar".
 	// -----------------------------------------------------------
+	
 	@Override
-	public void actionPerformed(ActionEvent evt) {
-		switch(evt.getActionCommand()) {
-		case ("Refrescar"): 
-			MsgBox.info("Refrescar");
-			
-			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-			// Por isso, cria-se uma nova, à medida do necessário.
-			tarefa = new Task();
-			tarefa.execute();
-			break;
-		default:
-			// nada para fazer
-			break;
+	public void actionPerformed(ActionEvent evento) {
+		switch(evento.getActionCommand()) {
+			case ("Refrescar"): 
+				
+				MsgBox.info("Refrescar");
+				
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+				// Por isso, cria-se uma nova, à medida do necessário.
+				tarefa = new Task();
+				tarefa.addPropertyChangeListener(this); // sentinela
+				tarefa.execute();
+				break;
+			default:
+				// nada a fazer
+				break;
 		}
 	}
 	

@@ -41,7 +41,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JList<String> listaFiles;
 	private JScrollPane listScroller;
 	private Task tarefa;
-	private static final String NEWLINE = "%n";
+	private static final String NEWLINE = "\n";
 	
 	class Task extends SwingWorker<Void, Void> {
 	
@@ -222,6 +222,12 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			case ("Procurar"): 
 				MsgBox.info("ui");
 				break;
+			case ("Refrescar"): 
+				MsgBox.info("ui gotcha!");
+				break;	
+			case ("OK"): 
+				MsgBox.info("ui gotcha!");
+				break;	
 			default:
 				// nada a fazer
 				break;
