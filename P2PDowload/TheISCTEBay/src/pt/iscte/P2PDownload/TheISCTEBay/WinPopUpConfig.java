@@ -9,14 +9,12 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
@@ -225,7 +223,8 @@ public class WinPopUpConfig extends JPanel  {
 		lblportCli.setBorder(borderPainelPequeno);
 
 		// Dados do Porto do Cliente 
-		JTextField txtFieldPortCli = new JTextField();
+		JLabel txtFieldPortCli = new JLabel();
+		//JTextField txtFieldPortCli = new JTextField();
 		txtFieldPortCli.setFont(fonteDados);
 		txtFieldPortCli.setText(portCli);
 		txtFieldPortCli.setHorizontalAlignment(SwingConstants.LEFT);
@@ -238,7 +237,8 @@ public class WinPopUpConfig extends JPanel  {
 		lblTransfer.setBorder(borderPainelPequeno);
 
 		// Dados da Localização das transferências no Cliente 
-		JTextField txtFieldTransfer = new JTextField();
+		JLabel txtFieldTransfer = new JLabel();
+		//JTextField txtFieldTransfer = new JTextField();
 		txtFieldTransfer.setFont(fonteDados);
 		txtFieldTransfer.setText(transferCli);
 		txtFieldTransfer.setHorizontalAlignment(SwingConstants.LEFT);
