@@ -7,16 +7,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,8 +26,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class WinPopUpUtilizadores extends JPanel implements ActionListener, PropertyChangeListener  {
 	
@@ -72,6 +67,9 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		public void done() { //Feito!!!
 			//			mostraBarraDeProgresso(false);
 			MsgBox.info("Lista de utilizadores carregada!");
+			scrollerListaUtilizadores.repaint();
+//			add(painelRefrescar, BorderLayout.NORTH);
+			
 //			Toolkit.getDefaultToolkit().beep();
 			setCursor(null); //desliga o wait do cursor
 		}
@@ -84,6 +82,8 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	}
 	
 	public Void loadListaUtilizadores() {
+
+		utilizadores = new DefaultListModel<String>();
 		String u = "";
 		utilizadores.removeAllElements();
 		int totalElementos = getTotalUtilizadores();
@@ -103,9 +103,26 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 			e.printStackTrace(); 
 			MsgBox.erro("Erro na obtenção da lista de Utilizadores!" +  NEW_LINE + e.getMessage());
 		} 
-		//...
-		scrollerListaUtilizadores.repaint();
+		listaUtilizadores = new JList<String>(utilizadores);
+		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
+		listaUtilizadores.setVisibleRowCount(-1);
 		
+		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
+		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
+		scrollerListaUtilizadores.setVisible(true);
+		
+		//...
+		//painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
+		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
+		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
+		painelUtilizadores.setLayout(new BorderLayout());
+//		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+//		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
+	
+		
+		// Criação dos elementos da GUI relacionados no contentor principal
+	
 //		String teste = "TESTE 1";
 //		for (i=0;i<totalElementos;i++) {
 //			teste = teste + "\n" + "i=" + String.valueOf(i) + " " + 
@@ -129,45 +146,15 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	public void enviaEventoRefrescar() {
 		this.botaoRefrescar.doClick();
 	}
-	
-// exemplo 1	
-//	scrollerListaUtilizadores = new JScrollPane();
-//	//frame.add(new JScrollPane(listaUtilizadores));
-//	scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-//	scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
-//	listaUtilizadores.addListSelectionListener(new ListSelectionListener() {
-//		private int previous = -1;
-//  fim de exemplo	
-	
-	// Construtor da Lista de Utilizadores
-//	public void ListaUtilizadores() {	
-//		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-//		listaUtilizadores.addListSelectionListener(new ListSelectionListener() {
-//			private int previous = -1;
-//			//@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//				if (listaUtilizadores.getSelectedIndex() != -1 && previous != listaUtilizadores.getSelectedIndex()) {
-//					System.out.println(listaUtilizadores.getSelectedValue().toString());
-//				}
-//				previous = listaUtilizadores.getSelectedIndex();
-//			}
-//		});	
-//		
-//		try {
-//			enviaEventoRefrescar();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			MsgBox.erro("erro: " + e.getMessage());
-//		}
-//	}
-	
-
 
 	// Construtor da Janela
 	public WinPopUpUtilizadores() {
 
 		super(new BorderLayout());
-
+		addFrameContent();
+	}
+	
+	public void addFrameContent() {
 		// elementos da IGUtilizadores
 		if(getTotalUtilizadores()== 1) {
 			lblTitulo.setText(getTotalUtilizadores() + " Utilizador Ligado");
@@ -203,15 +190,23 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 
 		// Painel de cima
 		painelRefrescar = new JPanel();
+		// Painel de baixo
+		painelUtilizadores = new JPanel();
+		// o resto,,,
 		painelRefrescar.setLayout(new GridLayout(1,3)); // 1 linha, 3 colunas.
 		painelRefrescar.setOpaque(false);
 		Border insideBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED);
 		painelRefrescar.setBorder(BorderFactory.createCompoundBorder(borderPainelBase , insideBorder ));
 		painelRefrescar.add(painelPequeno, BorderLayout.WEST);
 		painelRefrescar.add(botaoRefrescar, BorderLayout.EAST);
-
-		painelUtilizadores = new JPanel();
+		add(painelRefrescar, BorderLayout.NORTH);
 		
+	
+		
+		
+		add(painelUtilizadores, BorderLayout.WEST);
+		
+	
 //		listaUtilizadores = new JList<Utilizador>(utilizadores);
 //		........................................................
 //		EXEMPLO:
@@ -221,32 +216,38 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 //        }
 //        list = new JList(dlm);
 //        scroll = new JScrollPane(list);
+// fim do exemplo
 		
-		utilizadores = new DefaultListModel<String>();
-		enviaEventoRefrescar();
-		listaUtilizadores = new JList<String>(utilizadores);
-		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores);
-		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
-		listaUtilizadores.setVisibleRowCount(-1);
+//		utilizadores = new DefaultListModel<String>();
+//		enviaEventoRefrescar();
+//		listaUtilizadores = new JList<String>(utilizadores);
+//		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
+//		listaUtilizadores.setVisibleRowCount(-1);
+//......................................................................
+////		TESTE 3
+//		String teste3 = "TESTE 3";
+//		for (int i=0;i< listaUtilizadores.getSize();i++) {
+//			teste3 = teste3 + "\n" + "i=" + String.valueOf(i) + " " + listaUtilizadores.elementAt(i);
+//		}
+//		MsgBox.info(teste3);
+//......................................................................
+//		scrollerListaUtilizadores = new JScrollPane(listaUtilizadores
+		
+//		scrollerListaUtilizadores.setPreferredSize(new Dimension (W/9*5, H));
+//		scrollerListaUtilizadores.setPreferredSize(new Dimension (W, H));
 	
 		
-		scrollerListaUtilizadores.setPreferredSize(new Dimension (W/9*5, H));
-//		scrollerListaUtilizadores.setPreferredSize(new Dimension (W, H));
-		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
-		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-		scrollerListaUtilizadores.repaint();
-		
-		painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
-		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
-		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
-		painelUtilizadores.setLayout(new BorderLayout());
-		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
-
-		// Criação dos elementos da GUI relacionados no contentor principal
-		add(painelRefrescar, BorderLayout.NORTH);
-		add(painelUtilizadores, BorderLayout.WEST);
+//		painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
+//		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
+//		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
+//		painelUtilizadores.setLayout(new BorderLayout());
+//		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+//		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
+//
+//		// Criação dos elementos da GUI relacionados no contentor principal
+//		add(painelRefrescar, BorderLayout.NORTH);
+//		add(painelUtilizadores, BorderLayout.WEST);
 		//---------------------------------------------------
 		//Fim da definição da janela de Utilizadores
 		//---------------------------------------------------
@@ -259,7 +260,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	public void propertyChange(PropertyChangeEvent evt) {
 		if ("progress" == evt.getPropertyName()) {
 			int progress = (Integer) evt.getNewValue();
-			barraDeProgresso.setValue(progress);
+			//barraDeProgresso.setValue(progress);
 		}
 	}
 
@@ -270,6 +271,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	public void actionPerformed(ActionEvent evento) {
 		switch(evento.getActionCommand()) {
 			case ("Refrescar"): 
+
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				tarefa = new Task();
 				tarefa.addPropertyChangeListener(this); 
