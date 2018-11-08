@@ -41,7 +41,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 	private JList<String> listaFiles;
 	private JScrollPane listScroller;
 	private Task tarefa;
-	private static final String NEWLINE = "\n";
+	private static final String NEW_LINE = "\n";
 	
 	class Task extends SwingWorker<Void, Void> {
 	
@@ -71,7 +71,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		}
 
 		//---------------------------------------------------
-		// Executado no evento de despachar a thread
+		// Executado no evento de finalização da thread
 		//---------------------------------------------------
 		@Override
 		public void done() { //Feito!!!
@@ -84,10 +84,10 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 			MsgBox.info(
 					"Descarga completa." + 
-					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-					NEWLINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
+					NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
+					NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
 					, "Descarga completa");    
 		}
 	}
@@ -187,6 +187,7 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 
 		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
 		ActionListener actionListener = new PopUpActionListener();
+		pmenu.setBorder( BorderFactory.createLineBorder(Color.black, 1));
 		
 		JMenuItem menuItem1 = new JMenuItem("Utilizadores");
 		menuItem1.setActionCommand("Utilizadores");
@@ -222,12 +223,6 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 			case ("Procurar"): 
 				MsgBox.info("ui");
 				break;
-			case ("Refrescar"): 
-				MsgBox.info("ui gotcha!");
-				break;	
-			case ("OK"): 
-				MsgBox.info("ui gotcha!");
-				break;	
 			default:
 				// nada a fazer
 				break;

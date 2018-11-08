@@ -1,8 +1,11 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Diretorio {
@@ -94,29 +97,16 @@ public class Diretorio {
 		return this.listaUtilizadores.get(n);
 	}
 	
-	public List<String> getListaUtilizadoresStr() {
-		List<String> listaUtilizadoresStr = new ArrayList<String>();
-		listaUtilizadoresStr.clear();
-		String membro ="";
-		int i = 0;
-		while (i < this.listaUtilizadores.size()) {
-			membro = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
-			listaUtilizadoresStr.add(membro);
-			i++;		
-		}
-		return listaUtilizadoresStr;
-	}
-	
-	public ArrayList<String> getListaUtilizadoresArrayStr() {
-		ArrayList<String> listaUtilizadoresArrayStr = new ArrayList<String>();
-		listaUtilizadoresArrayStr.clear();
-		String elemento ="";
-		int i = 0;
-		while (i < getTotalUtilizadores()) {
-			elemento = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
-			listaUtilizadoresArrayStr.add(elemento);
-			i++;		
-		}
-		return listaUtilizadoresArrayStr;
-	}
+//	public List<String> getListaUtilizadoresStr() {
+//		List<String> listaUtilizadoresStr = new ArrayList<String>();
+//		listaUtilizadoresStr.clear();
+//		String membro ="";
+//		int i = 0;
+//		while (i < this.listaUtilizadores.size()) {
+//			membro = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
+//			listaUtilizadoresStr.add(membro);
+//			i++;		
+//		}
+//		return listaUtilizadoresStr;
+//	}
 }

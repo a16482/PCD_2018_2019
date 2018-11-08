@@ -5,63 +5,62 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
 import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-//public class WinPopUpConfig extends JPanel implements ActionListener, PropertyChangeListener {
-public class WinPopUpConfig extends JPanel  {
+public class WinPopUpConfig extends JPanel implements ActionListener {
+	
 	/** Trata a janela PopUp de Configurações.
 	 *  Projeto: The ISCTE Bay
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final int W = 400;
+	private static final int H = 500;
+	private JFrame frameConfig;
+	JComponent configContentPane = new WinPopUpConfig();
 
-	private static final int W = 600;
-	private static final int H = 600;
-	JButton botaoOK;
-
-	private ActionListener okActionListener; //aqui é que está o busílis
-
-	class Task extends SwingWorker<Void, Void> {
-
-		@Override
-		public Void doInBackground() {
-
-			return null;
-		}
-
-		@Override
-		public void done() { //Feito!!!
-			Toolkit.getDefaultToolkit().beep();
-			setCursor(null); //desliga o wait do cursor 
-		}
-	}
-
+    
 	public WinPopUpConfig() {
 		super(new BorderLayout());
+		
+		frameConfig = new JFrame();
+		frameConfig.setAlwaysOnTop(false);
+		frameConfig.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
+		frameConfig.setContentPane(configContentPane);
+		configContentPane.setOpaque(true);
+		frameConfig.setTitle("The ISCTE Bay - Configurações");
 		addFrameContent();
+		frameConfig.setSize(W, H);
+		frameConfig.setResizable(true);
+		frameConfig.setLocationRelativeTo(null);
+		frameConfig.pack();
+		
+	}
+																																													
+	public void open() {
+		// para abrir a janela (torna-la visivel)
+		frameConfig.setVisible(true);
 	}
 
-	//@Override
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		String a = e.getActionCommand();
-		MsgBox.info(a);
 		switch(e.getActionCommand()) {
 		case ("OK"): 
-
-			MsgBox.info("OK - caught you!");
-
+			frameConfig.dispose();
 		break;
 		default:
 			// nada a fazer
@@ -70,23 +69,6 @@ public class WinPopUpConfig extends JPanel  {
 
 	}
 
-/*
-	botaoOK.addActionListener(new ActionListener() { 
-		public void actionPerformed(ActionEvent e) { 
-			selectionButtonPressed();
-			String a = e.getPropertyName();
-			MsgBox.info("selectionButtonPressed " + a);
-		} 
-	}	);
-
-	//selectionButtonPressed()
-*/
-
-	//@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		String a = e.getPropertyName();
-		MsgBox.info("PropertyChangeEvent " + a);
-	}
 
 	private void addFrameContent() {
 		String endIPSrv = TheISCTEBay.devolveEnderecoDirectorio();
@@ -101,9 +83,9 @@ public class WinPopUpConfig extends JPanel  {
 		String transferCli = "..\\Transfer";
 		// ***************************************************
 		// Definição de Font(s)
-		Font fontTitulos = new Font("Lucida Sans Serif", Font.BOLD, 24);
-		Font fonteLabels = new Font("Lucida Sans Serif", Font.BOLD, 16);
-		Font fonteDados = new Font("Lucida Sans Serif", Font.BOLD, 16);
+		Font fontTitulos = new Font("Lucida Sans Serif", Font.BOLD, 18);
+		Font fonteLabels = new Font("Lucida Sans Serif", Font.BOLD, 14);
+		Font fonteDados = new Font("Lucida Sans Serif", Font.PLAIN, 14);
 		// ***************************************************
 		// Definição de Border(s)
 		Border borderPainelPequeno = BorderFactory.createEmptyBorder(10, 10, 10, 10); //cima, esquerda, baixo, direita
@@ -285,14 +267,14 @@ public class WinPopUpConfig extends JPanel  {
 		painelCliente.add(painelTransfer);
 
 		// Botão "OK"
-		botaoOK = new JButton("OK");
+		
+		JButton botaoOK = new JButton("OK");
 		botaoOK.setFont(fontTitulos);
 		botaoOK.setActionCommand("OK");
 		botaoOK.setPreferredSize(new Dimension(W / 8 * 3, H / 10));
-		//botaoOK.addActionListener((ActionListener) this);
+		botaoOK.addActionListener((ActionListener) this);
 		botaoOK.setHorizontalAlignment(SwingConstants.CENTER);
 
-		botaoOK.addActionListener(okActionListener);
 		JPanel painelOK = new JPanel();
 		painelOK.setLayout(new GridLayout(1, 1));
 		painelOK.add(botaoOK);

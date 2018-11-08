@@ -1,11 +1,11 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import java.util.List;
+
 
 public class TheISCTEBay {
 
@@ -65,13 +65,18 @@ public class TheISCTEBay {
 		return d.getTotalUtilizadores();
 	}
 	
-	public static List<String> devolveListaUtilizadoresStr(){
-		return d.getListaUtilizadoresStr();
+	public static List<Utilizador> devolveListaUtilizadores() {
+		return d.getListaUtilizadores();
 	}
 	
-	public static ArrayList<String> devolveListaUtilizadoresArrayStr(){
-		return d.getListaUtilizadoresArrayStr();
+	public static Utilizador devolveUtilizadorNDaLista(int n) {
+		return d.getUtilizadorNDaLista(n);
 	}
+	
+//	public static List<String> devolveListaUtilizadoresStr(){
+//		return d.getListaUtilizadoresStr();
+//	}
+	
 	
 	public static void main(String[] args) {
 
