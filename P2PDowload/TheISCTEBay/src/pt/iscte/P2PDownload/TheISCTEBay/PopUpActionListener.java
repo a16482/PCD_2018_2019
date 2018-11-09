@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+
 public class PopUpActionListener implements ActionListener {
 
 	@Override
@@ -34,33 +35,31 @@ public class PopUpActionListener implements ActionListener {
 	}
 	
 	private static void criaEmostraIGUtilizadores() throws InterruptedException {
-		JFrame frame = new JFrame("The ISCTE Bay - Utilizadores");
-		frame.setAlwaysOnTop(false);
+		JFrame frameUtilizadores = new JFrame("The ISCTE Bay - Utilizadores");
+		frameUtilizadores.setAlwaysOnTop(false);
 		JComponent UtilizadoresContentPane = new WinPopUpUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 
 		
-		frame.setContentPane(UtilizadoresContentPane);
-		frame.setSize(500, 500);
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.pack();
-        frame.setLocationRelativeTo(null);
+		frameUtilizadores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameUtilizadores.setContentPane(UtilizadoresContentPane);;
+		frameUtilizadores.setResizable(false);
+		frameUtilizadores.pack();
+        frameUtilizadores.setLocationRelativeTo(null);
+		frameUtilizadores.setVisible(true);
 
 	}
 	
 	private static void criaEmostraIGConfig() throws InterruptedException {
-//		JFrame frameConfig = new JFrame("The ISCTE Bay - Configurações");
-//		frameConfig.setAlwaysOnTop(false);
-//		JComponent ConfigContentPane = new WinPopUpConfig();
-//		ConfigContentPane.setOpaque(true); 
-//		
-//		frameConfig.setContentPane(ConfigContentPane);
-//		frameConfig.setSize(600, 600);
-//		frameConfig.setVisible(true);
-//		frameConfig.setResizable(false);
-//		frameConfig.pack();
-//		frameConfig.setLocationRelativeTo(null);
-		WinPopUpConfig popUpConfig = new WinPopUpConfig();
-		popUpConfig.open();
+		JFrame frameConfig = new JFrame("The ISCTE Bay - Configurações");
+		frameConfig.setAlwaysOnTop(false);
+		JComponent ConfigContentPane = new WinPopUpConfig();
+		ConfigContentPane.setOpaque(true); 
+		
+		frameConfig.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+		frameConfig.setContentPane(ConfigContentPane);
+		frameConfig.setResizable(false);
+		frameConfig.pack();
+		frameConfig.setLocationRelativeTo(null);
+		frameConfig.setVisible(true);
 	}
 }

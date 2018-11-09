@@ -1,0 +1,43 @@
+private String endIPSrv;
+private String portSrv;
+private String endIPCli;
+private String portCli;
+private String transferCli;
+
+private Font fontTitulos;
+private Font fonteLabels;
+private Font fonteDados;
+
+private Border borderPainelPequeno;
+private Border borderPainelBase;
+private Border insideBorder;
+
+private Dimension dimensionPequeno;
+
+private JLabel lblServer;
+private JLabel lblendIPSrv;
+private JLabel txtFieldIPSrv;
+private JLabel lblportSrv;
+private JLabel txtFieldPortoSrv;
+private JLabel lblCliente;
+private JLabel lblendIPCli;
+private JLabel txtFieldIPCli;
+private JLabel lblportCli;
+private JLabel txtFieldPortCli;
+private JLabel lblTransfer;
+private JLabel txtFieldTransfer;
+
+
+private JPanel painelTítuloServidor;
+private JPanel painelIPServidor;
+private JPanel painelPortoServidor;
+private JPanel painelBase;
+private JPanel painelServidor;
+private JPanel painelTítuloCliente;
+private JPanel painelIPCliente;
+private JPanel painelPortoCliente;
+private JPanel painelTransfer;
+private JPanel painelCliente;
+
+private JButton botaoOK;
+

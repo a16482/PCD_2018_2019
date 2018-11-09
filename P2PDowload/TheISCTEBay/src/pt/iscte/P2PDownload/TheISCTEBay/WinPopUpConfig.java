@@ -11,66 +11,40 @@ import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 public class WinPopUpConfig extends JPanel implements ActionListener {
 	
+	private static final long serialVersionUID = 1L;
 	/** Trata a janela PopUp de Configurações.
 	 *  Projeto: The ISCTE Bay
 	 */
-	private static final long serialVersionUID = 1L;
 	
-	private static final int W = 400;
-	private static final int H = 500;
-	private JFrame frameConfig;
-	JComponent configContentPane = new WinPopUpConfig();
+	private static final int W = 600;
+	private static final int H = 400;
 
     
-	public WinPopUpConfig() {
-		super(new BorderLayout());
-		
-		frameConfig = new JFrame();
-		frameConfig.setAlwaysOnTop(false);
-		frameConfig.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
-		frameConfig.setContentPane(configContentPane);
-		configContentPane.setOpaque(true);
-		frameConfig.setTitle("The ISCTE Bay - Configurações");
-		addFrameContent();
-		frameConfig.setSize(W, H);
-		frameConfig.setResizable(true);
-		frameConfig.setLocationRelativeTo(null);
-		frameConfig.pack();
-		
-	}
-																																													
-	public void open() {
-		// para abrir a janela (torna-la visivel)
-		frameConfig.setVisible(true);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-		case ("OK"): 
-			frameConfig.dispose();
-		break;
+		case ("OK"):
+			//dispose();
+			System.exit(0);
+			break;
 		default:
 			// nada a fazer
 			break;
 		}
-
 	}
-
-
-	private void addFrameContent() {
+	
+	
+	public WinPopUpConfig() {
+		super(new BorderLayout());
+		
 		String endIPSrv = TheISCTEBay.devolveEnderecoDirectorio();
 		String portSrv = String.valueOf(TheISCTEBay.devolvePortoDiretorio());
 		String endIPCli = "IP do cliente (localhost)";
@@ -89,7 +63,6 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		// ***************************************************
 		// Definição de Border(s)
 		Border borderPainelPequeno = BorderFactory.createEmptyBorder(10, 10, 10, 10); //cima, esquerda, baixo, direita
-		//Border borderPainelPequeno = BorderFactory.createBevelBorder(BevelBorder.RAISED); 
 		Border borderPainelBase = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		Border insideBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED);
 		// ***************************************************
@@ -100,9 +73,9 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		// Título servidor
 		JLabel lblServer = new JLabel();
 		lblServer.setText("Servidor");
-		lblServer.setHorizontalAlignment(SwingConstants.CENTER);
+		lblServer.setHorizontalAlignment(SwingConstants.LEFT);
 		lblServer.setFont(fontTitulos);
-		lblServer.setHorizontalAlignment(SwingConstants.CENTER);
+		lblServer.setHorizontalAlignment(SwingConstants.LEFT);
 
 		// Título do Endereço IP do Servidor 
 		JLabel lblendIPSrv = new JLabel();
@@ -110,7 +83,6 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		lblendIPSrv.setFont(fonteLabels);
 		lblendIPSrv.setBorder(borderPainelPequeno);
 		lblendIPSrv.setHorizontalAlignment(SwingConstants.LEFT);
-		//lblendIPSrv.setForeground(getForeground());
 
 		// Dados do Endereço IP do Servidor 
 		JLabel txtFieldIPSrv = new JLabel();
@@ -140,7 +112,6 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		painelTítuloServidor.setPreferredSize(dimensionPequeno);
 		painelTítuloServidor.setForeground(Color.GRAY);
 		painelTítuloServidor.setBorder(insideBorder);
-		//painelTítuloServidor.setBackground(Color.lightGray);
 		painelTítuloServidor.add(lblServer);
 
 		//painel pequeno - IP Servidor
@@ -154,8 +125,6 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		//painel pequeno - Porto Servidor
 		JPanel painelPortoServidor = new JPanel();
 		painelPortoServidor.setLayout(new GridLayout(1,2));
-		//painelPortoServidor.setAlignmentY(LEFT_ALIGNMENT);
-		//painelPortoServidor.setLayout(new FlowLayout());
 		painelPortoServidor.setPreferredSize(dimensionPequeno);
 		painelPortoServidor.setBorder(insideBorder); 
 		painelPortoServidor.add(lblportSrv);
@@ -175,14 +144,12 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		painelServidor.add(painelIPServidor);
 		painelServidor.add(painelPortoServidor);
 
-		// COLOCAR AQUI UM SEPARADOR
-
 		// -------- CLIENTE --------
 		// Título Cliente
 		JLabel lblCliente = new JLabel();
 		lblCliente.setText("Cliente");
 		lblCliente.setFont(fontTitulos);
-		lblCliente.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCliente.setHorizontalAlignment(SwingConstants.LEFT);
 
 		// Título do Endereço IP do Cliente 
 		JLabel lblendIPCli = new JLabel();
@@ -206,7 +173,6 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 
 		// Dados do Porto do Cliente 
 		JLabel txtFieldPortCli = new JLabel();
-		//JTextField txtFieldPortCli = new JTextField();
 		txtFieldPortCli.setFont(fonteDados);
 		txtFieldPortCli.setText(portCli);
 		txtFieldPortCli.setHorizontalAlignment(SwingConstants.LEFT);

@@ -7,6 +7,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -31,13 +32,11 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	
 	private static final long serialVersionUID = -736174911678774149L;
 
-	private static final int W = 500;
-	private static final int H = 500;
+	private static final int W = 800;
+	private static final int H = 800;
 	private static final String NEW_LINE = "\n";
 
-//	private DefaultListModel<Utilizador> utilizadores = new DefaultListModel<Utilizador>();
 	private DefaultListModel<String> utilizadores;
-//	private JList<Utilizador> listaUtilizadores;
 	private JList<String> listaUtilizadores;
 	private JScrollPane scrollerListaUtilizadores;
 
@@ -56,7 +55,13 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 
 		@Override
 		public Void doInBackground() {
-			loadListaUtilizadores();
+			try {
+				loadListaUtilizadores();
+				scrollerListaUtilizadores.repaint();
+			} catch (Exception e) {
+				e.printStackTrace();
+				MsgBox.info("Erro no carregamento da lista de utilizadores!"+  NEW_LINE + e.getMessage());
+			}
 			return null;
 		}
 
@@ -67,95 +72,56 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		public void done() { //Feito!!!
 			//			mostraBarraDeProgresso(false);
 			MsgBox.info("Lista de utilizadores carregada!");
-			scrollerListaUtilizadores.repaint();
-//			add(painelRefrescar, BorderLayout.NORTH);
-			
-//			Toolkit.getDefaultToolkit().beep();
+			Toolkit.getDefaultToolkit().beep();
 			setCursor(null); //desliga o wait do cursor
 		}
 	}
 	
-	int getTotalUtilizadores() {
+	public int getTotalUtilizadores() {
 		int i =0;
-		i = TheISCTEBay.devolveNumeroUtilizadores();
+		try {
+			i = TheISCTEBay.devolveNumeroUtilizadores();
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgBox.erro("Erro na leitura do número de Utilizadores na lista!" +  NEW_LINE + e.getMessage());
+		}
 		return i;
 	}
 	
+	public void reloadListaUtilizadores() {
+		try {
+			utilizadores.removeAllElements();
+		} catch (Exception e) {
+			e.printStackTrace();
+			MsgBox.erro("Erro na limpeza da lista de Utilizadores!" +  NEW_LINE + e.getMessage());
+		}
+	    loadListaUtilizadores();
+	}
+	
 	public Void loadListaUtilizadores() {
-
-		utilizadores = new DefaultListModel<String>();
 		String u = "";
-		utilizadores.removeAllElements();
 		int totalElementos = getTotalUtilizadores();
 		int i=0;
 		try {
 			for (i=0;i<totalElementos;i++) {
-//				utilizadores.add(i, TheISCTEBay.devolveUtilizadorNDaLista(i));
 				u= TheISCTEBay.devolveUtilizadorNDaLista(i).ipUtilizador() + ":" + 
 						TheISCTEBay.devolveUtilizadorNDaLista(i).portoUtilizador(); 
 				utilizadores.add(i, u);
-//				MsgBox.info("i=" + String.valueOf(i) + " " + u);
-//				MsgBox.info("i=" + String.valueOf(i) + 
-//						TheISCTEBay.devolveUtilizadorNDaLista(i).ipUtilizador() + " " + 
-//						TheISCTEBay.devolveUtilizadorNDaLista(i).portoUtilizador() );
 			}
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			MsgBox.erro("Erro na obtenção da lista de Utilizadores!" +  NEW_LINE + e.getMessage());
 		} 
-		listaUtilizadores = new JList<String>(utilizadores);
-		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
-		listaUtilizadores.setVisibleRowCount(-1);
-		
-		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
-		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
-		scrollerListaUtilizadores.setVisible(true);
-		
-		//...
-		//painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
-		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
-		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
-		painelUtilizadores.setLayout(new BorderLayout());
-//		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-//		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
-	
-		
-		// Criação dos elementos da GUI relacionados no contentor principal
-	
-//		String teste = "TESTE 1";
-//		for (i=0;i<totalElementos;i++) {
-//			teste = teste + "\n" + "i=" + String.valueOf(i) + " " + 
-//					TheISCTEBay.devolveUtilizadorNDaLista(i).ipUtilizador() + ":" + 
-//					TheISCTEBay.devolveUtilizadorNDaLista(i).portoUtilizador();
-//		}
-//		MsgBox.info(teste);
-//		
-//		String teste2 = "TESTE 2";
-//		for (i=0;i<utilizadores.getSize();i++) {
-//			teste2 = teste2 + "\n" + "i=" + String.valueOf(i) + " " + utilizadores.elementAt(i);
-//		}
-//		MsgBox.info(teste2);		 
-//			
-//		
-		//...
+
 		return null;
 	}
 
-	
-	public void enviaEventoRefrescar() {
-		this.botaoRefrescar.doClick();
-	}
 
 	// Construtor da Janela
 	public WinPopUpUtilizadores() {
-
 		super(new BorderLayout());
-		addFrameContent();
-	}
-	
-	public void addFrameContent() {
-		// elementos da IGUtilizadores
+		
+		// elementos da IG que mostra os Utilizadores
 		if(getTotalUtilizadores()== 1) {
 			lblTitulo.setText(getTotalUtilizadores() + " Utilizador Ligado");
 		} else {
@@ -188,23 +154,52 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		painelPequeno.add(barraDeProgresso);
 		painelPequeno.add(lblTitulo);
 
-		// Painel de cima
+		// Composição do painel de cima
 		painelRefrescar = new JPanel();
-		// Painel de baixo
-		painelUtilizadores = new JPanel();
-		// o resto,,,
 		painelRefrescar.setLayout(new GridLayout(1,3)); // 1 linha, 3 colunas.
 		painelRefrescar.setOpaque(false);
 		Border insideBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED);
 		painelRefrescar.setBorder(BorderFactory.createCompoundBorder(borderPainelBase , insideBorder ));
 		painelRefrescar.add(painelPequeno, BorderLayout.WEST);
 		painelRefrescar.add(botaoRefrescar, BorderLayout.EAST);
-		add(painelRefrescar, BorderLayout.NORTH);
 		
-	
+		// Painel de baixo
+		painelUtilizadores = new JPanel();
+		scrollerListaUtilizadores=new JScrollPane();
+		listaUtilizadores = new JList<String>();
+		utilizadores = new DefaultListModel<String>();
+		loadListaUtilizadores();
+		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
+		listaUtilizadores.setVisibleRowCount(-1);
 		
+//		listScroller = new JScrollPane();
+//		listaFiles = new JList<String>(searchResult);
+//		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		listaFiles.setLayoutOrientation(JList.VERTICAL);
+//		listaFiles.setVisibleRowCount(-1); 	
+//		//listaFiles.setFixedCellHeight(H/10);
+//		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
+//		listScroller.setViewportView(listaFiles);
+//		listScroller.setPreferredSize(new Dimension (W/9*5, H));
+//		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
+
+		listaUtilizadores.setVisible(true);
+		scrollerListaUtilizadores=new JScrollPane();
+		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
 		
-		add(painelUtilizadores, BorderLayout.WEST);
+		scrollerListaUtilizadores.setVisible(true);
+		scrollerListaUtilizadores.setOpaque(true);
+		
+		//painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
+		//painelRefrescar.setOpaque(true);
+		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
+		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
+		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
+//		painelUtilizadores.setLayout(new BorderLayout());
+		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
+//	
 		
 	
 //		listaUtilizadores = new JList<Utilizador>(utilizadores);
@@ -244,10 +239,10 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 //		painelUtilizadores.setLayout(new BorderLayout());
 //		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 //		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
-//
+
 //		// Criação dos elementos da GUI relacionados no contentor principal
-//		add(painelRefrescar, BorderLayout.NORTH);
-//		add(painelUtilizadores, BorderLayout.WEST);
+		add(painelRefrescar, BorderLayout.NORTH);
+		add(painelUtilizadores, BorderLayout.WEST);
 		//---------------------------------------------------
 		//Fim da definição da janela de Utilizadores
 		//---------------------------------------------------
@@ -259,6 +254,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if ("progress" == evt.getPropertyName()) {
+			@SuppressWarnings("unused")
 			int progress = (Integer) evt.getNewValue();
 			//barraDeProgresso.setValue(progress);
 		}

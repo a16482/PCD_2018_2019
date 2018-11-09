@@ -132,8 +132,10 @@ public class IGDownload extends JPanel implements ActionListener, PropertyChange
 		// --------------------------------------------------------------------------------------------
 		// ATENÇÃO: Substituir o array de string no processo de carregamento....
 		//--------------------------------------------------------------------------------------------
-		String[] searchResult = {"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l" +
-				"aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
+		String[] searchResult = {"ficheiro A", "ficheiroB.txt", "imagemC", "imagemD", "imagemE" , 
+				"oMeuFiceiro", "aMinhaFolha de cálculo toda certinha", "f", "g",
+				 "h", "i", "j", "k", "l"
+				+ "aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
 		listScroller = new JScrollPane();
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
