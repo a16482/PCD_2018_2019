@@ -5,42 +5,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.InetAddress;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-public class WinPopUpConfig extends JPanel implements ActionListener {
+public class WinPopUpConfig extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	/** Trata a janela PopUp de Configurações.
 	 *  Projeto: The ISCTE Bay
 	 */
 	
-	private static final int W = 600;
+	private static final int W = 540;
 	private static final int H = 400;
-
-    
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		switch(e.getActionCommand()) {
-		case ("OK"):
-			//dispose();
-			System.exit(0);
-			break;
-		default:
-			// nada a fazer
-			break;
-		}
-	}
-	
 	
 	public WinPopUpConfig() {
 		super(new BorderLayout());
@@ -57,7 +39,7 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		String transferCli = "..\\Transfer";
 		// ***************************************************
 		// Definição de Font(s)
-		Font fontTitulos = new Font("Lucida Sans Serif", Font.BOLD, 18);
+		Font fontTitulos = new Font("Lucida Sans Serif", Font.TYPE1_FONT, 18);
 		Font fonteLabels = new Font("Lucida Sans Serif", Font.BOLD, 14);
 		Font fonteDados = new Font("Lucida Sans Serif", Font.PLAIN, 14);
 		// ***************************************************
@@ -232,24 +214,9 @@ public class WinPopUpConfig extends JPanel implements ActionListener {
 		painelCliente.add(painelPortoCliente);
 		painelCliente.add(painelTransfer);
 
-		// Botão "OK"
-		
-		JButton botaoOK = new JButton("OK");
-		botaoOK.setFont(fontTitulos);
-		botaoOK.setActionCommand("OK");
-		botaoOK.setPreferredSize(new Dimension(W / 8 * 3, H / 10));
-		botaoOK.addActionListener((ActionListener) this);
-		botaoOK.setHorizontalAlignment(SwingConstants.CENTER);
-
-		JPanel painelOK = new JPanel();
-		painelOK.setLayout(new GridLayout(1, 1));
-		painelOK.add(botaoOK);
-		painelOK.setBorder(BorderFactory.createCompoundBorder(borderPainelBase , insideBorder ));
-
 		// Carregamento final
 		add(painelServidor, BorderLayout.NORTH);
 		add(painelCliente, BorderLayout.WEST);
-		add(painelOK, BorderLayout.SOUTH);
 	}
 
 }

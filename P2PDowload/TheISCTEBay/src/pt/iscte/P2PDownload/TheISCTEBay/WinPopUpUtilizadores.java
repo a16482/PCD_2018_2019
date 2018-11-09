@@ -32,8 +32,8 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	
 	private static final long serialVersionUID = -736174911678774149L;
 
-	private static final int W = 800;
-	private static final int H = 800;
+	private static final int W = 500;
+	private static final int H = 400;
 	private static final String NEW_LINE = "\n";
 
 	private DefaultListModel<String> utilizadores;
@@ -98,7 +98,28 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	    loadListaUtilizadores();
 	}
 	
-	public Void loadListaUtilizadores() {
+//	public class ListaUtilizadores extends JList{
+//		private static final long serialVersionUID = 1L;
+//		DefaultListModel utilizadorModel = new DefaultListModel();
+//
+//		MessageRenderer messageRenderer = new MessageRenderer();
+//
+//		public MessageList( ){
+//			this.setCellRenderer(messageRenderer);
+//			this.setModel(utilizadorModel);
+//
+//		}
+//
+//		public void getUtilizador(Utilizador u));
+//		}
+//
+//	}
+//	
+//	public String preparaUtilizadores() {
+//		
+//	}
+//	
+	public void loadListaUtilizadores() {
 		String u = "";
 		int totalElementos = getTotalUtilizadores();
 		int i=0;
@@ -112,8 +133,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 			e.printStackTrace(); 
 			MsgBox.erro("Erro na obtenção da lista de Utilizadores!" +  NEW_LINE + e.getMessage());
 		} 
-
-		return null;
 	}
 
 
@@ -165,38 +184,29 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		
 		// Painel de baixo
 		painelUtilizadores = new JPanel();
-		scrollerListaUtilizadores=new JScrollPane();
-		listaUtilizadores = new JList<String>();
+		
+		
 		utilizadores = new DefaultListModel<String>();
 		loadListaUtilizadores();
+		listaUtilizadores = new JList<String>(utilizadores);
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);
 		listaUtilizadores.setVisibleRowCount(-1);
-		
-//		listScroller = new JScrollPane();
-//		listaFiles = new JList<String>(searchResult);
-//		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		listaFiles.setLayoutOrientation(JList.VERTICAL);
-//		listaFiles.setVisibleRowCount(-1); 	
-//		//listaFiles.setFixedCellHeight(H/10);
-//		listaFiles.setFont(new Font("Lucida Sans Serif", Font.PLAIN, 16));
-//		listScroller.setViewportView(listaFiles);
-//		listScroller.setPreferredSize(new Dimension (W/9*5, H));
-//		listScroller.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
+		scrollerListaUtilizadores=new JScrollPane(listaUtilizadores);
 
-		listaUtilizadores.setVisible(true);
-		scrollerListaUtilizadores=new JScrollPane();
+		
+
 		scrollerListaUtilizadores.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); //cima;esquerda;baixo;direita
 		
-		scrollerListaUtilizadores.setVisible(true);
-		scrollerListaUtilizadores.setOpaque(true);
+//		scrollerListaUtilizadores.setVisible(true);
+//		scrollerListaUtilizadores.setOpaque(true);
 		
 		//painelUtilizadores.add(new JScrollPane(listaUtilizadores), BorderLayout.WEST);
 		//painelRefrescar.setOpaque(true);
-		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
+//		scrollerListaUtilizadores.setViewportView(listaUtilizadores);
 		painelUtilizadores.add(scrollerListaUtilizadores, BorderLayout.WEST);
 		painelUtilizadores.setPreferredSize(new Dimension(W , (H / 10 * 9) + 80));
-//		painelUtilizadores.setLayout(new BorderLayout());
+		painelUtilizadores.setLayout(new BorderLayout());
 		Border borderPainelUtilizadores = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		painelUtilizadores.setBorder(BorderFactory.createCompoundBorder(borderPainelUtilizadores , insideBorder ));
 //	
