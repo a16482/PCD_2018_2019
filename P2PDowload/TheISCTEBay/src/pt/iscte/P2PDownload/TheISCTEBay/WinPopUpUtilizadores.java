@@ -50,6 +50,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 
 	JFrame upperLeftFrame;
 	Container painelPequeno;
+	Diretorio d = TheISCTEBay.devolveDiretorio();
 	
 	class Task extends SwingWorker<Void, Void> {
 		@Override
@@ -69,17 +70,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		}
 	}
 	
-	public int getTotalUtilizadores() {
-		int i =0;
-		try {
-			i = TheISCTEBay.devolveNumeroUtilizadores();
-		} catch (Exception e) {
-			e.printStackTrace();
-			MsgBox.erro("Erro na leitura do número de Utilizadores na lista!" +  NEW_LINE + e.getMessage());
-		}
-		return i;
-	}
-
 	public class FlushListaUtilizadores extends Thread implements Runnable {
 		public void run() {
 			synchronized(this) {
@@ -148,9 +138,10 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		
 			@Override
 			public void run() {
+				d.consultaUtilizadores();
 				synchronized(this) {
 					try {
-						loadListaUtilizadores();
+						loadListaUtilizadores(d);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} finally {
@@ -159,14 +150,14 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 				}
 			}
 			
-			private synchronized void loadListaUtilizadores()throws InterruptedException {
+			private synchronized int loadListaUtilizadores(Diretorio d)throws InterruptedException {
 				String u = "";
-				int totalElementos = getTotalUtilizadores();
+				int totalElementos = d.getTotalUtilizadores();
 				int i=0;
 				try {
 					for (i=0;i<totalElementos;i++) {
-						u= TheISCTEBay.devolveUtilizadorNDaLista(i).ipUtilizador() + ":" + 
-								TheISCTEBay.devolveUtilizadorNDaLista(i).portoUtilizador(); 
+						u= d.getUtilizadorNDaLista(i).ipUtilizador() + ":" + 
+								d.getUtilizadorNDaLista(i).portoUtilizador(); 
 						utilizadores.add(i, u);
 					}
 				} catch (Exception e) {
@@ -175,17 +166,11 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 				} finally {
 					notifyAll();
 				}
+				return totalElementos;
 			}
 			
-			public synchronized int getUtilizadoresLigados() {
-				int i =0;
-				try {
-					i = TheISCTEBay.devolveNumeroUtilizadores();
-				} catch (Exception e) {
-					e.printStackTrace();
-					MsgBox.erro("Erro na leitura do número de Utilizadores na lista!" +  NEW_LINE + e.getMessage());
-				}
-				return i;
+			public int getTotalUtilizadores() {
+				return d.getTotalUtilizadores();
 			}
 			
 			public void init() {
@@ -203,10 +188,11 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		Font fontTitulos = new Font("Lucida Sans Serif", Font.BOLD, 12);
 		
 		// elementos da IG que mostra os Utilizadores
-		if(getTotalUtilizadores()== 1) {
-			lblTitulo.setText(getTotalUtilizadores() + " Utilizador Ligado");
+		int totalUtilizadores = d.getTotalUtilizadores();
+		if(totalUtilizadores== 1) {
+			lblTitulo.setText(totalUtilizadores + " Utilizador Ligado");
 		} else {
-			lblTitulo.setText(getTotalUtilizadores() + " Utilizadores Ligados");
+			lblTitulo.setText(totalUtilizadores + " Utilizadores Ligados");
 		}
 		lblTitulo.setFont(fontTitulos);
 		lblTitulo.setForeground(Color.DARK_GRAY);

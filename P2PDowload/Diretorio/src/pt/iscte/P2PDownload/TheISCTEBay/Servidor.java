@@ -8,13 +8,11 @@ public class Servidor {
 
 	private static int portoDiretorio;
 	private ServerSocket server;
+	private List<Cliente> diretorio = new ArrayList<>();
 
 	public void init() throws IOException {
 		server = new ServerSocket(portoDiretorio);
 	}
-
-	private List<Cliente> diretorio = new ArrayList<>();
-
 
 	public void serve() throws IOException{
 		while(true){
@@ -23,35 +21,9 @@ public class Servidor {
 			Socket s=server.accept();
 			System.out.println("Ligação efetuada");
 			new TrataMsg(s.getInputStream(), s.getOutputStream()).start();
-
 		}
 	}
 
-	public synchronized void adicionaCliente(Cliente c) {
-		diretorio.add(c);
-	}
-
-	// este método não está ainda a ser usado
-	public synchronized void removeCliente(Cliente c) {
-		diretorio.remove(c);
-	}
-	
-
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.err.println("É necessário indicar o porto de escuta do Diretório");
-			System.exit(1);
-		}
-		portoDiretorio = Integer.parseInt(args[0]);
-		final Servidor s = new Servidor();
-		try {
-			s.init();
-			s.serve();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 
 	public class TrataMsg extends Thread {
@@ -66,8 +38,30 @@ public class Servidor {
 			this.inStream = new ObjectInputStream(in);
 			this.outStream = new ObjectOutputStream(out);
 		}
+		
+		public synchronized void adicionaCliente(Cliente c) {
+			if (!existeCliente(c)) { 
+				diretorio.add(c);
+			}
+		}
 
-	    // VER ISTO!!!
+		public synchronized void removeCliente(Cliente c) {
+			diretorio.remove(c);
+		}
+		
+		public synchronized boolean existeCliente (Cliente c) {
+			boolean existeCliente= false;
+			Cliente clienteDiretorio;
+			Iterator<Cliente> iDiretorio = diretorio.iterator();
+			while (iDiretorio.hasNext()) {
+				clienteDiretorio = iDiretorio.next();
+				if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
+					existeCliente = true;
+				}
+			}
+			return existeCliente;
+		}
+
 		public synchronized void informaDiretorio() { 
 			try {	
 				for (int i = 0; i < diretorio.size(); i++) {
@@ -90,7 +84,6 @@ public class Servidor {
 			}
 		}
 
-		
 		@Override
 		public void run() {
 			try {
@@ -141,5 +134,21 @@ public class Servidor {
 			}
 		}
 
+	}
+	
+	public static void main(String[] args) {
+		if (args.length < 1) {
+			System.err.println("É necessário indicar o porto de escuta do Diretório");
+			System.exit(1);
+		}
+		portoDiretorio = Integer.parseInt(args[0]);
+		final Servidor s = new Servidor();
+		try {
+			s.init();
+			s.serve();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

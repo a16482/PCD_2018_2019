@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -49,7 +50,7 @@ public class Diretorio {
 			}
 			registo.close();
 			confirmacao.close();
-			socket.close();	// --------- GRANDE DÚVIDA!! -----------
+			socket.close();
 		} catch (Exception e) {
 			msgErro = "Erro: " + e.getMessage();
 			System.out.println(msgErro); 
@@ -64,6 +65,7 @@ public class Diretorio {
 			pedidoLista.flush();
 			pedidoLista.writeObject(new String("CLT"));
 			ObjectInputStream utilizadores = new ObjectInputStream(socketLista.getInputStream());
+			
 			while (true) {
 				String utilizadorString = (String)utilizadores.readObject();
 				if (utilizadorString.equals("END")) {
@@ -71,8 +73,10 @@ public class Diretorio {
 					break;
 					}
 				System.out.println(utilizadorString);
-				Utilizador u = new Utilizador(utilizadorString);
-				listaUtilizadores.add(u);
+				Utilizador u = new Utilizador(utilizadorString); //alterar
+				if (!existeUtilizador(u)) { 
+					listaUtilizadores.add(u);
+				}
 			}
 			pedidoLista.close();
 			utilizadores.close();
@@ -82,6 +86,19 @@ public class Diretorio {
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
 		}
+	}
+	
+	public boolean existeUtilizador (Utilizador u) {
+		boolean existeUtilizador= false;
+		Utilizador utilizadorLista;
+		Iterator<Utilizador> iListaUtilizadores = listaUtilizadores.iterator();
+		while (iListaUtilizadores.hasNext()) {
+			utilizadorLista = iListaUtilizadores.next();
+			if(utilizadorLista.ipUtilizador().equals(u.ipUtilizador()) && utilizadorLista.portoUtilizador().equals(u.portoUtilizador())) {
+				existeUtilizador = true;
+			}
+		}
+		return existeUtilizador;
 	}
 	
 	public List<Utilizador> getListaUtilizadores() {

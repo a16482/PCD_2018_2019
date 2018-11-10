@@ -61,16 +61,20 @@ public class TheISCTEBay {
 		return portoUtilizador;
 	}
 	
-	public static int devolveNumeroUtilizadores() {
-		return d.getTotalUtilizadores();
-	}
+//	public static int devolveNumeroUtilizadores() {
+//		return d.getTotalUtilizadores();
+//	}
+//	
+//	public static List<Utilizador> devolveListaUtilizadores() {
+//		return d.getListaUtilizadores();
+//	}
+//	
+//	public static Utilizador devolveUtilizadorNDaLista(int n) {
+//		return d.getUtilizadorNDaLista(n);
+//	}
 	
-	public static List<Utilizador> devolveListaUtilizadores() {
-		return d.getListaUtilizadores();
-	}
-	
-	public static Utilizador devolveUtilizadorNDaLista(int n) {
-		return d.getUtilizadorNDaLista(n);
+	public static Diretorio devolveDiretorio() {
+		return d;
 	}
 	
 //	public static List<String> devolveListaUtilizadoresStr(){
