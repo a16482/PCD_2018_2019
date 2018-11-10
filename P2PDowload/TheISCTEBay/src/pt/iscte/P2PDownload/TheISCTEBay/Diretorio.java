@@ -13,6 +13,7 @@ public class Diretorio {
 	private int portoDiretorio;
 	private String enderecoUtilizador;
 	private int portoUtilizador;
+	
 	private List<Utilizador> listaUtilizadores = new ArrayList<>();
 	private String msgInfo;
 	private String msgErro;
@@ -30,7 +31,6 @@ public class Diretorio {
 		portoUtilizador = pUser;
 		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
 		System.out.println(msgInfo); 
-//		MsgBox.info(msgInfo);
 	}
 
 
@@ -46,7 +46,6 @@ public class Diretorio {
 			if (conf.equals("ok")) {
 				msgInfo = "Registo no Diretório efetuado com sucesso" ;
 				System.out.println(msgInfo); 
-//				MsgBox.info(msgInfo, enderecoUtilizador);
 			}
 			registo.close();
 			confirmacao.close();
@@ -97,16 +96,4 @@ public class Diretorio {
 		return this.listaUtilizadores.get(n);
 	}
 	
-//	public List<String> getListaUtilizadoresStr() {
-//		List<String> listaUtilizadoresStr = new ArrayList<String>();
-//		listaUtilizadoresStr.clear();
-//		String membro ="";
-//		int i = 0;
-//		while (i < this.listaUtilizadores.size()) {
-//			membro = getUtilizadorNDaLista(i).ipUtilizador() + " " +  getUtilizadorNDaLista(i).portoUtilizador();
-//			listaUtilizadoresStr.add(membro);
-//			i++;		
-//		}
-//		return listaUtilizadoresStr;
-//	}
 }

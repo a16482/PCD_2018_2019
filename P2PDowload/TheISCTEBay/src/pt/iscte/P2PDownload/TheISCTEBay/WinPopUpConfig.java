@@ -21,7 +21,7 @@ public class WinPopUpConfig extends JPanel {
 	 *  Projeto: The ISCTE Bay
 	 */
 	
-	private static final int W = 540;
+	private static final int W = 400;
 	private static final int H = 400;
 	
 	public WinPopUpConfig() {
@@ -39,9 +39,9 @@ public class WinPopUpConfig extends JPanel {
 		String transferCli = "..\\Transfer";
 		// ***************************************************
 		// Definição de Font(s)
-		Font fontTitulos = new Font("Lucida Sans Serif", Font.TYPE1_FONT, 18);
-		Font fonteLabels = new Font("Lucida Sans Serif", Font.BOLD, 14);
-		Font fonteDados = new Font("Lucida Sans Serif", Font.PLAIN, 14);
+		Font fontTitulos = new Font("Lucida Sans Serif", Font.TYPE1_FONT, 16);
+		Font fonteLabels = new Font("Lucida Sans Serif", Font.PLAIN, 12);
+		Font fonteDados = new Font("Lucida Sans Serif", Font.BOLD, 12);
 		// ***************************************************
 		// Definição de Border(s)
 		Border borderPainelPequeno = BorderFactory.createEmptyBorder(10, 10, 10, 10); //cima, esquerda, baixo, direita
