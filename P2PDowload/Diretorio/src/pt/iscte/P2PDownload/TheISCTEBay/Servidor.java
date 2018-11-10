@@ -46,7 +46,9 @@ public class Servidor {
 		}
 
 		public synchronized void removeCliente(Cliente c) {
-			diretorio.remove(c);
+			if (existeCliente(c)) { 
+				diretorio.remove(c);
+			}
 		}
 		
 		public synchronized boolean existeCliente (Cliente c) {
@@ -108,6 +110,12 @@ public class Servidor {
 								break;
 							case ("CLT"):
 								informaDiretorio();
+								break;
+							case ("RMV"):
+								removeCliente(cliente);
+								outStream.flush();  //limpeza
+								outStream.writeObject(new String("ok"));
+								outStream.close();
 								break;
 							default:
 								outStream.flush();

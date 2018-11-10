@@ -7,7 +7,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -32,7 +31,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	
 	private static final long serialVersionUID = -736174911678774149L;
 
-	private static final int W = 400;
+	private static final int W = 450;
 	private static final int H = 400;
 	private static final String NEW_LINE = "\n";
 
@@ -122,7 +121,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 			
 		}
 		
-		public synchronized void repintaScroller() {
+		public void repintaScroller() {
 			scrollerListaUtilizadores.revalidate();
 			scrollerListaUtilizadores.repaint();
 			MsgBox.info("Lista de utilizadores recarregada!");

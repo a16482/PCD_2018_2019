@@ -4,6 +4,8 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+
+import java.net.InetAddress;
 import java.util.List;
 
 
@@ -21,7 +23,17 @@ public class TheISCTEBay {
 	// ------------------------------------------------------------------------
 	private static void criaEmostraGUI() {
 		// ---------------- Painel de Download -----------------------------
-		JFrame frame = new JFrame("The ISCTE Bay");
+		String idUtilizador =  devolveIPUtilizador() + ":" + String.valueOf(devolvePortoUtilizador());
+				
+		JFrame frame = new JFrame();
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent e) {
+				//Remove um utilizador do Diretório
+				d.removeUtilizador();
+		        System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
+		    }
+		});
 		
 		// Cria e configura o painel de conteúdos.
 		JComponent DownloadContentPane = new WinDownload();
@@ -32,12 +44,13 @@ public class TheISCTEBay {
 		pmenu = WinDownload.setPopUpMenu();
 	   
 		DownloadContentPane.setComponentPopupMenu(pmenu);
-
-		frame.setVisible(true);
+		
+		frame.setTitle("The ISCTE Bay" + " (" + idUtilizador  + ")");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 	}
 	
 	public static String devolveEnderecoDirectorio () {
@@ -46,6 +59,16 @@ public class TheISCTEBay {
 	
 	public static int devolvePortoDiretorio() {
 		return portoDiretorio;
+	}
+
+	public static String devolveIPUtilizador() {
+		String enderecoUtilizador="";
+		try {
+			enderecoUtilizador = InetAddress.getLocalHost().getHostAddress();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return enderecoUtilizador;
 	}
 	
 	public static int devolvePortoUtilizador() {

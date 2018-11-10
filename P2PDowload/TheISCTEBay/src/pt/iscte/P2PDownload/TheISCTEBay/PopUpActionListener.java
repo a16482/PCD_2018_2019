@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 
 public class PopUpActionListener implements ActionListener {
-
+	
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		System.out.println("Selected: " + evt.getActionCommand());
@@ -35,7 +35,10 @@ public class PopUpActionListener implements ActionListener {
 	}
 	
 	private static void criaEmostraIGUtilizadores() throws InterruptedException {
-		JFrame frameUtilizadores = new JFrame("The ISCTE Bay - Utilizadores");
+		String endIPCli = TheISCTEBay.devolveIPUtilizador();
+		String portCli = String.valueOf(TheISCTEBay.devolvePortoUtilizador());
+		JFrame frameUtilizadores = new JFrame();
+		frameUtilizadores.setTitle("The ISCTE Bay" + " (" + endIPCli + ":" + portCli  + ")");
 		frameUtilizadores.setAlwaysOnTop(false);
 		JComponent UtilizadoresContentPane = new WinPopUpUtilizadores();
 		UtilizadoresContentPane.setOpaque(true); 

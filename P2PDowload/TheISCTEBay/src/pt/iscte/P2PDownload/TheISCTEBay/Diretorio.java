@@ -19,6 +19,9 @@ public class Diretorio {
 	private String msgInfo;
 	private String msgErro;
 	
+	private static final String NEW_LINE = "\n";
+	
+	
 	public Diretorio(String eDiretorio, int pDiretorio, int pUser){
 		enderecoDiretorio = eDiretorio;
 		portoDiretorio = pDiretorio;
@@ -34,7 +37,32 @@ public class Diretorio {
 		System.out.println(msgInfo); 
 	}
 
-
+	//Remoção de um utilizador do diretorio
+	public void removeUtilizador() {
+		try {
+			Socket socket = new Socket(enderecoDiretorio, portoDiretorio);
+			ObjectOutputStream registo = new ObjectOutputStream(socket.getOutputStream());
+			registo.flush();
+			registo.writeObject(new String("RMV " + enderecoUtilizador + " " + portoUtilizador));	
+			ObjectInputStream confirmacao = new ObjectInputStream(socket.getInputStream());
+			String conf = (String)confirmacao.readObject();
+			if (conf.equals("ok")) {
+				msgInfo = "Remoção do Utilizador do Diretório efetuada com sucesso" ;
+				System.out.println(msgInfo); 
+			}
+			registo.close();
+			confirmacao.close();
+			socket.close();
+		} catch (Exception e) {
+			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
+					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					  "A aplicação TheISCTEBay vai terminar.";
+			System.out.println(msgErro); 
+			MsgBox.erro(msgErro);
+			System.exit(1);
+		}
+	}
+	
 	//Registo no diretorio
 	public void registoDiretorio() {
 		try {
@@ -52,9 +80,12 @@ public class Diretorio {
 			confirmacao.close();
 			socket.close();
 		} catch (Exception e) {
-			msgErro = "Erro: " + e.getMessage();
+			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
+					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					  "A aplicação TheISCTEBay vai terminar.";
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
+			System.exit(1);
 		}
 	}
 
@@ -82,9 +113,12 @@ public class Diretorio {
 			utilizadores.close();
 			socketLista.close();		
 		} catch (Exception e) {
-			msgErro = "Erro: " + e.getMessage();
+			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
+					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					  "A aplicação TheISCTEBay vai terminar.";
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
+			System.exit(1);
 		}
 	}
 	

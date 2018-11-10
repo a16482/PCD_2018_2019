@@ -37,19 +37,23 @@ public class WinPopUpConfig extends JPanel {
 		}
 		String portCli = String.valueOf(TheISCTEBay.devolvePortoUtilizador());
 		String transferCli = "..\\Transfer";
+		
 		// ***************************************************
 		// Definição de Font(s)
 		Font fontTitulos = new Font("Lucida Sans Serif", Font.TYPE1_FONT, 16);
 		Font fonteLabels = new Font("Lucida Sans Serif", Font.PLAIN, 12);
 		Font fonteDados = new Font("Lucida Sans Serif", Font.BOLD, 12);
+		
 		// ***************************************************
 		// Definição de Border(s)
 		Border borderPainelPequeno = BorderFactory.createEmptyBorder(10, 10, 10, 10); //cima, esquerda, baixo, direita
 		Border borderPainelBase = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		Border insideBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED);
+		
 		// ***************************************************
 		//Definição de Dimension(s)
 		Dimension dimensionPequeno = new Dimension((W -120), (H/10 + 20));
+		
 		// ***************************************************
 		// -------- SERVIDOR --------
 		// Título servidor
