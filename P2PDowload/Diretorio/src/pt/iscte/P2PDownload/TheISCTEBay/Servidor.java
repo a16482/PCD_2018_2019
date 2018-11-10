@@ -133,7 +133,6 @@ public class Servidor {
 				}
 			}
 		}
-
 	}
 	
 	public static void main(String[] args) {
@@ -147,8 +146,9 @@ public class Servidor {
 			s.init();
 			s.serve();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erro no lançamento do Servidor: " + e.getMessage());
+			System.out.println("Lançamento do Servidor cancelado.");
+			System.exit(1);
 		}
 	}
 }

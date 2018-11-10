@@ -14,13 +14,6 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
-	//private String msgErro;
-	//--------------------------------------------	
-	// Variaveis e Constantes da IG
-	//--------------------------------------------
-	private static final int W = 800;
-	private static final int H = 400;
-	
 	
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
@@ -31,17 +24,15 @@ public class TheISCTEBay {
 		JFrame frame = new JFrame("The ISCTE Bay");
 		
 		// Cria e configura o painel de conteúdos.
-		JComponent DownloadContentPane = new IGDownload(W,H);
+		JComponent DownloadContentPane = new WinDownload();
 		DownloadContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
 		frame.setContentPane(DownloadContentPane);
 		
 		JPopupMenu pmenu = new JPopupMenu("PopUpMenu");
-		pmenu = IGDownload.setPopUpMenu();
+		pmenu = WinDownload.setPopUpMenu();
 	   
-
 		DownloadContentPane.setComponentPopupMenu(pmenu);
 
-		frame.setSize(600, 400);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -61,26 +52,9 @@ public class TheISCTEBay {
 		return portoUtilizador;
 	}
 	
-//	public static int devolveNumeroUtilizadores() {
-//		return d.getTotalUtilizadores();
-//	}
-//	
-//	public static List<Utilizador> devolveListaUtilizadores() {
-//		return d.getListaUtilizadores();
-//	}
-//	
-//	public static Utilizador devolveUtilizadorNDaLista(int n) {
-//		return d.getUtilizadorNDaLista(n);
-//	}
-	
 	public static Diretorio devolveDiretorio() {
 		return d;
 	}
-	
-//	public static List<String> devolveListaUtilizadoresStr(){
-//		return d.getListaUtilizadoresStr();
-//	}
-	
 	
 	public static void main(String[] args) {
 
