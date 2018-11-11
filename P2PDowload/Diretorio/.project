@@ -3,6 +3,7 @@
 	<name>Diretorio</name>
 	<comment></comment>
 	<projects>
+		<project>TheISCTEBay</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

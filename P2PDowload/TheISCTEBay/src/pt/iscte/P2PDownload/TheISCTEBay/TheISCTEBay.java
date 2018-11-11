@@ -1,6 +1,7 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 
+import java.io.File;
 import java.net.InetAddress;
 import java.util.List;
 
@@ -87,6 +88,23 @@ public class TheISCTEBay {
 		return d;
 	}
 	
+	public static String verificaPastaDeTransferencias(String dirTransfer) {
+		final String pastaDefault = "Transfer"; 
+		String pasta = dirTransfer;
+		if ((pasta == null) || (pasta.length() ==0)) {
+			pasta = pastaDefault;
+		}
+		File f = new File("/" + pasta);
+		if (!f.exists() || !f.isDirectory()) {
+			MsgBox.info("A pasta de transferências indicada não existe atualmente." + "\n" 
+					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
+			pasta = pastaDefault;
+			new File("/" + pasta).mkdir();
+		} 
+		
+		return pasta;
+	}
+	
 	public static void main(String[] args) {
 
 		//Verifica se a aplicação iniciou com os 4 argumentos:<IP do Diretório> <Porto do Diretório> <Porto do Utilizador> <Pasta para transferências>
@@ -102,7 +120,7 @@ public class TheISCTEBay {
 		enderecoDiretorio = args[0];
 		portoDiretorio = Integer.parseInt(args[1]);
 		portoUtilizador = Integer.parseInt(args[2]);
-		pastaTransferencias = args[3];
+		pastaTransferencias = verificaPastaDeTransferencias(args[3]);
 		
 		//Mostra os argumentos recebidos na consola
 		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
