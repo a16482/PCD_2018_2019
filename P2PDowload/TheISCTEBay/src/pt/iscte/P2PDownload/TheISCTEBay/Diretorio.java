@@ -102,7 +102,7 @@ public class Diretorio {
 			pedidoLista.flush();
 			pedidoLista.writeObject(new String("CLT"));
 			ObjectInputStream utilizadores = new ObjectInputStream(socketLista.getInputStream());
-			
+			listaUtilizadores.clear();
 			while (true) {
 				String utilizadorString = (String)utilizadores.readObject();
 				if (utilizadorString.equals("END")) {

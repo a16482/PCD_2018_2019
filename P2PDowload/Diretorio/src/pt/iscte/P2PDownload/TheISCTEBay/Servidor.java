@@ -50,7 +50,7 @@ public class Servidor {
 			while ((iDiretorio.hasNext()) && (!encontrado)) {
 				clienteDiretorio = iDiretorio.next();
 				if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
-					diretorio.remove(c);
+					diretorio.remove(clienteDiretorio);
 					encontrado= true;
 				}
 				
