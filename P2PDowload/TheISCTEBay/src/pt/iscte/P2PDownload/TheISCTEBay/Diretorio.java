@@ -1,5 +1,8 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -16,6 +19,8 @@ public class Diretorio {
 	private int portoUtilizador;
 	
 	private List<Utilizador> listaUtilizadores = new ArrayList<>();
+	private List<FileDetails> listaFicheiros = new ArrayList<FileDetails>();
+	private String palavraChave;
 	private String msgInfo;
 	private String msgErro;
 	
@@ -147,4 +152,94 @@ public class Diretorio {
 		return this.listaUtilizadores.get(n);
 	}
 	
+	
+	//-------------------------------------------------------------------------
+	// Classe em construção
+	//-------------------------------------------------------------------------
+	public class LookUpForFiles  extends Thread implements Runnable {
+		// carrega a lista List<FileDetails> listaFicheiros
+		@Override
+		public void run() {
+			try {
+				File ficheiro_atual = new File("START/FROM/DIR"); 
+				procuraFicheiros(0, ficheiro_atual, palavraChave);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				notifyAll();
+			}
+		}
+
+		//procura de ficheiros
+		public void procuraFicheiros(int profundidade, File ficheiro_atual, String palavraChave) throws IOException{
+			//File ficheiro_atual = new File("."); //atual
+
+			String nomeFicheiro = "";
+			long bytesFicheiro= 0;
+
+			for(File ficheiro : ficheiro_atual.listFiles()){ // obtém, mas não distingue ficheiros e diretorios
+				if (!ficheiro.isDirectory()) { 
+					 nomeFicheiro = ficheiro.getName();
+					 bytesFicheiro= ficheiro.length();
+					 System.out.println( nomeFicheiro + ", " + String.valueOf(bytesFicheiro) );
+					 if ((ficheiroNaoExcluido(nomeFicheiro)) && (nomeFicheiro.contains(palavraChave))) {
+						// colocar o ficheiro na lista
+						 FileDetails ficheiroEncontrado = new FileDetails(nomeFicheiro,bytesFicheiro); 
+						 listaFicheiros.add(ficheiroEncontrado);
+					 }
+						 
+				} else {
+					// invocação recursiva
+					File[] ficheiros = ficheiro.listFiles(); 
+					for (int i = 0; i < ficheiros.length; i++){
+						procuraFicheiros(profundidade + 4, ficheiros[i], palavraChave);
+					} 
+				}
+			}
+		}
+		
+		//Exclusao de nomes
+		boolean ficheiroNaoExcluido(String nomeFicheiro){
+		    if (nomeFicheiro.charAt(0) == '.') {
+		        return false;
+		    }
+		    if (nomeFicheiro.contains("svn")) {
+		        return false;
+		    }
+		    //.
+		    //. outras exclusões possíveis
+		    //.
+		    return true;
+		}
+		
+		public class ListFiles {
+		    public File[] findDirectories(File ficheiro) { 
+		        return ficheiro.listFiles(new FileFilter() {
+		            public boolean accept(File f) {
+		                return f.isDirectory();
+		            }});
+		    }
+
+		    public File[] findFiles(File ficheiro) {
+		        return ficheiro.listFiles(new FileFilter() {
+		            public boolean accept(File f) {
+		                return f.isFile();
+		            }});
+		    }
+		}
+
+//		private void directory(File dir) {
+//			File[] files = dir.listFiles();
+//			for (File file : files) {
+//				System.out.println(file.getAbsolutePath());
+//				if (file.listFiles() != null)
+//					directory(file);        
+//			}
+//		} 
+	
+		public void init() {
+			new Thread(this, "LookUpForFiles").start();
+		}
+	}
 }
+

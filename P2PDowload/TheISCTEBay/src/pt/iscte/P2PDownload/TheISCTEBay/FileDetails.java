@@ -2,9 +2,9 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 public class FileDetails {
 	private String nomeFicheiro;
-	private int bytesFicheiro;
+	private long bytesFicheiro;
 
-	public FileDetails (String nome, int bytes) {
+	public FileDetails (String nome, long bytes) {
 		nomeFicheiro = nome;
 		bytesFicheiro = bytes;
 	}
@@ -13,7 +13,7 @@ public class FileDetails {
 		return nomeFicheiro;
 	}
 
-	public int bytesFicheiro() {
+	public long bytesFicheiro() {
 		return bytesFicheiro;
 	}
 }

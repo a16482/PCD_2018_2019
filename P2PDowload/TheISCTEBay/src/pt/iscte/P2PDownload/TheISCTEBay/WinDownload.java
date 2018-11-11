@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -42,7 +44,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JLabel lblTexto;
 	private JTextField txtField;
 	
-	private DefaultListModel<String> files;
+	//private DefaultListModel<String> files;
 	private JList<String> listaFiles;
 	private JScrollPane listaFilesScroller;
 	
@@ -53,7 +55,8 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JPanel painelSuperior;
 	private JPanel painelFicheiros;
 	private JPanel painelProgresso;
-
+	private String palavraChave;
+	
 	private static final int W = 600;
 	private static final int H = 400;
 	private static final String NEW_LINE = "\n";
@@ -252,6 +255,45 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 		return pmenu;
 	}
+	
+	public class ProcuraFicheiros<palavraChave> implements Runnable{
+		private Diretorio dir;
+		private ArrayList<Utilizador> listaUtilizadores = new ArrayList<Utilizador>();
+		
+		public ProcuraFicheiros (palavraChave parameter){
+		}
+		
+		public void run() {
+			dir.consultaUtilizadores();  //recarrega a lista de utilizadores no Diretor
+			synchronized(this) {
+				try {
+					percorreListaUtilizadores(dir);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					notifyAll();
+				}
+			}
+			
+		}
+		private synchronized void percorreListaUtilizadores(Diretorio d) throws InterruptedException {
+			Utilizador utilizadorLista;
+			String endIPUtilizadorLista="";
+			String portoUtilizadorLista="";
+	
+			Iterator<Utilizador> iListaUtilizadores = listaUtilizadores.iterator();
+			while (iListaUtilizadores.hasNext()) {
+				utilizadorLista = iListaUtilizadores.next();
+				endIPUtilizadorLista=utilizadorLista.ipUtilizador();
+				portoUtilizadorLista=utilizadorLista.portoUtilizador();
+				lookUpForFiles(endIPUtilizadorLista, portoUtilizadorLista, palavraChave);
+			}
+		}
+		
+		public void lookUpForFiles(String endIPUtilizador, String portoUtilizador, String palavraChave) {
+			
+		}
+	}	
 
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
@@ -272,7 +314,10 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 			tarefa.execute();
 			break;
 		case ("Procurar"): 
-			MsgBox.info("ui");
+			palavraChave= txtField.getText();
+			Thread t = new Thread(new ProcuraFicheiros<String>(palavraChave));
+		    t.start();
+			//MsgBox.info("ui");
 			break;
 		default:
 			// nada a fazer
