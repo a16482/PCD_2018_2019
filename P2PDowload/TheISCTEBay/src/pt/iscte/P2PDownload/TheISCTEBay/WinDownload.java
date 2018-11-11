@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
