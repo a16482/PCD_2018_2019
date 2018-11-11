@@ -233,8 +233,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		LoadListaUtilizadores loadLista = new LoadListaUtilizadores();
 		loadLista.start();
 		
-
-		
 		listaUtilizadores = new JList<String>(utilizadores);
 		listaUtilizadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaUtilizadores.setLayoutOrientation(JList.VERTICAL);

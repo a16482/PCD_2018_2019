@@ -132,7 +132,6 @@ public class Servidor {
 			} catch (IOException e) {
 				// Não fazer nada... Leitura acabou
 				System.out.println("Cliente desligou-se.");
-				//removeCliente(c);
 			} finally{
 				try {
 					inStream.close();

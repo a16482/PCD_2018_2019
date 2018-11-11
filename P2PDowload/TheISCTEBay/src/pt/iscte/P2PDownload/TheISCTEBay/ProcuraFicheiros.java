@@ -1,11 +1,16 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JList;
 
 //List<String> listaFicheirosUtilizadores = new LinkedList<String>();
 
@@ -43,10 +48,6 @@ public class ProcuraFicheiros extends Thread implements Runnable{
 		String endIPUtilizadorLista="";
 		String portoUtilizadorLista="";
 
-		//String filePath = "//192.168.10.20";
-		//  file://192.168.10.20/f$/MyDir/SubDir/text.doc
-		//File[] ficheiros = new File(filePath).listFiles();
-
 		Iterator<Utilizador> iListaUtilizadores = listaUtilizadores.iterator();
 		while (iListaUtilizadores.hasNext()) {
 			utilizadorLista = iListaUtilizadores.next();
@@ -55,10 +56,41 @@ public class ProcuraFicheiros extends Thread implements Runnable{
 		}
 	}
 
-//	public synchronized Diretorio loadDiretorio() throws InterruptedException {
-//		Diretorio dir = TheISCTEBay.devolveDiretorio();
-//		return dir;
-//	}
+	// invoca procura de ficheiros
+    public static void main( String [] args ) {
+        File actual = new File(".");
+        for( File f : actual.listFiles()){
+            System.out.println( f.getName() );
+        }
+    }
+    
+//    ....
+    public File[] findDirectories(File root) { 
+		return root.listFiles(new FileFilter() {
+			public boolean accept(File f) {
+				return f.isDirectory();
+			}});
+	}
+
+	public File[] findFiles(File root) {
+		return root.listFiles(new FileFilter() {
+			public boolean accept(File f) {
+				return f.isFile();
+			}});
+	}
+	
+	public static void directory(File dir) {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			System.out.println(file.getAbsolutePath());
+			if (file.listFiles() != null) {
+				directory(file);        
+			}
+
+		}
+	} 	
+	
+//	.....
 
 
 	public void init() {
