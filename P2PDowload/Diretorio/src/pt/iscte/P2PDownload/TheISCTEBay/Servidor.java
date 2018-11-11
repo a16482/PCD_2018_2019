@@ -24,8 +24,6 @@ public class Servidor {
 		}
 	}
 
-
-
 	public class TrataMsg extends Thread {
 
 		private ObjectInputStream inStream;
@@ -46,8 +44,16 @@ public class Servidor {
 		}
 
 		public synchronized void removeCliente(Cliente c) {
-			if (existeCliente(c)) { 
-				diretorio.remove(c);
+			Cliente clienteDiretorio;
+			boolean encontrado = false;
+			Iterator<Cliente> iDiretorio = diretorio.iterator();
+			while ((iDiretorio.hasNext()) && (!encontrado)) {
+				clienteDiretorio = iDiretorio.next();
+				if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
+					diretorio.remove(c);
+					encontrado= true;
+				}
+				
 			}
 		}
 		

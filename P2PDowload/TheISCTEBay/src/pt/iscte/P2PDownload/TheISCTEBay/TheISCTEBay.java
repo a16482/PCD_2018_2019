@@ -1,12 +1,12 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 
+import java.net.InetAddress;
+import java.util.List;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
-
-import java.net.InetAddress;
-import java.util.List;
 
 
 public class TheISCTEBay {
@@ -21,6 +21,7 @@ public class TheISCTEBay {
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
 	// ------------------------------------------------------------------------
+		
 	private static void criaEmostraGUI() {
 		// ---------------- Painel de Download -----------------------------
 		String idUtilizador =  devolveIPUtilizador() + ":" + String.valueOf(devolvePortoUtilizador());
@@ -28,10 +29,17 @@ public class TheISCTEBay {
 		JFrame frame = new JFrame();
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent e) {
+		    public void windowClosing(java.awt.event.WindowEvent e) {	
 				//Remove um utilizador do Diretório
-				d.removeUtilizador();
-		        System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
+		    	try {
+					d.removeUtilizador();
+					System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				} finally {
+			        frame.dispose();
+			        System.exit(0);
+				}
 		    }
 		});
 		
@@ -46,7 +54,7 @@ public class TheISCTEBay {
 		DownloadContentPane.setComponentPopupMenu(pmenu);
 		
 		frame.setTitle("The ISCTE Bay" + " (" + idUtilizador  + ")");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
         frame.setLocationRelativeTo(null);

@@ -77,7 +77,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 					Thread.sleep(random.nextInt(1000));
 				} catch (InterruptedException ignore) {}
 				//--> ALTERAR ISTO!
-				//Tornar o progresso random.
+				//Torna o progresso random.
 				progresso += random.nextInt(10);
 				setProgress(Math.min(progresso, 100));
 			}
@@ -313,10 +313,10 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 			tarefa.execute();
 			break;
 		case ("Procurar"): 
-			palavraChave= txtField.getText();
-			Thread t = new Thread(new ProcuraFicheiros<String>(palavraChave));
-		    t.start();
-			//MsgBox.info("ui");
+//			palavraChave= txtField.getText();
+//			Thread t = new Thread(new ProcuraFicheiros<String>(palavraChave));
+//		    t.start();
+			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
 			break;
 		default:
 			// nada a fazer

@@ -43,31 +43,32 @@ public class Diretorio {
 	}
 
 	//Remoção de um utilizador do diretorio
-	public void removeUtilizador() {
+
+	public void removeUtilizador() throws InterruptedException {
 		try {
 			Socket socket = new Socket(enderecoDiretorio, portoDiretorio);
-			ObjectOutputStream registo = new ObjectOutputStream(socket.getOutputStream());
-			registo.flush();
-			registo.writeObject(new String("RMV " + enderecoUtilizador + " " + portoUtilizador));	
-			ObjectInputStream confirmacao = new ObjectInputStream(socket.getInputStream());
-			String conf = (String)confirmacao.readObject();
+			ObjectOutputStream remocao = new ObjectOutputStream(socket.getOutputStream());
+			remocao.flush();
+			remocao.writeObject(new String("RMV " + enderecoUtilizador + " " + portoUtilizador));	
+			ObjectInputStream confirma_remocao = new ObjectInputStream(socket.getInputStream());
+			String conf = (String)confirma_remocao.readObject();
 			if (conf.equals("ok")) {
 				msgInfo = "Remoção do Utilizador do Diretório efetuada com sucesso" ;
 				System.out.println(msgInfo); 
 			}
-			registo.close();
-			confirmacao.close();
+			remocao.close();
+			confirma_remocao.close();
 			socket.close();
 		} catch (Exception e) {
 			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
-					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
-					  "A aplicação TheISCTEBay vai terminar.";
+					"Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					"A aplicação TheISCTEBay vai terminar.";
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
-			System.exit(1);
 		}
 	}
-	
+
+
 	//Registo no diretorio
 	public void registoDiretorio() {
 		try {
@@ -154,9 +155,9 @@ public class Diretorio {
 	
 	
 	//-------------------------------------------------------------------------
-	// Classe em construção
+	// Classe LookUpForFiles (daemon) em construção
 	//-------------------------------------------------------------------------
-	public class LookUpForFiles  extends Thread implements Runnable {
+	public class LookUpForFiles extends Thread implements Runnable {
 		// carrega a lista List<FileDetails> listaFicheiros
 		@Override
 		public void run() {
@@ -241,5 +242,6 @@ public class Diretorio {
 			new Thread(this, "LookUpForFiles").start();
 		}
 	}
+
 }
 
