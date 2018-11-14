@@ -7,7 +7,8 @@ public class Utilizador {
 	public Utilizador(String u) {
 		String parte[] = u.split(" ");
 		enderecoIP = parte[1];
-		porto = parte[2];
+		porto  = parte[2];
+		
 //		int inicioPorto=0;
 //		for(int i = 4;u.charAt(i) != ' '; i++) {
 //			enderecoIP += u.charAt(i);

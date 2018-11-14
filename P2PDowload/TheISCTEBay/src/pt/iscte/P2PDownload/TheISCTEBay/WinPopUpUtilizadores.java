@@ -162,8 +162,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 				} catch (Exception e) {
 					e.printStackTrace(); 
 					MsgBox.erro("Erro na obtenção da lista de Utilizadores!" +  NEW_LINE + e.getMessage());
-				} finally {
-					notifyAll();
 				}
 				return totalElementos;
 			}

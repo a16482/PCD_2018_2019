@@ -1,14 +1,22 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-public class WordSearchMessage {
+import java.io.Serializable;
+
+public class WordSearchMessage implements Serializable{
 	
-	private String keyword;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	public WordSearchMessage (String k) {
-		keyword = k;
+	private String palavraChave;
+	
+	public WordSearchMessage(String keyWord) {
+		palavraChave=keyWord;
 	}
 	
-	public String getKeyword () {
-		return keyword;
+	public String getPalavraChave() {
+		return palavraChave;
 	}
+	
 }

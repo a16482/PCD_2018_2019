@@ -1,6 +1,13 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-public class FileDetails {
+import java.io.Serializable;
+
+public class FileDetails implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String nomeFicheiro;
 	private long bytesFicheiro;
 
