@@ -26,7 +26,6 @@ public class Diretorio {
 	
 	private static final String NEW_LINE = "\n";
 	
-	
 	public Diretorio(String eDiretorio, int pDiretorio, int pUser){
 		enderecoDiretorio = eDiretorio;
 		portoDiretorio = pDiretorio;
@@ -43,7 +42,6 @@ public class Diretorio {
 	}
 
 	//Remoção de um utilizador do diretorio
-
 	public void removeUtilizador() throws InterruptedException {
 		try {
 			Socket socket = new Socket(enderecoDiretorio, portoDiretorio);
@@ -67,7 +65,6 @@ public class Diretorio {
 			MsgBox.erro(msgErro);
 		}
 	}
-
 
 	//Registo no diretorio
 	public void registoDiretorio() {
@@ -152,6 +149,41 @@ public class Diretorio {
 	public Utilizador getUtilizadorNDaLista(int n) {
 		return this.listaUtilizadores.get(n);
 	}
+	
+	public void pesquisaFicheiroNoutrosUtilizadores(WordSearchMessage wsm) {
+		Utilizador utilizadorLista;
+		List listaFicheirosEncontrados = new ArrayList<FileDetails>();
+		Iterator<Utilizador> iListaUtilizadores = listaUtilizadores.iterator();
+		
+		while (iListaUtilizadores.hasNext()) {
+			utilizadorLista = iListaUtilizadores.next();
+			FileDetails ficheiroEncontrado;
+			
+			try {
+				Socket socket = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
+				ObjectOutputStream palavraAProcurar = new ObjectOutputStream(socket.getOutputStream());
+				palavraAProcurar.flush();
+				palavraAProcurar.writeObject(wsm);	
+				ObjectInputStream detalhesFicheiroRecebido = new ObjectInputStream(socket.getInputStream());
+				while(true) {
+				ficheiroEncontrado = (FileDetails)detalhesFicheiroRecebido.readObject();
+				if (ficheiroEncontrado == null) {
+					break;
+				}
+				listaFicheiros.add(ficheiroEncontrado);
+				}
+				palavraAProcurar.close();
+				detalhesFicheiroRecebido.close();
+				socket.close();
+			} catch (Exception e) {
+				msgErro = "Erro ao estabelecer a ligação com o Utilizador: " + utilizadorLista.toString() + NEW_LINE + 
+						  "Mensagem de erro original: " + e.getMessage();
+				System.out.println(msgErro); 
+				MsgBox.erro(msgErro);
+			}
+			}
+		
+		}	
 	
 	
 	//-------------------------------------------------------------------------

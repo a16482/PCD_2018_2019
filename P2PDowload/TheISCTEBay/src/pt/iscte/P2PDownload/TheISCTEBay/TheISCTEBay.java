@@ -45,7 +45,7 @@ public class TheISCTEBay {
 		});
 		
 		// Cria e configura o painel de conteúdos.
-		JComponent DownloadContentPane = new WinDownload();
+		JComponent DownloadContentPane = new WinDownload(d);
 		DownloadContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
 		frame.setContentPane(DownloadContentPane);
 		
@@ -88,21 +88,31 @@ public class TheISCTEBay {
 		return d;
 	}
 	
-	public static String verificaPastaDeTransferencias(String dirTransfer) {
-		final String pastaDefault = "Transfer"; 
-		String pasta = dirTransfer;
-		if ((pasta == null) || (pasta.length() ==0)) {
-			pasta = pastaDefault;
-		}
-		File f = new File("/" + pasta);
-		if (!f.exists() || !f.isDirectory()) {
-			MsgBox.info("A pasta de transferências indicada não existe atualmente." + "\n" 
-					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
-			pasta = pastaDefault;
-			new File("/" + pasta).mkdir();
-		} 
+	public static String verificaPastaDeTransferencias(String pasta) {
 		
-		return pasta;
+		String caminhoCompleto = System.getProperty("user.dir") + "\\" + pasta;
+		File f = new File(caminhoCompleto);
+		if (!f.isDirectory()) {
+			MsgBox.info("A pasta de transferências indicada não existe atualmente.\n" 
+					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
+			f.mkdir();
+		}
+		return caminhoCompleto;
+		
+//		final String pastaDefault = "Transfer"; 
+//		String pasta = dirTransfer;
+//		if ((pasta == null) || (pasta.length() ==0)) {
+//			pasta = pastaDefault;
+//		}
+//		File f = new File("/" + pasta);
+//		if (!f.exists() || !f.isDirectory()) {
+//			MsgBox.info("A pasta de transferências indicada não existe atualmente." + "\n" 
+//					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
+//			pasta = pastaDefault;
+//			new File("/" + pasta).mkdir();
+//		} 
+//		
+//		return pasta;
 	}
 	
 	public static void main(String[] args) {

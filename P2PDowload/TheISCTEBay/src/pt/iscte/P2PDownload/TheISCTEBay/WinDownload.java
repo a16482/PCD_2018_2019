@@ -59,6 +59,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private static final int W = 600;
 	private static final int H = 400;
 	private static final String NEW_LINE = "\n";
+	private Diretorio d;
 
 	class Task extends SwingWorker<Void, Void> {
 
@@ -106,9 +107,9 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		}
 	}
 
-	public WinDownload() {
-
+	public WinDownload(Diretorio diretorio) {
 		super(new BorderLayout());
+		d = diretorio;
 		//---------------------------------------------------
 		//Criação da Interface IGDownload
 		//---------------------------------------------------
@@ -312,8 +313,11 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 			tarefa.addPropertyChangeListener(this); // sentinela
 			tarefa.execute();
 			break;
-		case ("Procurar"): 
-//			palavraChave= txtField.getText();
+		case ("Procurar"):
+			palavraChave= txtField.getText();
+			System.out.println(palavraChave);
+			WordSearchMessage wsm = new WordSearchMessage(palavraChave);
+			d.pesquisaFicheiroNoutrosUtilizadores(wsm);
 //			Thread t = new Thread(new ProcuraFicheiros<String>(palavraChave));
 //		    t.start();
 			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
