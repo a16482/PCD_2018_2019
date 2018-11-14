@@ -1,5 +1,6 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -7,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class ServidorFicheiros extends Thread implements Runnable {
@@ -54,9 +57,26 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			this.outStream = new ObjectOutputStream(out);
 		}
 		
+		private ArrayList<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage pChave) {
+			FileDetails ficheiroEncontrado;
+			ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails>();
+			String procurarPalavra = pChave.getPalavraChave().toLowerCase();
+			File[] files = new File("./" + TheISCTEBay.devolvePastaTransferencias()).listFiles();
+			for (File file: files) {
+				String nomeFicheiro = file.getName().toLowerCase();
+				Boolean encontrei = nomeFicheiro.contains(procurarPalavra);
+				if (encontrei) {
+					ficheiroEncontrado = new FileDetails(file.getName(),file.length());
+					listaFicheirosEncontrados.add(ficheiroEncontrado);
+				}
+			}
+			return listaFicheirosEncontrados;
+		}
+		
 
 		@Override
 		public void run() {
+			ArrayList<FileDetails> listaFicheirosEncontrados;
 			try {
 				while(true){
 					System.out.println("à espera...");
@@ -64,10 +84,12 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					// RECEÇÃO da MSG:
 					palavraChave=(WordSearchMessage)inStream.readObject();
 					System.out.println("Recebido: " + palavraChave.getPalavraChave());
-					outStream.flush();  //limpeza
-					
-					// Falta chamar método para pesquisar ficheiros
-					outStream.writeObject(new FileDetails("img",80));
+					outStream.flush();
+					listaFicheirosEncontrados = procuraFicheirosPorPalavraChave (palavraChave);
+					Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
+					while(iListaFicheiros.hasNext()) {
+						outStream.writeObject(iListaFicheiros.next());
+					}
 					outStream.close();
 					System.out.println("....................");
 				}

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -45,7 +46,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 	//private DefaultListModel<String> files;
 	private ArrayList<FileDetails> listaFilesEncontrados;
-	private DefaultListModel<FileDetails> files;
+//	private DefaultListModel<FileDetails> files;
 	private JList<String> listaFiles;
 	private JScrollPane listaFilesScroller;
 
@@ -57,6 +58,8 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JPanel painelFicheiros;
 	private JPanel painelProgresso;
 	private String palavraChave;
+	
+	private DefaultListModel<String> searchResult = new DefaultListModel<String>();
 	
 	private Diretorio dir;
 
@@ -187,10 +190,7 @@ public WinDownload(Diretorio d) {
 		// --------------------------------------------------------------------------------------------
 		// ATENÇÃO: Substituir o array de string no processo de carregamento....
 		//--------------------------------------------------------------------------------------------
-		String[] searchResult = {"ficheiro A", "ficheiroB.txt", "imagemC", "imagemD", "imagemE" , 
-				"oMeuFiceiro", "aMinhaFolha de cálculo toda certinha", "f", "g",
-				"h", "i", "j", "k", "l"
-						+ "aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
+
 		listaFilesScroller = new JScrollPane();
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -260,6 +260,17 @@ public WinDownload(Diretorio d) {
 		return pmenu;
 	}
 
+	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> lista) {
+		FileDetails ficheiroLista;
+		Iterator<FileDetails> iListaFicheiros = lista.iterator();
+		searchResult.removeAllElements();
+		while(iListaFicheiros.hasNext()) {
+			ficheiroLista = iListaFicheiros.next();
+			searchResult.addElement(ficheiroLista.nomeFicheiro() + " - "+ ficheiroLista.bytesFicheiro() + " bytes");
+		}
+	}
+	
+	
 
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
@@ -269,29 +280,21 @@ public WinDownload(Diretorio d) {
 		switch(evt.getActionCommand()) {
 		case ("Descarregar"): 
 			botaoDescarregar.setEnabled(false);
-		botaoProcurar.setEnabled(false);
-		txtField.setEnabled(false);
-		listaFiles.setEnabled(false);
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-		// Por isso, cria-se uma nova, à medida do necessário.
-		tarefa = new Task();
-		tarefa.addPropertyChangeListener(this); // sentinela
-		tarefa.execute();
-		break;
+			botaoProcurar.setEnabled(false);
+			txtField.setEnabled(false);
+			listaFiles.setEnabled(false);
+			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+			// Por isso, cria-se uma nova, à medida do necessário.
+			tarefa = new Task();
+			tarefa.addPropertyChangeListener(this); // sentinela
+			tarefa.execute();
+			break;
 		case ("Procurar"): 
 			palavraChave= txtField.getText();
 		    WordSearchMessage w = new WordSearchMessage(palavraChave);
 		    listaFilesEncontrados = dir.procuraFicheiros(w);
-//		    Em construção:
-//		    files = new DefaultListModel<FileDetails>();
-//		    listaFiles = new JList<FileDetails>(files);
-//		    listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		    listaFiles.setLayoutOrientation(JList.VERTICAL);
-//		    listaFiles.setVisibleRowCount(-1);
-//		    listaFilesScroller=new JScrollPane(listaFiles);
-//		    Fim de secção em construção
-			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
+		    mostrarListaFilesEncontrados(listaFilesEncontrados);
 		break;
 		default:
 			// nada a fazer

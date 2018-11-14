@@ -2,7 +2,6 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
-	private static  ServidorFicheiros fileServer;
+	private static ServidorFicheiros fileServer;
 	
 	private static void fecharServidor() {
 		// TODO: fechar o servidor
@@ -92,6 +91,10 @@ public class TheISCTEBay {
 	
 	public static Diretorio devolveDiretorio() {
 		return d;
+	}
+	
+	public static String devolvePastaTransferencias() {
+		return pastaTransferencias;
 	}
 	
 	public static String verificaPastaDeTransferencias(String dirTransfer) {
