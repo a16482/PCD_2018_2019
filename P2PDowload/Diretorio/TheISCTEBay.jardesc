@@ -13,9 +13,7 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <file path="/TheISCTEBay/.project"/>
         <file path="/TheISCTEBay/.classpath"/>
-        <file path="/Diretorio/Diretorio.jardesc"/>
-        <file path="/Diretorio/.classpath"/>
-        <file path="/Diretorio/.project"/>
+        <folder path="/TheISCTEBay/Transfer"/>
         <javaElement handleIdentifier="=TheISCTEBay/src"/>
     </selectedElements>
 </jardesc>

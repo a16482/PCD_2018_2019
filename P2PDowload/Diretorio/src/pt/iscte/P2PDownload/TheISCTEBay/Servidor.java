@@ -23,6 +23,39 @@ public class Servidor {
 			new TrataMsg(s.getInputStream(), s.getOutputStream()).start();
 		}
 	}
+	
+	public synchronized void adicionaCliente(Cliente c) {
+		if (!existeCliente(c)) { 
+			diretorio.add(c);
+		}
+	}
+
+	public synchronized void removeCliente(Cliente c) {
+		Cliente clienteDiretorio;
+		boolean encontrado = false;
+		Iterator<Cliente> iDiretorio = diretorio.iterator();
+		while ((iDiretorio.hasNext()) && (!encontrado)) {
+			clienteDiretorio = iDiretorio.next();
+			if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
+				diretorio.remove(clienteDiretorio);
+				encontrado= true;
+			}
+			
+		}
+	}
+	
+	public synchronized boolean existeCliente (Cliente c) {
+		boolean existeCliente= false;
+		Cliente clienteDiretorio;
+		Iterator<Cliente> iDiretorio = diretorio.iterator();
+		while (iDiretorio.hasNext()) {
+			clienteDiretorio = iDiretorio.next();
+			if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
+				existeCliente = true;
+			}
+		}
+		return existeCliente;
+	}
 
 	public class TrataMsg extends Thread {
 
@@ -37,39 +70,6 @@ public class Servidor {
 			this.outStream = new ObjectOutputStream(out);
 		}
 		
-		public synchronized void adicionaCliente(Cliente c) {
-			if (!existeCliente(c)) { 
-				diretorio.add(c);
-			}
-		}
-
-		public synchronized void removeCliente(Cliente c) {
-			Cliente clienteDiretorio;
-			boolean encontrado = false;
-			Iterator<Cliente> iDiretorio = diretorio.iterator();
-			while ((iDiretorio.hasNext()) && (!encontrado)) {
-				clienteDiretorio = iDiretorio.next();
-				if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
-					diretorio.remove(clienteDiretorio);
-					encontrado= true;
-				}
-				
-			}
-		}
-		
-		public synchronized boolean existeCliente (Cliente c) {
-			boolean existeCliente= false;
-			Cliente clienteDiretorio;
-			Iterator<Cliente> iDiretorio = diretorio.iterator();
-			while (iDiretorio.hasNext()) {
-				clienteDiretorio = iDiretorio.next();
-				if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
-					existeCliente = true;
-				}
-			}
-			return existeCliente;
-		}
-
 		public synchronized void informaDiretorio() { 
 			try {	
 				for (int i = 0; i < diretorio.size(); i++) {

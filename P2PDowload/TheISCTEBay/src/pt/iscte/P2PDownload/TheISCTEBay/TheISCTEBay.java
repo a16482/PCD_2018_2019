@@ -17,7 +17,11 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
+	private static  ServidorFicheiros fileServer;
 	
+	private static void fecharServidor() {
+		// TODO: fechar o servidor
+	}
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
@@ -33,6 +37,7 @@ public class TheISCTEBay {
 		    public void windowClosing(java.awt.event.WindowEvent e) {	
 				//Remove um utilizador do Diretório
 		    	try {
+		    		fecharServidor();
 					d.removeUtilizador();
 					System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
 				} catch (InterruptedException e1) {
@@ -45,7 +50,7 @@ public class TheISCTEBay {
 		});
 		
 		// Cria e configura o painel de conteúdos.
-		JComponent DownloadContentPane = new WinDownload();
+		JComponent DownloadContentPane = new WinDownload(d);
 		DownloadContentPane.setOpaque(true); // Os painéis de conteúdos devem ser opacos !!!
 		frame.setContentPane(DownloadContentPane);
 		
@@ -94,12 +99,13 @@ public class TheISCTEBay {
 		if ((pasta == null) || (pasta.length() ==0)) {
 			pasta = pastaDefault;
 		}
-		File f = new File("/" + pasta);
-		if (!f.exists() || !f.isDirectory()) {
+		
+		File f = new File("./" + pasta);
+		if (!f.isDirectory()) {
 			MsgBox.info("A pasta de transferências indicada não existe atualmente." + "\n" 
 					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
 			pasta = pastaDefault;
-			new File("/" + pasta).mkdir();
+			f.mkdir();
 		} 
 		
 		return pasta;
@@ -140,6 +146,11 @@ public class TheISCTEBay {
 		for (Utilizador u : listaUtilizadores) {
 			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
 		}
+		
+		// inicia o serviço próprio de servidor de ficheiros
+		fileServer = new ServidorFicheiros();
+		new Thread(fileServer, "ServidorFicheiros").start();
+		
 		
 		// Agenda um job para o evento de despacho da thread.
 		// Cria e mostra a GUI principal desta aplicação.
