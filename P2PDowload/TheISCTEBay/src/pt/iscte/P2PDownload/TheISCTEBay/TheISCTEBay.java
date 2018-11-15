@@ -17,7 +17,11 @@ public class TheISCTEBay {
 	private static int portoUtilizador;
 	private static String pastaTransferencias;
 	private static Diretorio d;
+<<<<<<< HEAD
 	private static  ServidorFicheiros fileServer;
+=======
+	private static ServidorFicheiros fileServer;
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 	
 	private static void fecharServidor() {
 		// TODO: fechar o servidor
@@ -91,6 +95,10 @@ public class TheISCTEBay {
 	
 	public static Diretorio devolveDiretorio() {
 		return d;
+	}
+	
+	public static String devolvePastaTransferencias() {
+		return pastaTransferencias;
 	}
 	
 	public static String verificaPastaDeTransferencias(String dirTransfer) {

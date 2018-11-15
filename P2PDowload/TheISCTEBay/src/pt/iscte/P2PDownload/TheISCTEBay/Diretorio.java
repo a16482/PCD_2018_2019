@@ -164,7 +164,11 @@ public class Diretorio {
 			try {
 				if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
 						&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
+<<<<<<< HEAD
 					// exclui o próprio (que também é membro do diretório da pesquisa
+=======
+					// exclui o próprio da pesquisa
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
 					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 					oos.flush();

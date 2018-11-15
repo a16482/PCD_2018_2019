@@ -45,7 +45,11 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 	//private DefaultListModel<String> files;
 	private ArrayList<FileDetails> listaFilesEncontrados;
+<<<<<<< HEAD
 	private DefaultListModel<FileDetails> files;
+=======
+//	private DefaultListModel<FileDetails> files;
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 	private JList<String> listaFiles;
 	private JScrollPane listaFilesScroller;
 
@@ -58,6 +62,11 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JPanel painelProgresso;
 	private String palavraChave;
 	
+<<<<<<< HEAD
+=======
+	private DefaultListModel<String> searchResult = new DefaultListModel<String>();
+	
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 	private Diretorio dir;
 
 	private static final int W = 600;
@@ -187,10 +196,7 @@ public WinDownload(Diretorio d) {
 		// --------------------------------------------------------------------------------------------
 		// ATENÇÃO: Substituir o array de string no processo de carregamento....
 		//--------------------------------------------------------------------------------------------
-		String[] searchResult = {"ficheiro A", "ficheiroB.txt", "imagemC", "imagemD", "imagemE" , 
-				"oMeuFiceiro", "aMinhaFolha de cálculo toda certinha", "f", "g",
-				"h", "i", "j", "k", "l"
-						+ "aaaa", "bbbbb", "ccccc", "d", "0001", "f", "g","h", "i", "j", "k", "l"};
+
 		listaFilesScroller = new JScrollPane();
 		listaFiles = new JList<String>(searchResult);
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -260,6 +266,20 @@ public WinDownload(Diretorio d) {
 		return pmenu;
 	}
 
+<<<<<<< HEAD
+=======
+	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> lista) {
+		FileDetails ficheiroLista;
+		Iterator<FileDetails> iListaFicheiros = lista.iterator();
+		searchResult.removeAllElements();
+		while(iListaFicheiros.hasNext()) {
+			ficheiroLista = iListaFicheiros.next();
+			searchResult.addElement(ficheiroLista.nomeFicheiro() + " - "+ ficheiroLista.bytesFicheiro() + " bytes");
+		}
+	}
+	
+	
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
@@ -283,6 +303,7 @@ public WinDownload(Diretorio d) {
 			palavraChave= txtField.getText();
 		    WordSearchMessage w = new WordSearchMessage(palavraChave);
 		    listaFilesEncontrados = dir.procuraFicheiros(w);
+<<<<<<< HEAD
 //		    Em construção:
 //		    files = new DefaultListModel<FileDetails>();
 //		    listaFiles = new JList<FileDetails>(files);
@@ -292,6 +313,9 @@ public WinDownload(Diretorio d) {
 //		    listaFilesScroller=new JScrollPane(listaFiles);
 //		    Fim de secção em construção
 			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
+=======
+		    mostrarListaFilesEncontrados(listaFilesEncontrados);
+>>>>>>> 5331b2e08d1f36528661985e798523c7037ca2bb
 		break;
 		default:
 			// nada a fazer
