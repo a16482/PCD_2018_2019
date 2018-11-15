@@ -1,12 +1,12 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class ThreadMonitora implements Runnable{
+public class MonitorDeThreads implements Runnable{
 	private ThreadPoolExecutor executor;
 	private int segundos;
 	private boolean run=true;
 
-	public ThreadMonitora(ThreadPoolExecutor executor, int atraso)
+	public MonitorDeThreads(ThreadPoolExecutor executor, int atraso)
 	{
 		this.executor = executor;
 		this.segundos=atraso;

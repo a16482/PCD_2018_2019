@@ -16,8 +16,9 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
-	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
-
+//	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
+	private Thread t;
+	
 	@Override
 	public void run() {
 		try {
@@ -30,8 +31,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	}
 
 	private void serve() throws IOException{
-		//		listaDeThreads.clear();
-		Thread t;
+	
 		while(true){
 			System.out.println("Servidor iniciado:" + portoProprio);
 			Socket s=fileServer.accept();
@@ -42,24 +42,18 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			//listaDeThreads.add(t);
 			//...
 		}
-
-		//		Iterator<Thread> iListaDeThreads =  listaDeThreads.iterator();
-		//
-		//		while (iListaDeThreads.hasNext()) {
-		//			iListaDeThreads.next().join();
-		//			iListaDeThreads.remove();
-		//		}	
 	}
 
-
-	//		public void init() {
-	//			//new Thread(this, "ServidorFicheiros").start();
-	//		}
-	public class TrataPedidos extends Thread implements Runnable{
+	public class TrataPedidos extends Thread{
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
 		private WordSearchMessage palavraChave;
+		
+		public TrataPedidos(InputStream inputStream, OutputStream outputStream) {
+			// TODO Auto-generated constructor stub
+		}
+		
 		@Override
 		public void run() {
 			ArrayList<FileDetails> listaFicheirosEncontrados;
@@ -74,7 +68,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 					// Falta chamar método para pesquisar ficheiros
 					outStream.writeObject(new FileDetails("img",80));
-					listaFicheirosEncontrados = procuraFicheirosPorPalavraChave (palavraChave);
+					listaFicheirosEncontrados = procuraFicheirosPorPalavraChave(palavraChave);
 					
 					Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
 					while(iListaFicheiros.hasNext()) {
@@ -97,8 +91,5 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				}
 			}
 		}
-	}
-	public void init() {
-		new Thread(this, "TrataPedidos").start();
 	}
 }
