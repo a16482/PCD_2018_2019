@@ -15,6 +15,7 @@ import java.util.Iterator;
 public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
+//	private String ipProprio = TheISCTEBay.devolveIPUtilizador();
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
 //	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
 	private Thread t;
@@ -36,7 +37,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			System.out.println("Servidor iniciado:" + portoProprio);
 			Socket s=fileServer.accept();
 			System.out.println("Ligação efetuada");
-			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
+			t = new TrataPedidos();
+//			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
 			t.start();
 			//...
 			//listaDeThreads.add(t);
@@ -44,15 +46,12 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 	}
 
-	public class TrataPedidos extends Thread{
+	public class TrataPedidos extends Thread implements Runnable {
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
 		private WordSearchMessage palavraChave;
 		
-		public TrataPedidos(InputStream inputStream, OutputStream outputStream) {
-			// TODO Auto-generated constructor stub
-		}
 		
 		@Override
 		public void run() {
