@@ -6,9 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+// Classe que recebe os pedidos de Detalhes de todos os Ficheiros a Pasta e pedidos de uma parte de um Ficheiro
 public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
@@ -16,6 +18,10 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	//	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
 	private Thread t;
 
+	
+
+	
+//Servidor sempre à escuta
 	@Override
 	public void run() {
 		try {
@@ -42,7 +48,10 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 	}
 
-	public class TrataPedidos extends Thread implements Runnable {
+
+//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
+//Parte de um determinado ficheiro da pasta local
+	private class TrataPedidos extends Thread implements Runnable {
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
@@ -70,8 +79,21 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 		
 		
-		private void enviarParteFicheiroPedido(FileBlockRequestMessage p) {
-			MsgBox.info("Para fazer: Buscar ficheiro e enviar!");
+		private byte[] parteDoFicheiroPedido(FileBlockRequestMessage p) {
+			String caminhoFicheiro = TheISCTEBay.devolvePastaTransferencias() + "/" + p.getFileDetails().nomeFicheiro();
+			byte[] fileContents = new byte[(int)p.getFileDetails().bytesFicheiro()];
+			byte[] parteFicheiroPedido = new byte[p.getLength()];
+			
+			File f = new File(caminhoFicheiro);
+			try {
+				fileContents= Files.readAllBytes(f.toPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.arraycopy(fileContents, p.getOffset(), parteFicheiroPedido, 0, p.getLength());
+			
+			return parteFicheiroPedido;
 		}
 
 		@Override
@@ -98,14 +120,12 @@ public class ServidorFicheiros extends Thread implements Runnable {
 							outStream.writeObject(iListaFicheiros.next());
 						}
 						outStream.close();
-						System.out.println("....................");
 					} else if (msg instanceof FileBlockRequestMessage){
 						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
-						enviarParteFicheiroPedido(pedidoParteFicheiro);
+						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
+						outStream.writeObject(parteFicheiro);
+						outStream.close();
 					}
-
-
-
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
