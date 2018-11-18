@@ -2,10 +2,8 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import java.util.Iterator;
 public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
-//	private String ipProprio = TheISCTEBay.devolveIPUtilizador();
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
 //	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
 	private Thread t;
@@ -37,7 +34,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			System.out.println("Servidor iniciado:" + portoProprio);
 			Socket s=fileServer.accept();
 			System.out.println("Ligação efetuada");
-			t = new TrataPedidos();
+			t = new TrataPedidos(s);
 //			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
 			t.start();
 			//...
@@ -51,6 +48,29 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
 		private WordSearchMessage palavraChave;
+		
+		public TrataPedidos(Socket soc) throws IOException {
+			super();
+			inStream = new ObjectInputStream(soc.getInputStream());
+			outStream = new ObjectOutputStream (soc.getOutputStream());
+		}
+		
+		private ArrayList<FileDetails> procuraFicheirosLocais (WordSearchMessage pChave) {
+			FileDetails ficheiroEncontrado;
+			ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails>();
+			String procurarPalavra = pChave.getPalavraChave().toLowerCase();
+			File[] files = new File("./" + TheISCTEBay.devolvePastaTransferencias()).listFiles();
+			for (File file: files) {
+				String nomeFicheiro = file.getName().toLowerCase();
+				Boolean encontrei = nomeFicheiro.contains(procurarPalavra);
+				if (encontrei) {
+					ficheiroEncontrado = new FileDetails(file.getName(),file.length());
+					listaFicheirosEncontrados.add(ficheiroEncontrado);
+				}
+			}
+			return listaFicheirosEncontrados;
+		}
+		
 		
 		
 		@Override
@@ -66,14 +86,11 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					outStream.flush();  //limpeza
 
 					// Falta chamar método para pesquisar ficheiros
-					outStream.writeObject(new FileDetails("img",80));
-					listaFicheirosEncontrados = procuraFicheirosPorPalavraChave(palavraChave);
-					
+					listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
 					Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
 					while(iListaFicheiros.hasNext()) {
 						outStream.writeObject(iListaFicheiros.next());
 					}
-					
 					outStream.close();
 					System.out.println("....................");
 				}
