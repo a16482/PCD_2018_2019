@@ -100,7 +100,6 @@ public class Servidor {
 
 					// RECEÇÃO da MSG:
 					String msg=(String)inStream.readObject();
-					System.out.println("Recebido: " + msg);
 
 					//--> cria uma instância de Msg do Cliente e VERIFICA o tipo de MSG:
 					Msg m = new Msg(msg);

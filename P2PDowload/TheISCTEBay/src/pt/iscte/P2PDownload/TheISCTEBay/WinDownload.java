@@ -2,7 +2,6 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -53,7 +52,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 	private JScrollPane listaFilesScroller;
 
-	private Task tarefa;
+//	private Task tarefa;
 	private JPanel painelBase;
 	private JPanel painelProcura;
 	private JPanel painelBotaoProcurar;
@@ -312,18 +311,24 @@ public WinDownload(Diretorio d) {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		switch(evt.getActionCommand()) {
-		case ("Descarregar"): 
-			botaoDescarregar.setEnabled(false);
-		botaoProcurar.setEnabled(false);
-		txtField.setEnabled(false);
-		listaFiles.setEnabled(false);
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-		// Por isso, cria-se uma nova, à medida do necessário.
-		tarefa = new Task();
-		tarefa.addPropertyChangeListener(this); // sentinela
-		tarefa.execute();
-		break;
+		case ("Descarregar"):
+			
+			//TODO Teste - código para teste - tem que ser refeito
+			//Pede o primeiro ficheiro da lista dos ficheiros encontrados
+			dir.pedirFicheiro(listaFilesEncontrados.get(0));
+			
+			
+//			botaoDescarregar.setEnabled(false);
+//			botaoProcurar.setEnabled(false);
+//			txtField.setEnabled(false);
+//			listaFiles.setEnabled(false);
+//			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+//			// Por isso, cria-se uma nova, à medida do necessário.
+//			tarefa = new Task();
+//			tarefa.addPropertyChangeListener(this); // sentinela
+//			tarefa.execute();
+			break;
 		case ("Procurar"): 
 			palavraChave= txtField.getText();
 		    WordSearchMessage w = new WordSearchMessage(palavraChave);
@@ -331,7 +336,7 @@ public WinDownload(Diretorio d) {
 		    
 //			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
 		    mostrarListaFilesEncontrados(listaFilesEncontrados);
-		break;
+		    break;
 		default:
 			// nada a fazer
 			break;

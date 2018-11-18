@@ -1,6 +1,9 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-public class Utilizador {
+import java.io.Serializable;
+
+public class Utilizador implements Serializable{
+	private static final long serialVersionUID = 15L;
 	private String enderecoIP;
 	private String porto;
 
@@ -8,13 +11,6 @@ public class Utilizador {
 		String parte[] = u.split(" ");
 		enderecoIP = parte[1];
 		porto  = parte[2];
-		
-//		int inicioPorto=0;
-//		for(int i = 4;u.charAt(i) != ' '; i++) {
-//			enderecoIP += u.charAt(i);
-//			inicioPorto = i+2;
-//		}
-//		porto= u.substring(inicioPorto,inicioPorto+4);
 	}
 	
 	public Utilizador(String ip, String p) {

@@ -9,18 +9,17 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
-//	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
+	//	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
 	private Thread t;
-	
+
 	@Override
 	public void run() {
 		try {
-			fileServer= new ServerSocket(portoProprio);
+			fileServer = new ServerSocket(portoProprio);
 			serve();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -28,18 +27,18 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 	}
 
-	private void serve() throws IOException{
-	
-		while(true){
+	private void serve() throws IOException {
+
+		while (true) {
 			System.out.println("Servidor iniciado:" + portoProprio);
-			Socket s=fileServer.accept();
+			Socket s = fileServer.accept();
 			System.out.println("Ligação efetuada");
 			t = new TrataPedidos(s);
-//			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
+			//			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
 			t.start();
-			//...
-			//listaDeThreads.add(t);
-			//...
+			// ...
+			// listaDeThreads.add(t);
+			// ...
 		}
 	}
 
@@ -47,24 +46,23 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
-		private WordSearchMessage palavraChave;
-		
+
 		public TrataPedidos(Socket soc) throws IOException {
 			super();
 			inStream = new ObjectInputStream(soc.getInputStream());
-			outStream = new ObjectOutputStream (soc.getOutputStream());
+			outStream = new ObjectOutputStream(soc.getOutputStream());
 		}
-		
-		private ArrayList<FileDetails> procuraFicheirosLocais (WordSearchMessage pChave) {
+
+		private ArrayList<FileDetails> procuraFicheirosLocais(WordSearchMessage pChave) {
 			FileDetails ficheiroEncontrado;
 			ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails>();
 			String procurarPalavra = pChave.getPalavraChave().toLowerCase();
 			File[] files = new File("./" + TheISCTEBay.devolvePastaTransferencias()).listFiles();
-			for (File file: files) {
+			for (File file : files) {
 				String nomeFicheiro = file.getName().toLowerCase();
 				Boolean encontrei = nomeFicheiro.contains(procurarPalavra);
 				if (encontrei) {
-					ficheiroEncontrado = new FileDetails(file.getName(),file.length());
+					ficheiroEncontrado = new FileDetails(file.getName(), file.length());
 					listaFicheirosEncontrados.add(ficheiroEncontrado);
 				}
 			}
@@ -72,27 +70,42 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 		
 		
-		
+		private void enviarParteFicheiroPedido(FileBlockRequestMessage p) {
+			MsgBox.info("Para fazer: Buscar ficheiro e enviar!");
+		}
+
 		@Override
 		public void run() {
 			ArrayList<FileDetails> listaFicheirosEncontrados;
+			Object msg;
+			WordSearchMessage palavraChave;
+			FileBlockRequestMessage pedidoParteFicheiro;
+			
 			try {
 				while(true){
 					System.out.println("à espera...");
 
 					// RECEÇÃO da MSG:
-					palavraChave=(WordSearchMessage)inStream.readObject();
-					System.out.println("Recebido: " + palavraChave.getPalavraChave());
-					outStream.flush();  //limpeza
+					msg=inStream.readObject();
+					if (msg instanceof WordSearchMessage) {
+						palavraChave=(WordSearchMessage)msg;
+						outStream.flush();  //limpeza
 
-					// Falta chamar método para pesquisar ficheiros
-					listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
-					Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
-					while(iListaFicheiros.hasNext()) {
-						outStream.writeObject(iListaFicheiros.next());
+						// Falta chamar método para pesquisar ficheiros
+						listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
+						Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
+						while(iListaFicheiros.hasNext()) {
+							outStream.writeObject(iListaFicheiros.next());
+						}
+						outStream.close();
+						System.out.println("....................");
+					} else if (msg instanceof FileBlockRequestMessage){
+						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
+						enviarParteFicheiroPedido(pedidoParteFicheiro);
 					}
-					outStream.close();
-					System.out.println("....................");
+
+
+
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -108,4 +121,5 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			}
 		}
 	}
+
 }

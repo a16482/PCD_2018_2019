@@ -1,6 +1,8 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.io.EOFException;
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -20,6 +22,8 @@ public class Diretorio {
 
 	private String msgInfo;
 	private String msgErro;
+	
+	private ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails> ();
 	
 	private static final String NEW_LINE = "\n";
 	
@@ -150,8 +154,26 @@ public class Diretorio {
 		return this.listaUtilizadores.get(n);
 	}
 	
+	private FileDetails adicionaListaFicheirosEncontrados(FileDetails f) {
+		FileDetails ficheiroDaLista;
+		
+		Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
+		while (iListaFicheiros.hasNext()) {
+			ficheiroDaLista = iListaFicheiros.next();
+			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
+			Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
+			
+			if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
+				return ficheiroDaLista;
+			}
+			
+		}
+		listaFicheirosEncontrados.add(f);
+		
+		return f;
+	}
+	
 	public ArrayList<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage keyWord)  {
-		ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails> ();
 		Utilizador utilizadorLista;
 		FileDetails ficheiroEncontrado;
 		Socket s;
@@ -174,7 +196,10 @@ public class Diretorio {
 					while (true) {
 						try {
 							ficheiroEncontrado = (FileDetails)ois.readObject();
-							listaFicheirosEncontrados.add(ficheiroEncontrado);
+							
+							//Verificar se o ficheiro encontrado já existe na nossa lista
+							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
+							ficheiroLista.setUtilizador(utilizadorLista);							
 						} catch (EOFException e) {
 							break;
 						}
@@ -190,6 +215,37 @@ public class Diretorio {
 			
 		}
 		return listaFicheirosEncontrados;
+	}
+	
+	//pedir ficheiro aos utilizadores que o têm disponível
+	public void pedirFicheiro(FileDetails f) {
+		Socket s;
+		
+		//só estamos a pedir ao primeiro utilizador que tem o ficheiro
+		// TODO iterar todos os utilizadores que têm o ficheiro e lançar o pedido de uma parte a cada um
+		Utilizador user = f.getUtilizadors().get(0);
+		FileBlockRequestMessage pedido = new FileBlockRequestMessage(f, 0, 5000);
+		
+		try {
+			s = new Socket(user.ipUtilizador(), Integer.parseInt(user.portoUtilizador()));
+			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+			oos.flush();
+			oos.writeObject(pedido);
+			ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+			
+			//apenas para testar a receção da 1ª parte
+			File parte1 = (File)ois.readObject();
+			
+			System.out.println("Chegou isto: " + parte1.getName());		
+			
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
