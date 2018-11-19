@@ -259,9 +259,10 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 				if (mouseEvent.getClickCount() == 2) {
 					int index = listaFiles.locationToIndex(mouseEvent.getPoint());
 					if (index >= 0) {
-						Object o = listaFiles.getModel().getElementAt(index);
-						MsgBox.info("Duplo-click em: " + o.toString());
-						System.out.println("Duplo-click em: " + o.toString());
+						FileDetails fd = (FileDetails)listaFiles.getModel().getElementAt(index);
+						new Download(fd);
+						MsgBox.info("Duplo-click em: " + fd.toString());
+						System.out.println("Duplo-click em: " + fd.toString());
 					}
 				}
 			}
@@ -337,7 +338,8 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 			//TODO Teste - código para teste - tem que ser refeito
 			//Pede o primeiro ficheiro da lista dos ficheiros encontrados
-			dir.pedirFicheiro(listaFilesEncontrados.get(0));
+			new Download(listaFilesEncontrados.get(0));
+//			dir.pedirFicheiro(listaFilesEncontrados.get(0));
 
 
 		//			botaoDescarregar.setEnabled(false);
