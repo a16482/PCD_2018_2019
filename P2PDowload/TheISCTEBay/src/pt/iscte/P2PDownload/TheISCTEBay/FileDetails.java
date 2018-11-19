@@ -14,6 +14,7 @@ public class FileDetails implements Serializable{
 	private long bytesFicheiro;
 
 	public FileDetails (String nome, long bytes) {
+		super();
 		nomeFicheiro = nome;
 		bytesFicheiro = bytes;
 	}
@@ -28,6 +29,11 @@ public class FileDetails implements Serializable{
 	
 	public void setUtilizador(Utilizador u) {
 		users.add(u);
+	}
+	@Override
+	
+	public String toString() {
+		return nomeFicheiro;
 	}
 	
 	public ArrayList <Utilizador> getUtilizadors() {

@@ -8,10 +8,11 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -44,15 +45,15 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JTextField txtField;
 
 	private ArrayList<FileDetails> listaFilesEncontrados;
-	
-// JList com objetos em vez de Strings
-//	private DefaultListModel<FileDetails> filesModel;
-//	private JList<FileDetails> listaFiles;
-	private JList<String> listaFiles;
+
+	// JList com objetos em vez de Strings
+	//	private DefaultListModel<FileDetails> filesModel;
+	private JList<FileDetails> listaFiles;
+	//	private JList<String> listaFiles;
 
 	private JScrollPane listaFilesScroller;
 
-//	private Task tarefa;
+	//	private Task tarefa;
 	private JPanel painelBase;
 	private JPanel painelProcura;
 	private JPanel painelBotaoProcurar;
@@ -60,12 +61,12 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JPanel painelFicheiros;
 	private JPanel painelProgresso;
 	private String palavraChave;
-	
-// JList com objetos em vez de Strings
-//	private DefaultListModel<FileDetails> searchResult = new DefaultListModel<FileDetails>();
-	private DefaultListModel<String> searchResult = new DefaultListModel<String>();
 
-	
+	// JList com objetos em vez de Strings
+	private DefaultListModel<FileDetails> searchResult = new DefaultListModel<FileDetails>();
+	//	private DefaultListModel<String> searchResult = new DefaultListModel<String>();
+
+
 	private Diretorio dir;
 
 	private static final int W = 600;
@@ -118,7 +119,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		}
 	}
 
-public WinDownload(Diretorio d) {
+	public WinDownload(Diretorio d) {
 
 		super(new BorderLayout());
 		dir = d;
@@ -198,9 +199,9 @@ public WinDownload(Diretorio d) {
 
 		listaFilesScroller = new JScrollPane();
 
-// JList com objetos em vez de Strings
-//		listaFiles = new JList<FileDetails>(searchResult);
-		listaFiles = new JList<String>(searchResult);
+		// JList com objetos em vez de Strings
+		listaFiles = new JList<FileDetails>(searchResult);
+		//		listaFiles = new JList<String>(searchResult);
 
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
@@ -248,6 +249,23 @@ public WinDownload(Diretorio d) {
 		add(painelSuperior, BorderLayout.NORTH);
 		add(painelFicheiros, BorderLayout.WEST);
 		add(painelProgresso, BorderLayout.EAST);
+		// ------------------------------------------------------------------------
+		// Mouse Listener para a JList
+		// ------------------------------------------------------------------------
+		listaFiles.addMouseListener( new MouseAdapter() {
+			@SuppressWarnings("rawtypes")
+			public void mouseClicked(MouseEvent mouseEvent) {
+				JList listaFiles = (JList) mouseEvent.getSource();
+				if (mouseEvent.getClickCount() == 2) {
+					int index = listaFiles.locationToIndex(mouseEvent.getPoint());
+					if (index >= 0) {
+						Object o = listaFiles.getModel().getElementAt(index);
+						MsgBox.info("Duplo-click em: " + o.toString());
+						System.out.println("Duplo-click em: " + o.toString());
+					}
+				}
+			}
+		});
 	}
 
 	public static JPopupMenu setPopUpMenu(){
@@ -268,42 +286,46 @@ public WinDownload(Diretorio d) {
 
 		return pmenu;
 	}
-	
-	
-// JList com objetos em vez de Strings
-//	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> listaFilesEncontrados) {
-//		int i=0;
-//		
-//		filesModel = new DefaultListModel<FileDetails>();
-//
-//		while(i < listaFilesEncontrados.size()) {
-//			FileDetails f = listaFilesEncontrados(i);
-//			filesModel.addElement(f);
-//			i++;
-//		}
-//
-//		listaFiles = new JList<FileDetails>(filesModel);
-//
-//		listaFilesScroller=new JScrollPane(listaFiles);
-//	    listaFilesScroller.revalidate();
-//	    listaFilesScroller.repaint();
-//	}
-	
-	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> lista) {
-		FileDetails ficheiroLista;
-		Iterator<FileDetails> iListaFicheiros = lista.iterator();
+
+
+	// JList com objetos em vez de Strings	
+	private void mostraListaFilesEncontrados(WordSearchMessage w) {
+		int i=0;
+		listaFilesEncontrados = dir.procuraFicheirosPorPalavraChave(w);
+
+		System.out.println("Ficheiros encontrados para a palavra chave " + "'" + w.getPalavraChave() + "':  " + listaFilesEncontrados.size());
+		MsgBox.info("Ficheiros encontrados para a palavra chave " + "'" + w.getPalavraChave() + "':  " + listaFilesEncontrados.size());
+
 		searchResult.removeAllElements();
-		while(iListaFicheiros.hasNext()) {
-			ficheiroLista = iListaFicheiros.next();
-			searchResult.addElement(ficheiroLista.nomeFicheiro() + " - "+ ficheiroLista.bytesFicheiro() + " bytes");
+		FileDetails f;
+
+		while(i < listaFilesEncontrados.size()) {
+			f = new FileDetails(listaFilesEncontrados.get(i).nomeFicheiro(),
+					listaFilesEncontrados.get(i).bytesFicheiro());
+			searchResult.addElement(f);
+
+			System.out.println(listaFilesEncontrados.get(i).nomeFicheiro() + " - " + 
+					listaFilesEncontrados.get(i).bytesFicheiro() + "Bytes");
+			i++;
 		}
+
+		listaFilesScroller.repaint();
 	}
-	
-	
-//	private FileDetails listaFilesEncontrados(int i) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
+
+	// pedaço substituído
+	//	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> lista) {
+	//		FileDetails ficheiroLista;
+	//		Iterator<FileDetails> iListaFicheiros = lista.iterator();
+	//		searchResult.removeAllElements();
+	//		while(iListaFicheiros.hasNext()) {
+	//			ficheiroLista = iListaFicheiros.next();
+	//			searchResult.addElement(ficheiroLista.nomeFicheiro() + " - "+ ficheiroLista.bytesFicheiro() + " bytes");
+	//		}
+	//	}
+	//	
+
+
 
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
@@ -312,31 +334,31 @@ public WinDownload(Diretorio d) {
 	public void actionPerformed(ActionEvent evt) {
 		switch(evt.getActionCommand()) {
 		case ("Descarregar"):
-			
+
 			//TODO Teste - código para teste - tem que ser refeito
 			//Pede o primeiro ficheiro da lista dos ficheiros encontrados
 			dir.pedirFicheiro(listaFilesEncontrados.get(0));
-			
-			
-//			botaoDescarregar.setEnabled(false);
-//			botaoProcurar.setEnabled(false);
-//			txtField.setEnabled(false);
-//			listaFiles.setEnabled(false);
-//			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-//			// Por isso, cria-se uma nova, à medida do necessário.
-//			tarefa = new Task();
-//			tarefa.addPropertyChangeListener(this); // sentinela
-//			tarefa.execute();
-			break;
+
+
+		//			botaoDescarregar.setEnabled(false);
+		//			botaoProcurar.setEnabled(false);
+		//			txtField.setEnabled(false);
+		//			listaFiles.setEnabled(false);
+		//			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		//			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
+		//			// Por isso, cria-se uma nova, à medida do necessário.
+		//			tarefa = new Task();
+		//			tarefa.addPropertyChangeListener(this); // sentinela
+		//			tarefa.execute();
+		break;
 		case ("Procurar"): 
 			palavraChave= txtField.getText();
-		    WordSearchMessage w = new WordSearchMessage(palavraChave);
-		    listaFilesEncontrados = dir.procuraFicheirosPorPalavraChave(w);
-		    
-//			MsgBox.info("Aqui vai funcionar a procura dos ficheiros - em construção...");
-		    mostrarListaFilesEncontrados(listaFilesEncontrados);
-		    break;
+		WordSearchMessage w = new WordSearchMessage(palavraChave);
+		listaFilesEncontrados = dir.procuraFicheirosPorPalavraChave(w);
+		mostraListaFilesEncontrados(w);
+
+		MsgBox.info("Ficheiros mostrados para a palavra chave " + "'" + palavraChave + "': " + listaFilesEncontrados.size());
+		break;
 		default:
 			// nada a fazer
 			break;
