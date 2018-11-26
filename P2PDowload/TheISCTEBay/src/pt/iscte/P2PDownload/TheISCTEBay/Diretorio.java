@@ -1,7 +1,6 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.io.EOFException;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -157,6 +156,8 @@ public class Diretorio {
 		FileDetails ficheiroDaLista;
 		
 		Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
+		
+		//Ciclo para veridicar se o FileDetails "f" já existe na ArrayList "listaFicheirosEncontrados"
 		while (iListaFicheiros.hasNext()) {
 			ficheiroDaLista = iListaFicheiros.next();
 			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
@@ -183,9 +184,9 @@ public class Diretorio {
 		while (iListaUtilizadores.hasNext()) {
 			utilizadorLista = iListaUtilizadores.next();
 			try {
+				// exclui o próprio (que também é membro do diretório da pesquisa
 				if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
 						&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
-					// exclui o próprio (que também é membro do diretório da pesquisa
 					
 					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
 					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
@@ -198,7 +199,7 @@ public class Diretorio {
 							
 							//Verificar se o ficheiro encontrado já existe na nossa lista
 							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
-							ficheiroLista.setUtilizador(utilizadorLista);							
+							ficheiroLista.setUtilizador(utilizadorLista);
 						} catch (EOFException e) {
 							break;
 						}
@@ -215,72 +216,5 @@ public class Diretorio {
 		}
 		return listaFicheirosEncontrados;
 	}
-	
-//	//pedir ficheiro aos utilizadores que o têm disponível
-//	public void pedirFicheiro(FileDetails f) {
-//		int contadorPartes=0;
-//		int tamanhoDasPartes = 5000;
-//		int tamanhoDoFicheiro = (int)f.bytesFicheiro();
-//		int numeroDePartesCompletas = tamanhoDoFicheiro/tamanhoDasPartes;
-//		int tamanhoDoUltimoFicheiro = tamanhoDoFicheiro % tamanhoDasPartes;
-//		ArrayList<Utilizador> users = f.getUtilizadors();
-//		int numeroDeUsers = users.size();
-//
-//		while (contadorPartes < numeroDePartesCompletas) {
-//			int u=0;
-//			while(u < numeroDeUsers) {
-//				if (contadorPartes == numeroDePartesCompletas) {
-//					if (tamanhoDoUltimoFicheiro > 0) {
-//						FileBlockRequestMessage pedidoUltimaParte = new FileBlockRequestMessage(f, contadorPartes*tamanhoDasPartes, tamanhoDasPartes);
-//						Thread t = new PedeParte(users.get(u),pedidoUltimaParte);
-//						t.start();
-//					}
-//					break;
-//				} else {
-//					FileBlockRequestMessage pedidoDeParte = new FileBlockRequestMessage(f, contadorPartes*tamanhoDasPartes, tamanhoDasPartes);
-//					Thread t = new PedeParte(users.get(u),pedidoDeParte);
-//					t.start();
-//					contadorPartes++;
-//					u++;
-//				}
-//			}
-//		}		
-//	}
-//	
-//	private class PedeParte extends Thread implements Runnable{
-//		private Socket s;
-//		private Utilizador user;
-//		private FileBlockRequestMessage pedidoBloco; 
-//		
-//		public PedeParte (Utilizador u, FileBlockRequestMessage p) {
-//			super();
-//			user = u;
-//			pedidoBloco = p;
-//		}
-//		
-//		@Override
-//		public void run() {
-//			try {
-//				s = new Socket(user.ipUtilizador(), Integer.parseInt(user.portoUtilizador()));
-//				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-//				oos.flush();
-//				oos.writeObject(pedidoBloco);
-//				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-//				byte[] parte = (byte[])ois.readObject();
-//				
-//				System.out.println("Nr de bytes: " + parte.length);
-//				wait();
-//			} catch (NumberFormatException | IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 }
 

@@ -313,21 +313,6 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		listaFilesScroller.repaint();
 	}
 
-
-	// pedaço substituído
-	//	private void mostrarListaFilesEncontrados(ArrayList<FileDetails> lista) {
-	//		FileDetails ficheiroLista;
-	//		Iterator<FileDetails> iListaFicheiros = lista.iterator();
-	//		searchResult.removeAllElements();
-	//		while(iListaFicheiros.hasNext()) {
-	//			ficheiroLista = iListaFicheiros.next();
-	//			searchResult.addElement(ficheiroLista.nomeFicheiro() + " - "+ ficheiroLista.bytesFicheiro() + " bytes");
-	//		}
-	//	}
-	//	
-
-
-
 	// ------------------------------------------------------------------------
 	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
 	// ------------------------------------------------------------------------
@@ -338,29 +323,17 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 			//TODO Teste - código para teste - tem que ser refeito
 			//Pede o primeiro ficheiro da lista dos ficheiros encontrados
-			new Download(listaFilesEncontrados.get(0));
-//			dir.pedirFicheiro(listaFilesEncontrados.get(0));
-
-
-		//			botaoDescarregar.setEnabled(false);
-		//			botaoProcurar.setEnabled(false);
-		//			txtField.setEnabled(false);
-		//			listaFiles.setEnabled(false);
-		//			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		//			// As instâncias do javax.swing.SwingWorker não são reutilizáveis.
-		//			// Por isso, cria-se uma nova, à medida do necessário.
-		//			tarefa = new Task();
-		//			tarefa.addPropertyChangeListener(this); // sentinela
-		//			tarefa.execute();
-		break;
+			//É necessário substituir "0" na linha de baixo pelo número do ficheiro selecionado pelo utilizador
+			Thread t = new Download(listaFilesEncontrados.get(0));
+			t.start();
+			break;
 		case ("Procurar"): 
 			palavraChave= txtField.getText();
-		WordSearchMessage w = new WordSearchMessage(palavraChave);
-		listaFilesEncontrados = dir.procuraFicheirosPorPalavraChave(w);
-		mostraListaFilesEncontrados(w);
-
-		MsgBox.info("Ficheiros mostrados para a palavra chave " + "'" + palavraChave + "': " + listaFilesEncontrados.size());
-		break;
+			WordSearchMessage w = new WordSearchMessage(palavraChave);
+			mostraListaFilesEncontrados(w);
+	
+			MsgBox.info("Ficheiros mostrados para a palavra chave " + "'" + palavraChave + "': " + listaFilesEncontrados.size());
+			break;
 		default:
 			// nada a fazer
 			break;

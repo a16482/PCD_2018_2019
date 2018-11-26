@@ -8,11 +8,13 @@ public class FileBlockRequestMessage implements Serializable {
 	private FileDetails detalhesFicheiro;
 	private int offset;
 	private int length;
+	private int numeroDoBloco;
 	
-	public FileBlockRequestMessage(FileDetails f, int o, int l) {
+	public FileBlockRequestMessage(FileDetails f, int o, int l, int n) {
 		detalhesFicheiro = f;
 		offset= o;
 		length = l;
+		numeroDoBloco = n;
 	}
 	
 	public FileDetails getFileDetails() {
@@ -25,5 +27,9 @@ public class FileBlockRequestMessage implements Serializable {
 
 	public int getLength() {
 		return length;
+	}
+	
+	public int getNumeroDoBloco() {
+		return numeroDoBloco;
 	}
 }
