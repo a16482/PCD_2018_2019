@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -43,17 +42,8 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JButton botaoProcurar;
 	private JLabel lblTexto;
 	private JTextField txtField;
-
-	private ArrayList<FileDetails> listaFilesEncontrados;
-
-	// JList com objetos em vez de Strings
-	//	private DefaultListModel<FileDetails> filesModel;
 	private JList<FileDetails> listaFiles;
-	//	private JList<String> listaFiles;
-
 	private JScrollPane listaFilesScroller;
-
-	//	private Task tarefa;
 	private JPanel painelBase;
 	private JPanel painelProcura;
 	private JPanel painelBotaoProcurar;
@@ -62,10 +52,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	private JPanel painelProgresso;
 	private String palavraChave;
 
-	// JList com objetos em vez de Strings
 	private DefaultListModel<FileDetails> searchResult = new DefaultListModel<FileDetails>();
-	//	private DefaultListModel<String> searchResult = new DefaultListModel<String>();
-
 
 	private Diretorio dir;
 
@@ -101,22 +88,23 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		// Executado na finalização da thread
 		//---------------------------------------------------
 		@Override
-		public void done() { //Feito!!!
+		public void done() {
 			Toolkit.getDefaultToolkit().beep();
 			botaoDescarregar.setEnabled(true);
 			botaoProcurar.setEnabled(true);
 			txtField.setEnabled(true);
 			listaFiles.setEnabled(true);
-			setCursor(null); //desliga o wait do cursor
-
-			MsgBox.info(
-					"Descarga completa." + 
-							NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-							NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-							NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" +
-							NEW_LINE + "fake fake fake: Fornecedor[endereço=/127.0.0.1, porto=8082]:253" 
-							, "Descarga completa");    
+			setCursor(null); //desliga o wait do cursor 
 		}
+	}
+
+	public String formataMsgFimDownload(String textoMsg, String novoTexto) {
+		return textoMsg + NEW_LINE + novoTexto;
+	}
+
+	public void descarregaFicheiro(FileDetails f) {
+		Thread t = new Download(f);
+		t.start();
 	}
 
 	public WinDownload(Diretorio d) {
@@ -199,9 +187,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 		listaFilesScroller = new JScrollPane();
 
-		// JList com objetos em vez de Strings
 		listaFiles = new JList<FileDetails>(searchResult);
-		//		listaFiles = new JList<String>(searchResult);
 
 		listaFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaFiles.setLayoutOrientation(JList.VERTICAL);
@@ -259,12 +245,56 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 				if (mouseEvent.getClickCount() == 2) {
 					int index = listaFiles.locationToIndex(mouseEvent.getPoint());
 					if (index >= 0) {
-						FileDetails fd = (FileDetails)listaFiles.getModel().getElementAt(index);
-						new Download(fd);
-						MsgBox.info("Duplo-click em: " + fd.toString());
-						System.out.println("Duplo-click em: " + fd.toString());
+						FileDetails f = (FileDetails) (listaFiles.getModel().getElementAt(index));
+						botaoProcurar.setEnabled(false);
+						botaoDescarregar.setEnabled(false);
+						descarregaFicheiro(f);
 					}
 				}
+			}
+		});
+
+
+		txtField.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (txtField.getText().length()>0) {
+					botaoProcurar.setEnabled(true);
+				}
+			}
+		});
+
+		botaoDescarregar.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				FileDetails f=null;
+				int i =  listaFiles.getSelectedIndex();
+				if (i >=0) {
+					f =  (FileDetails) (listaFiles.getModel().getElementAt(i));
+				}
+
+				if (f==null) {
+					MsgBox.info("Selecciona um ficheiro para descarregar");
+				}else {
+					botaoProcurar.setEnabled(false);
+					botaoDescarregar.setEnabled(false);
+
+					descarregaFicheiro(f);
+					botaoProcurar.setEnabled(true);
+					botaoDescarregar.setEnabled(true);
+				}
+			}
+		});
+
+		botaoProcurar.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				palavraChave= txtField.getText();
+				WordSearchMessage w = new WordSearchMessage(palavraChave);
+				mostraListaFilesEncontrados(w);
 			}
 		});
 	}
@@ -289,56 +319,17 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	}
 
 
-	// JList com objetos em vez de Strings	
 	private void mostraListaFilesEncontrados(WordSearchMessage w) {
-		int i=0;
-		listaFilesEncontrados = dir.procuraFicheirosPorPalavraChave(w);
-
-		System.out.println("Ficheiros encontrados para a palavra chave " + "'" + w.getPalavraChave() + "':  " + listaFilesEncontrados.size());
-		MsgBox.info("Ficheiros encontrados para a palavra chave " + "'" + w.getPalavraChave() + "':  " + listaFilesEncontrados.size());
-
 		searchResult.removeAllElements();
-		FileDetails f;
-
-		while(i < listaFilesEncontrados.size()) {
-			f = new FileDetails(listaFilesEncontrados.get(i).nomeFicheiro(),
-					listaFilesEncontrados.get(i).bytesFicheiro());
-			searchResult.addElement(f);
-
-			System.out.println(listaFilesEncontrados.get(i).nomeFicheiro() + " - " + 
-					listaFilesEncontrados.get(i).bytesFicheiro() + "Bytes");
+		int i=0;
+		DefaultListModel<FileDetails> sr = dir.procuraFicheirosPorPalavraChave(w);
+		while (i<sr.size()) {
+			searchResult.addElement(sr.getElementAt(i));
 			i++;
 		}
-
 		listaFilesScroller.repaint();
 	}
 
-	// ------------------------------------------------------------------------
-	// Invocado quando o utilizador prime o botão "Descarregar" ou "Procurar".
-	// ------------------------------------------------------------------------
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		switch(evt.getActionCommand()) {
-		case ("Descarregar"):
-
-			//TODO Teste - código para teste - tem que ser refeito
-			//Pede o primeiro ficheiro da lista dos ficheiros encontrados
-			//É necessário substituir "0" na linha de baixo pelo número do ficheiro selecionado pelo utilizador
-			Thread t = new Download(listaFilesEncontrados.get(0));
-			t.start();
-			break;
-		case ("Procurar"): 
-			palavraChave= txtField.getText();
-			WordSearchMessage w = new WordSearchMessage(palavraChave);
-			mostraListaFilesEncontrados(w);
-	
-			MsgBox.info("Ficheiros mostrados para a palavra chave " + "'" + palavraChave + "': " + listaFilesEncontrados.size());
-			break;
-		default:
-			// nada a fazer
-			break;
-		}
-	}
 
 	// ------------------------------------------------------------------------
 	// Invocado sempre que a propriedade de progresso da tarefa é alterada
@@ -349,5 +340,12 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 			int progress = (Integer) evt.getNewValue();
 			barraDeProgresso.setValue(progress);
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+
 	}
 }

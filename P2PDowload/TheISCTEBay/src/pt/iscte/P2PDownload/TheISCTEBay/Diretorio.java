@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+
 
 public class Diretorio {
 	private String enderecoDiretorio;
@@ -21,8 +23,7 @@ public class Diretorio {
 	private String msgInfo;
 	private String msgErro;
 	
-	private ArrayList<FileDetails> listaFicheirosEncontrados = new ArrayList<FileDetails> ();
-	
+	private DefaultListModel<FileDetails> listaFicheirosEncontrados = new DefaultListModel<FileDetails>();
 	private static final String NEW_LINE = "\n";
 	
 	
@@ -154,28 +155,28 @@ public class Diretorio {
 	
 	private FileDetails adicionaListaFicheirosEncontrados(FileDetails f) {
 		FileDetails ficheiroDaLista;
+		int i=0;
 		
-		Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
-		
-		//Ciclo para veridicar se o FileDetails "f" já existe na ArrayList "listaFicheirosEncontrados"
-		while (iListaFicheiros.hasNext()) {
-			ficheiroDaLista = iListaFicheiros.next();
+		//Ciclo para veridicar se o FileDetails "f" já existe em "listaFicheirosEncontrados"
+		while (i< listaFicheirosEncontrados.size()) {
+			ficheiroDaLista = listaFicheirosEncontrados.getElementAt(i);
 			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
 			Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
 			
 			if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
 				return ficheiroDaLista;
 			}
-			
+			i++;
 		}
-		listaFicheirosEncontrados.add(f);
+		listaFicheirosEncontrados.addElement(f);
 		
 		return f;
 	}
 	
-	public ArrayList<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage keyWord)  {
+	public DefaultListModel<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage keyWord)  {
 		Utilizador utilizadorLista;
 		FileDetails ficheiroEncontrado;
+		listaFicheirosEncontrados.removeAllElements();
 		Socket s;
 		consultaUtilizadores();  //recarrega a lista de utilizadores no Diretorio
 

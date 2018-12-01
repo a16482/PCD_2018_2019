@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,11 +15,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
-	//	private ArrayList<Thread> listaDeThreads = new ArrayList<Thread>();
 	private Thread t;
-
-	
-
 	
 //Servidor sempre à escuta
 	@Override
@@ -40,7 +36,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			Socket s = fileServer.accept();
 			System.out.println("Ligação efetuada");
 			t = new TrataPedidos(s);
-			//			t = new TrataPedidos(s.getInputStream(), s.getOutputStream());
 			t.start();
 			// ...
 			// listaDeThreads.add(t);
@@ -81,18 +76,18 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		
 		private byte[] parteDoFicheiroPedido(FileBlockRequestMessage p) {
 			String caminhoFicheiro = TheISCTEBay.devolvePastaTransferencias() + "/" + p.getFileDetails().nomeFicheiro();
-			byte[] fileContents = new byte[(int)p.getFileDetails().bytesFicheiro()];
 			byte[] parteFicheiroPedido = new byte[p.getLength()];
 			
 			File f = new File(caminhoFicheiro);
 			try {
-				fileContents= Files.readAllBytes(f.toPath());
-			} catch (IOException e) {
+				RandomAccessFile rf = new RandomAccessFile(f,"r");
+				rf.read(parteFicheiroPedido, p.getOffset(),p.getLength());
+				rf.close();
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-			System.arraycopy(fileContents, p.getOffset(), parteFicheiroPedido, 0, p.getLength());
-			
+
 			return parteFicheiroPedido;
 		}
 

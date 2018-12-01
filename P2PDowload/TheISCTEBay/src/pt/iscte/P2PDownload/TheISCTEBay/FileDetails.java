@@ -46,19 +46,14 @@ public class FileDetails implements Serializable{
 	public String toString() {
 		return nomeFicheiro;
 	}
-	
+
+	public String  numberOfBytesToString() {
+		return String.valueOf(bytesFicheiro);
+	}
+
 	public ArrayList <Utilizador> getUtilizadors() {
 		return users;
 	}
-	
-//	public FileDetails getFileDetails(String n, Long b){
-//		if(n.equals(nomeFicheiro) && b.equals(bytesFicheiro)) {
-//			return this;
-//		}else {
-//			return null;
-//		}
-//		
-//	}
 	
 }
 

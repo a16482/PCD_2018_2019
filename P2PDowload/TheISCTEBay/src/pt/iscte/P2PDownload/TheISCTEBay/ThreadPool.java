@@ -21,7 +21,6 @@ public class ThreadPool {
 
 	}
 
-
 	public ThreadPool (int i) {
 		workers = new ThreadPoolWorker[i];
 		for(ThreadPoolWorker t:workers) {

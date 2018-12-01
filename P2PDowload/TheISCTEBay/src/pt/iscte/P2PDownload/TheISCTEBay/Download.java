@@ -28,7 +28,7 @@ public class Download extends Thread{
 		int tamanhoDoUltimoFicheiro = (tamanhoDoFicheiro % tamanhoDasPartes);
 		ArrayList<Utilizador> users = ficheiro.getUtilizadors();
 		int numeroDeUsers = users.size();
-		ArrayList<Parte> partes = new ArrayList<Parte>(); 
+		ArrayList<Parte> partes = new ArrayList<Parte>();
 
 		while (contadorPartes < numeroDePartesCompletas) {
 			int u=0;
@@ -61,7 +61,6 @@ public class Download extends Thread{
 			try {
 				Parte p = iPartes.next();
 				p.join();
-				System.out.println("Parte nº " + p.getNumero());
 				byte[] parteEmBytes = p.getParteCarregada();
 				System.arraycopy(parteEmBytes, 0, ficheiroDescarregado, p.getNumero()*tamanhoDasPartes, parteEmBytes.length);
 			} catch (InterruptedException e) {
@@ -69,7 +68,7 @@ public class Download extends Thread{
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Ficheiro em Memória!!!!!!!!!!!!!");
+		MsgBox.info(ficheiro.toString() + " descarregado com sucesso!");
 		try {
 			Files.write(Paths.get(TheISCTEBay.devolvePastaTransferencias()+"/"+ficheiro.nomeFicheiro()), ficheiroDescarregado);
 		} catch (IOException e) {
@@ -78,7 +77,34 @@ public class Download extends Thread{
 		}
 	}
 	
-	public class Parte extends Thread{
+//	private class User extends Thread{
+//		private Socket s;
+//		private FileBlockRequestMessage pedidoBloco;
+//		private Utilizador user;
+//		private byte[] parteCarregada;
+//		
+//		public User (Utilizador u) {
+//			user = u;
+//		}
+//		
+//		public byte[] downloadPart(FileBlockRequestMessage p) {
+//			try {
+//				s = new Socket(user.ipUtilizador(), Integer.parseInt(user.portoUtilizador()));
+//				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+//				oos.flush();
+//				oos.writeObject(pedidoBloco);
+//				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+//				parteCarregada = (byte[])ois.readObject();
+//				
+//			} catch (NumberFormatException | IOException | ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			return parteCarregada;
+//		}
+//	}
+	
+	private class Parte extends Thread{
 		private byte[] parteCarregada;
 		private Socket s;
 		private Utilizador user;
@@ -110,7 +136,6 @@ public class Download extends Thread{
 				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 				parteCarregada = (byte[])ois.readObject();
 				
-				System.out.println("Nr de bytes: " + parteCarregada.length);
 			} catch (NumberFormatException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
