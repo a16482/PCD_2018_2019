@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -103,8 +104,20 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	}
 
 	public void descarregaFicheiro(FileDetails f) {
-		Thread t = new Download(f);
-		t.start();
+		if(verificaSeTem(f)) {
+			MsgBox.info("O ficheiro " + f.nomeFicheiro() + " já existe na pasta " + TheISCTEBay.devolvePastaTransferencias());
+		}else {
+			Thread t = new Download(f);
+			t.start();
+		}
+	}
+
+	private boolean verificaSeTem(FileDetails fch) {
+		File[] files = new File("./" + TheISCTEBay.devolvePastaTransferencias()).listFiles();
+		for (File file : files) {
+			if (file.getName().equals(fch.nomeFicheiro()) && file.length() == fch.bytesFicheiro()) return true;
+		}
+		return false;
 	}
 
 	public WinDownload(Diretorio d) {

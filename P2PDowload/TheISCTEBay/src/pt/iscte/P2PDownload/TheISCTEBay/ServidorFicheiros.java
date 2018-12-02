@@ -15,9 +15,11 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
-	private Thread t;
-	
-//Servidor sempre à escuta
+	private TrataPedidos t;
+	private ArrayList<TrataPedidos> listaDeThreads = new ArrayList<TrataPedidos>();
+	private int limitePedidos = TheISCTEBay.limitePedidos;
+
+	//Servidor sempre à escuta
 	@Override
 	public void run() {
 		try {
@@ -32,29 +34,38 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	private void serve() throws IOException {
 
 		while (true) {
-			System.out.println("Servidor iniciado:" + portoProprio);
-			Socket s = fileServer.accept();
-			System.out.println("Ligação efetuada");
-			t = new TrataPedidos(s);
-			t.start();
-			// ...
-			// listaDeThreads.add(t);
-			// ...
+			while (listaDeThreads.size()<limitePedidos) {
+				System.out.println("Servidor iniciado:" + portoProprio);
+				Socket s = fileServer.accept();
+				System.out.println("Ligação efetuada");
+				t = new TrataPedidos(s);
+				listaDeThreads.add(t);
+				t.start();
+			}
+			synchronized(listaDeThreads) {
+				for (TrataPedidos thr:listaDeThreads) {
+					if (!thr.isAlive()) {
+						listaDeThreads.remove(thr);
+					}
+				}
+			}
 		}
 	}
 
 
-//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
-//Parte de um determinado ficheiro da pasta local
+	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
+	//Parte de um determinado ficheiro da pasta local
 	private class TrataPedidos extends Thread implements Runnable {
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
+		private Socket s;
 
 		public TrataPedidos(Socket soc) throws IOException {
 			super();
 			inStream = new ObjectInputStream(soc.getInputStream());
 			outStream = new ObjectOutputStream(soc.getOutputStream());
+			s=soc;
 		}
 
 		private ArrayList<FileDetails> procuraFicheirosLocais(WordSearchMessage pChave) {
@@ -72,16 +83,17 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			}
 			return listaFicheirosEncontrados;
 		}
-		
-		
+
+
 		private byte[] parteDoFicheiroPedido(FileBlockRequestMessage p) {
 			String caminhoFicheiro = TheISCTEBay.devolvePastaTransferencias() + "/" + p.getFileDetails().nomeFicheiro();
 			byte[] parteFicheiroPedido = new byte[p.getLength()];
-			
+
 			File f = new File(caminhoFicheiro);
 			try {
 				RandomAccessFile rf = new RandomAccessFile(f,"r");
-				rf.read(parteFicheiroPedido, p.getOffset(),p.getLength());
+				rf.seek(p.getOffset());
+				rf.read(parteFicheiroPedido);
 				rf.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -97,7 +109,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			Object msg;
 			WordSearchMessage palavraChave;
 			FileBlockRequestMessage pedidoParteFicheiro;
-			
+
 			try {
 				while(true){
 					System.out.println("à espera...");
@@ -119,7 +131,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
 						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
 						outStream.writeObject(parteFicheiro);
-						outStream.close();
 					}
 				}
 			} catch (ClassNotFoundException e) {
@@ -129,7 +140,9 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				System.out.println("Cliente desligou-se.");
 			} finally{
 				try {
+					outStream.close();
 					inStream.close();
+					s.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
