@@ -107,7 +107,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		if(verificaSeTem(f)) {
 			MsgBox.info("O ficheiro " + f.nomeFicheiro() + " já existe na pasta " + TheISCTEBay.devolvePastaTransferencias());
 		}else {
-			Thread t = new Download(f);
+			Thread t = new Download(f, this);
 			t.start();
 		}
 	}
@@ -354,11 +354,14 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 			barraDeProgresso.setValue(progress);
 		}
 	}
+	
+	public void atualizabarraDeProgresso(int p) {
+		barraDeProgresso.setValue(p);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
 
 	}
 }

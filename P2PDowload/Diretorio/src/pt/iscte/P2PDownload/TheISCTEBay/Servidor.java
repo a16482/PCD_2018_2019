@@ -10,27 +10,28 @@ public class Servidor {
 	private ServerSocket server;
 	private List<Cliente> diretorio = new ArrayList<>();
 
-	public void init() throws IOException {
+	private void init() throws IOException {
 		server = new ServerSocket(portoDiretorio);
 	}
 
-	public void serve() throws IOException{
+	private void serve() throws IOException{
 		while(true){
 			System.out.println("Servidor iniciado:" + portoDiretorio);
 
 			Socket s=server.accept();
 			System.out.println("Ligação efetuada");
+			System.out.println(s.getPort());
 			new TrataMsg(s.getInputStream(), s.getOutputStream()).start();
 		}
 	}
 	
-	public synchronized void adicionaCliente(Cliente c) {
+	private synchronized void adicionaCliente(Cliente c) {
 		if (!existeCliente(c)) { 
 			diretorio.add(c);
 		}
 	}
 
-	public synchronized void removeCliente(Cliente c) {
+	private synchronized void removeCliente(Cliente c) {
 		Cliente clienteDiretorio;
 		boolean encontrado = false;
 		Iterator<Cliente> iDiretorio = diretorio.iterator();
@@ -70,14 +71,23 @@ public class Servidor {
 			this.outStream = new ObjectOutputStream(out);
 		}
 		
-		public synchronized void informaDiretorio() { 
+		private boolean confirmaLigacao(Cliente cliente) {
+		    try (Socket s = new Socket(cliente.ipCliente(), Integer.parseInt(cliente.portoCliente()))) {
+		        return true;
+		    } catch (IOException ex) {
+		    	System.out.println("CLI " + cliente.ipCliente() + " " + cliente.portoCliente() + " está offline");
+		    	removeCliente(cliente);
+		    }
+		    return false;
+		}
+		
+		private synchronized void informaDiretorio() {
 			try {	
-				for (int i = 0; i < diretorio.size(); i++) {
-					System.out.println("CLI " + diretorio.get(i).ipCliente() + " " + diretorio.get(i).portoCliente());
-				}
 				outStream.flush();
 				for (Cliente d : diretorio) {
+//					if (!confirmaLigacao(d)) continue;
 					outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
+					System.out.println("CLI " + d.ipCliente() + " " + d.portoCliente());
 				}
 				outStream.writeObject("END");
 				outStream.close();

@@ -1,6 +1,7 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.io.EOFException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -17,16 +18,16 @@ public class Diretorio {
 	private int portoDiretorio;
 	private String enderecoUtilizador;
 	private int portoUtilizador;
-	
+
 	private List<Utilizador> listaUtilizadores = new ArrayList<>();
 
 	private String msgInfo;
 	private String msgErro;
-	
+
 	private DefaultListModel<FileDetails> listaFicheirosEncontrados = new DefaultListModel<FileDetails>();
 	private static final String NEW_LINE = "\n";
-	
-	
+
+
 	public Diretorio(String eDiretorio, int pDiretorio, int pUser){
 		enderecoDiretorio = eDiretorio;
 		portoDiretorio = pDiretorio;
@@ -36,7 +37,7 @@ public class Diretorio {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		portoUtilizador = pUser;
 		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
 		System.out.println(msgInfo); 
@@ -87,8 +88,8 @@ public class Diretorio {
 			socket.close();
 		} catch (Exception e) {
 			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
-					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
-					  "A aplicação TheISCTEBay vai terminar.";
+					"Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					"A aplicação TheISCTEBay vai terminar.";
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
 			System.exit(1);
@@ -108,7 +109,7 @@ public class Diretorio {
 				if (utilizadorString.equals("END")) {
 					System.out.println("Fim da lista de utilizadores");
 					break;
-					}
+				}
 				System.out.println(utilizadorString);
 				Utilizador u = new Utilizador(utilizadorString); //alterar
 				if (!existeUtilizador(u)) { 
@@ -120,14 +121,14 @@ public class Diretorio {
 			socketLista.close();		
 		} catch (Exception e) {
 			msgErro = "Erro ao estabelecer a ligação com o servidor." + NEW_LINE + 
-					  "Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
-					  "A aplicação TheISCTEBay vai terminar.";
+					"Mensagem de erro original: " + e.getMessage() + NEW_LINE + 
+					"A aplicação TheISCTEBay vai terminar.";
 			System.out.println(msgErro); 
 			MsgBox.erro(msgErro);
 			System.exit(1);
 		}
 	}
-	
+
 	public boolean existeUtilizador (Utilizador u) {
 		boolean existeUtilizador= false;
 		Utilizador utilizadorLista;
@@ -140,64 +141,67 @@ public class Diretorio {
 		}
 		return existeUtilizador;
 	}
-	
+
 	public List<Utilizador> getListaUtilizadores() {
 		return this.listaUtilizadores;
 	}
-	
+
 	public int getTotalUtilizadores() {
 		return this.listaUtilizadores.size();
 	}
-	
+
 	public Utilizador getUtilizadorNDaLista(int n) {
 		return this.listaUtilizadores.get(n);
 	}
-	
+
 	private FileDetails adicionaListaFicheirosEncontrados(FileDetails f) {
 		FileDetails ficheiroDaLista;
 		int i=0;
-		
+
 		//Ciclo para veridicar se o FileDetails "f" já existe em "listaFicheirosEncontrados"
 		while (i< listaFicheirosEncontrados.size()) {
 			ficheiroDaLista = listaFicheirosEncontrados.getElementAt(i);
 			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
 			Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
-			
+
 			if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
 				return ficheiroDaLista;
 			}
 			i++;
 		}
 		listaFicheirosEncontrados.addElement(f);
-		
+
 		return f;
 	}
-	
+
 	public DefaultListModel<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage keyWord)  {
 		Utilizador utilizadorLista;
 		FileDetails ficheiroEncontrado;
 		listaFicheirosEncontrados.removeAllElements();
-		Socket s;
+		Socket s=null;
+		ObjectOutputStream oos=null;
+		ObjectInputStream ois=null;
 		consultaUtilizadores();  //recarrega a lista de utilizadores no Diretorio
 
 		Iterator<Utilizador> iListaUtilizadores = getListaUtilizadores().iterator();
-		
+
 		while (iListaUtilizadores.hasNext()) {
 			utilizadorLista = iListaUtilizadores.next();
-			try {
-				// exclui o próprio (que também é membro do diretório da pesquisa
-				if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
-						&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
-					
+
+			// exclui o próprio (que também é membro do diretório da pesquisa
+			if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
+					&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
+
+				try {
 					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
-					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+					oos = new ObjectOutputStream(s.getOutputStream());
+					ois = new ObjectInputStream(s.getInputStream());
 					oos.flush();
 					oos.writeObject(keyWord);
-					ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 					while (true) {
 						try {
 							ficheiroEncontrado = (FileDetails)ois.readObject();
-							
+
 							//Verificar se o ficheiro encontrado já existe na nossa lista
 							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
 							ficheiroLista.setUtilizador(utilizadorLista);
@@ -205,15 +209,25 @@ public class Diretorio {
 							break;
 						}
 					}
-					oos.close();
-					ois.close();
-					s.close();
+//					oos.close();
+//					ois.close();
+//					s.close();
+				} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}finally {
+					try {
+						oos.close();
+						ois.close();
+						s.close();	
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}			
 				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 			}
-			
+
 		}
 		return listaFicheirosEncontrados;
 	}

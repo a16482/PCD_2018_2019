@@ -16,8 +16,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
 	private TrataPedidos t;
-	private ArrayList<TrataPedidos> listaDeThreads = new ArrayList<TrataPedidos>();
 	private int limitePedidos = TheISCTEBay.limitePedidos;
+		
 
 	//Servidor sempre à escuta
 	@Override
@@ -33,21 +33,15 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 	private void serve() throws IOException {
 
+		ThreadPool p = new ThreadPool(limitePedidos);
+
 		while (true) {
-			while (listaDeThreads.size()<limitePedidos) {
+			while (true) {
 				System.out.println("Servidor iniciado:" + portoProprio);
 				Socket s = fileServer.accept();
 				System.out.println("Ligação efetuada");
 				t = new TrataPedidos(s);
-				listaDeThreads.add(t);
-				t.start();
-			}
-			synchronized(listaDeThreads) {
-				for (TrataPedidos thr:listaDeThreads) {
-					if (!thr.isAlive()) {
-						listaDeThreads.remove(thr);
-					}
-				}
+				p.submit(t);
 			}
 		}
 	}
@@ -61,10 +55,15 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		private ObjectOutputStream outStream;
 		private Socket s;
 
-		public TrataPedidos(Socket soc) throws IOException {
+		public TrataPedidos(Socket soc){
 			super();
-			inStream = new ObjectInputStream(soc.getInputStream());
-			outStream = new ObjectOutputStream(soc.getOutputStream());
+			try {
+				inStream = new ObjectInputStream(soc.getInputStream());
+				outStream = new ObjectOutputStream(soc.getOutputStream());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			s=soc;
 		}
 
@@ -95,9 +94,9 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				rf.seek(p.getOffset());
 				rf.read(parteFicheiroPedido);
 				rf.close();
-			} catch (IOException e1) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
 
 			return parteFicheiroPedido;
@@ -112,7 +111,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 			try {
 				while(true){
-					System.out.println("à espera...");
 
 					// RECEÇÃO da MSG:
 					msg=inStream.readObject();
@@ -131,6 +129,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
 						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
 						outStream.writeObject(parteFicheiro);
+						System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
 					}
 				}
 			} catch (ClassNotFoundException e) {
