@@ -29,7 +29,7 @@ public class ThreadPool {
 		}
 	}
 
-	public Runnable getTask() throws InterruptedException {
+	private Runnable getTask() throws InterruptedException {
 		return tasks.take();
 	}
 

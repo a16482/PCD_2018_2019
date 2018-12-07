@@ -194,9 +194,9 @@ public class Download extends Thread{
 					blocosDescarregadosThread++;
 					blocosDescarregados++;
 					w.atualizabarraDeProgresso((blocosDescarregados*100)/numeroTotalBlocos);
-//					sleep(100);
+					sleep(100);
 				}
-			} catch (NumberFormatException | IOException | ClassNotFoundException e) {
+			} catch (NumberFormatException | IOException | ClassNotFoundException | InterruptedException e) {
 				// TODO Auto-generated catch block
 
 				e.printStackTrace();

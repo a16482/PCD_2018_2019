@@ -347,12 +347,15 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	// ------------------------------------------------------------------------
 	// Invocado sempre que a propriedade de progresso da tarefa é alterada
 	// ------------------------------------------------------------------------
-	@Override
+//	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if ("progress" == evt.getPropertyName()) {
-			int progress = (Integer) evt.getNewValue();
-			barraDeProgresso.setValue(progress);
-		}
+		System.out.println(evt.getPropertyName());
+		MsgBox.info("Evento: " + evt.getPropertyName() + "\nToString: " + evt.toString());
+		
+//		if ("progress" == evt.getPropertyName()) {
+//			int progress = (Integer) evt.getNewValue();
+//			barraDeProgresso.setValue(progress);
+//		}
 	}
 	
 	public void atualizabarraDeProgresso(int p) {

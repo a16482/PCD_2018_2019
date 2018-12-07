@@ -24,7 +24,7 @@ public class Servidor {
 			new TrataMsg(s.getInputStream(), s.getOutputStream()).start();
 		}
 	}
-	
+
 	private synchronized void adicionaCliente(Cliente c) {
 		if (!existeCliente(c)) { 
 			diretorio.add(c);
@@ -41,10 +41,10 @@ public class Servidor {
 				diretorio.remove(clienteDiretorio);
 				encontrado= true;
 			}
-			
+
 		}
 	}
-	
+
 	public synchronized boolean existeCliente (Cliente c) {
 		boolean existeCliente= false;
 		Cliente clienteDiretorio;
@@ -70,107 +70,131 @@ public class Servidor {
 			this.inStream = new ObjectInputStream(in);
 			this.outStream = new ObjectOutputStream(out);
 		}
-		
+
 		private boolean confirmaLigacao(Cliente cliente) {
-		    try (Socket s = new Socket(cliente.ipCliente(), Integer.parseInt(cliente.portoCliente()))) {
-		        return true;
-		    } catch (IOException ex) {
-		    	System.out.println("CLI " + cliente.ipCliente() + " " + cliente.portoCliente() + " está offline");
-		    	removeCliente(cliente);
-		    }
-		    return false;
-		}
-		
-		private synchronized void informaDiretorio() {
-			try {	
-				outStream.flush();
-				for (Cliente d : diretorio) {
-//					if (!confirmaLigacao(d)) continue;
-					outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
-					System.out.println("CLI " + d.ipCliente() + " " + d.portoCliente());
-				}
-				outStream.writeObject("END");
-				outStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally{
+			boolean isAlive = false;
+			Socket s=null;
+			ObjectOutputStream oos=null;
+			ObjectInputStream ois=null;
+			String msg;
+			System.out.println("A testar se o cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + " está vivo");
+			try {
+				s = new Socket(cliente.ipCliente(), Integer.parseInt(cliente.portoCliente()));
+				oos = new ObjectOutputStream(s.getOutputStream());
+				ois = new ObjectInputStream(s.getInputStream());
+				oos.flush();
+				String pergunta = "Servidor de Ficheiros " + cliente.ipCliente() + " : " + cliente.portoCliente() + " estás Vivo?";
+				System.out.println("Perguntei ao cliente: " + pergunta);
+				oos.writeObject(pergunta);
+				msg = (String)ois.readObject();
+				System.out.println("Recebi esta resposta: " + msg);
+				isAlive = true;
+			} catch (IOException | ClassNotFoundException e){
+				System.out.println("Cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + "está desligado");
+			}
+			finally {
 				try {
-					inStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+					oos.close();
+					ois.close();
+					s.close();
+				} catch (Exception e) {
+					System.out.println("Cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + "está desligado");
+					isAlive = false;
 				}
 			}
-		}
+				return isAlive;
+			}
 
-		@Override
-		public void run() {
-			try {
-				while(true){
-					System.out.println("à espera...");
+			private synchronized void informaDiretorio() {
+				try {	
+					outStream.flush();
+					for (Cliente d : diretorio) {
+						if (!confirmaLigacao(d)) continue;
+						outStream.writeObject("CLT "+ d.ipCliente() + " " + d.portoCliente());
+						System.out.println("CLI " + d.ipCliente() + " " + d.portoCliente());
+					}
+					outStream.writeObject("END");
+					outStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally{
+					try {
+						inStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
-					// RECEÇÃO da MSG:
-					String msg=(String)inStream.readObject();
+			@Override
+			public void run() {
+				try {
+					while(true){
+						System.out.println("à espera...");
 
-					//--> cria uma instância de Msg do Cliente e VERIFICA o tipo de MSG:
-					Msg m = new Msg(msg);
-					tipoMsg = m.getTipoMsg();
-					cliente = m.getClienteMsg();
-					synchronized (diretorio) {
-						switch (tipoMsg) {
+						// RECEÇÃO da MSG:
+						String msg=(String)inStream.readObject();
+
+						//--> cria uma instância de Msg do Cliente e VERIFICA o tipo de MSG:
+						Msg m = new Msg(msg);
+						tipoMsg = m.getTipoMsg();
+						cliente = m.getClienteMsg();
+						synchronized (diretorio) {
+							switch (tipoMsg) {
 							case ("INSC"): 
 								adicionaCliente(cliente);
-								outStream.flush();  //limpeza
-								outStream.writeObject(new String("ok"));
-								outStream.close();
-								break;
+							outStream.flush();  //limpeza
+							outStream.writeObject(new String("ok"));
+							outStream.close();
+							break;
 							case ("CLT"):
 								informaDiretorio();
-								break;
+							break;
 							case ("RMV"):
 								removeCliente(cliente);
-								outStream.flush();  //limpeza
-								outStream.writeObject(new String("ok"));
-								outStream.close();
-								break;
+							outStream.flush();  //limpeza
+							outStream.writeObject(new String("ok"));
+							outStream.close();
+							break;
 							default:
 								outStream.flush();
 								outStream.writeObject(new String("Mensagem com formato desconhecido"));
 								outStream.close();
 								System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
 								break;
+							}
 						}
+						System.out.println("....................");
 					}
-					System.out.println("....................");
-				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// Não fazer nada... Leitura acabou
-				System.out.println("Cliente desligou-se.");
-			} finally{
-				try {
-					inStream.close();
-				} catch (IOException e) {
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
+				} catch (IOException e) {
+					// Não fazer nada... Leitura acabou
+					System.out.println("Cliente desligou-se.");
+				} finally{
+					try {
+						inStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.err.println("É necessário indicar o porto de escuta do Diretório");
-			System.exit(1);
+
+		public static void main(String[] args) {
+			if (args.length < 1) {
+				System.err.println("É necessário indicar o porto de escuta do Diretório");
+				System.exit(1);
+			}
+			portoDiretorio = Integer.parseInt(args[0]);
+			final Servidor s = new Servidor();
+			try {
+				s.init();
+				s.serve();
+			} catch (IOException e) {
+				System.out.println("Erro no lançamento do Servidor: " + e.getMessage());
+				System.out.println("Lançamento do Servidor cancelado.");
+				System.exit(1);
+			}
 		}
-		portoDiretorio = Integer.parseInt(args[0]);
-		final Servidor s = new Servidor();
-		try {
-			s.init();
-			s.serve();
-		} catch (IOException e) {
-			System.out.println("Erro no lançamento do Servidor: " + e.getMessage());
-			System.out.println("Lançamento do Servidor cancelado.");
-			System.exit(1);
-		}
 	}
-}

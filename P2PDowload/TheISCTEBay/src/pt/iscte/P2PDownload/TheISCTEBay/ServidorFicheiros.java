@@ -34,17 +34,14 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	private void serve() throws IOException {
 
 		ThreadPool p = new ThreadPool(limitePedidos);
-
-		while (true) {
 			while (true) {
 				System.out.println("Servidor iniciado:" + portoProprio);
 				Socket s = fileServer.accept();
-				System.out.println("Ligação efetuada");
+				System.out.println("Novo Pedido! Vamos tratá-lo com o TrataPedios!");
 				t = new TrataPedidos(s);
 				p.submit(t);
 			}
 		}
-	}
 
 
 	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
@@ -108,6 +105,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			Object msg;
 			WordSearchMessage palavraChave;
 			FileBlockRequestMessage pedidoParteFicheiro;
+			
+			System.out.println("Pedido a ser tratado");
 
 			try {
 				while(true){
@@ -115,6 +114,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					// RECEÇÃO da MSG:
 					msg=inStream.readObject();
 					if (msg instanceof WordSearchMessage) {
+						System.out.println("Pedido para procurar ficheiro");
 						palavraChave=(WordSearchMessage)msg;
 						outStream.flush();  //limpeza
 
@@ -130,13 +130,20 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
 						outStream.writeObject(parteFicheiro);
 						System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
+					}else if (msg instanceof String){
+						String mensagem = (String)msg;
+						System.out.println("Mensagem recebida: " + mensagem);
+						outStream.flush();  //limpeza
+						String resposta = "Eu, " + TheISCTEBay.devolveIPUtilizador() + " : " + 	TheISCTEBay.devolveIPUtilizador() + ", estou vivo e bem vivo!";
+						outStream.writeObject(resposta);
+//						System.out.println("A minha resposta: " + resposta);
 					}
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// Não fazer nada... Leitura acabou
-				System.out.println("Cliente desligou-se.");
+				System.out.println("Ligação caiu.\nTeste do Diretório para saber se o cliente está vivo");
 			} finally{
 				try {
 					outStream.close();
