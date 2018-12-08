@@ -8,25 +8,35 @@ public class ThreadPool {
 	BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
 
 	public class ThreadPoolWorker extends Thread{
+		private int posicao;
+		public ThreadPoolWorker(int t ) {
+			posicao=t;
+		}
+		
 		@Override
 		public void run() {
 			try {
 				Runnable r;
 				r = getTask();
 				r.run();
+				ClearThreadPoolPosition(posicao);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			} 
 		}	
 
 	}
 
 	public ThreadPool (int i) {
 		workers = new ThreadPoolWorker[i];
-		for(ThreadPoolWorker t:workers) {
-			t = new ThreadPoolWorker();
-			t.start();
+		for(int t=0; t<i; t++) {
+			ClearThreadPoolPosition(t);
 		}
+	}
+	
+	public void ClearThreadPoolPosition (int pos) {
+		workers[pos] = new ThreadPoolWorker(pos);
+		workers[pos].start();
 	}
 
 	private Runnable getTask() throws InterruptedException {

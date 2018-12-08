@@ -33,20 +33,20 @@ public class ServidorFicheiros extends Thread implements Runnable {
 
 	private void serve() throws IOException {
 
-		ThreadPool p = new ThreadPool(limitePedidos);
-			while (true) {
-				System.out.println("Servidor iniciado:" + portoProprio);
-				Socket s = fileServer.accept();
-				System.out.println("Novo Pedido! Vamos tratá-lo com o TrataPedios!");
-				t = new TrataPedidos(s);
-				p.submit(t);
-			}
+		ThreadPool pool = new ThreadPool(limitePedidos);
+		while (true) {
+			System.out.println("Servidor iniciado:" + portoProprio);
+			Socket s = fileServer.accept();
+			System.out.println("Novo Pedido! Vamos tratá-lo com o TrataPedios!");
+			t = new TrataPedidos(s);
+			pool.submit(t);
 		}
+	}
 
 
 	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
 	//Parte de um determinado ficheiro da pasta local
-	private class TrataPedidos extends Thread implements Runnable {
+	private class TrataPedidos implements Runnable {
 
 		private ObjectInputStream inStream;
 		private ObjectOutputStream outStream;
@@ -129,7 +129,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
 						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
 						outStream.writeObject(parteFicheiro);
-						System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
+						//System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
 					}else if (msg instanceof String){
 						String mensagem = (String)msg;
 						System.out.println("Mensagem recebida: " + mensagem);
