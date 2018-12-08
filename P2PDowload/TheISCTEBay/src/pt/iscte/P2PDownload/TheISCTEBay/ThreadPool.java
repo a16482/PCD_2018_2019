@@ -9,6 +9,7 @@ public class ThreadPool {
 
 	public class ThreadPoolWorker extends Thread{
 		private int posicao;
+		
 		public ThreadPoolWorker(int t ) {
 			posicao=t;
 		}
@@ -19,10 +20,11 @@ public class ThreadPool {
 				Runnable r;
 				r = getTask();
 				r.run();
-				ClearThreadPoolPosition(posicao);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			} 
+			}  finally {
+				ClearThreadPoolPosition(posicao);
+			}
 		}	
 
 	}
