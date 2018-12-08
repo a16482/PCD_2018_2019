@@ -37,12 +37,47 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		while (true) {
 			System.out.println("Servidor iniciado:" + portoProprio);
 			Socket s = fileServer.accept();
+			int port = s.getPort();
+			System.out.println("Porto do Cliente: "+port);
+			if (port == 8079) {
+				System.out.println("Pedido do Servidor");
+				respondeDiretorio(s);
+			}else {
 			System.out.println("Novo Pedido! Vamos tratá-lo com o TrataPedios!");
 			t = new TrataPedidos(s);
-			pool.submit(t);
+			pool.execute(t);
+			}
 		}
 	}
 
+	private void respondeDiretorio(Socket soc) {
+		ObjectInputStream inStream=null;
+		ObjectOutputStream outStream = null;
+		try {
+			inStream = new ObjectInputStream(soc.getInputStream());
+			outStream= new ObjectOutputStream(soc.getOutputStream());
+			
+			String mensagem = (String) inStream.readObject();
+			System.out.println("Mensagem recebida: " + mensagem);
+			outStream.flush();  //limpeza
+			String resposta = "Eu, " + TheISCTEBay.devolveIPUtilizador() + " : " + 	TheISCTEBay.devolveIPUtilizador() + ", estou vivo e bem vivo!";
+			outStream.writeObject(resposta);
+			System.out.println("A minha resposta: " + resposta);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// Não fazer nada... Leitura acabou
+			System.out.println("Ligação caiu.\nTeste do Diretório para saber se o cliente está vivo");
+		} finally{
+			try {
+				outStream.close();
+				inStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
 	//Parte de um determinado ficheiro da pasta local
@@ -130,14 +165,15 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
 						outStream.writeObject(parteFicheiro);
 						//System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
-					}else if (msg instanceof String){
-						String mensagem = (String)msg;
-						System.out.println("Mensagem recebida: " + mensagem);
-						outStream.flush();  //limpeza
-						String resposta = "Eu, " + TheISCTEBay.devolveIPUtilizador() + " : " + 	TheISCTEBay.devolveIPUtilizador() + ", estou vivo e bem vivo!";
-						outStream.writeObject(resposta);
-//						System.out.println("A minha resposta: " + resposta);
 					}
+//					else if (msg instanceof String){
+//						String mensagem = (String)msg;
+//						System.out.println("Mensagem recebida: " + mensagem);
+//						outStream.flush();  //limpeza
+//						String resposta = "Eu, " + TheISCTEBay.devolveIPUtilizador() + " : " + 	TheISCTEBay.devolveIPUtilizador() + ", estou vivo e bem vivo!";
+//						outStream.writeObject(resposta);
+////						System.out.println("A minha resposta: " + resposta);
+//					}
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
