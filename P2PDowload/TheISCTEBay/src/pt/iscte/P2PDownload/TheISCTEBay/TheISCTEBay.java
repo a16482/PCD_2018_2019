@@ -12,7 +12,7 @@ import javax.swing.JPopupMenu;
 public class TheISCTEBay {
 
 	public static int tamanhoDosBlocos = 5000;
-	public static int limitePedidos = 5;
+	public static int limitePedidos = 3;
 	private static String enderecoDiretorio;
 	private static int portoDiretorio;
 	private static int portoUtilizador;
@@ -133,8 +133,8 @@ public class TheISCTEBay {
 		pastaTransferencias = verificaPastaDeTransferencias(args[3]);
 
 		//Mostra os argumentos recebidos na consola
-		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
-				+ "\nPorto do Utilizador: " + portoUtilizador + "\nPasta para transferências: " + pastaTransferencias);
+//		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
+//				+ "\nPorto do Utilizador: " + portoUtilizador + "\nPasta para transferências: " + pastaTransferencias);
 
 		//Instancia um diretório
 		d = new Diretorio (enderecoDiretorio, portoDiretorio, portoUtilizador);
@@ -160,8 +160,11 @@ public class TheISCTEBay {
 		d.consultaUtilizadores();
 
 		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
+		
+		System.out.println("Lista de Utilizadores Ligados: ");
 
 		for (Utilizador u : listaUtilizadores) {
+			
 			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
 		}
 

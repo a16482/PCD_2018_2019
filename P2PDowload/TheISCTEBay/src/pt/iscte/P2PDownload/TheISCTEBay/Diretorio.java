@@ -40,7 +40,7 @@ public class Diretorio {
 
 		portoUtilizador = pUser;
 		msgInfo = "Endereço do Utilizador= " + enderecoUtilizador;
-		System.out.println(msgInfo); 
+//		System.out.println(msgInfo); 
 	}
 
 	//Remoção de um utilizador do diretorio do cliente
@@ -81,7 +81,13 @@ public class Diretorio {
 			String conf = (String)confirmacao.readObject();
 			if (conf.equals("ok")) {
 				msgInfo = "Registo no Diretório efetuado com sucesso" ;
-				System.out.println(msgInfo); 
+//				System.out.println(msgInfo); 
+			} else if (conf.equals("existe")) {
+				String msg = "Já há um utilizador no porto " + portoUtilizador + NEW_LINE +  
+						"A aplicação TheISCTEBay vai terminar.";
+				System.out.println(msg);
+				MsgBox.erro(msg);
+				System.exit(1);
 			}
 			registo.close();
 			confirmacao.close();
@@ -110,7 +116,7 @@ public class Diretorio {
 					System.out.println("Fim da lista de utilizadores");
 					break;
 				}
-				System.out.println(utilizadorString);
+				System.out.println("Utilizador recebido: "+utilizadorString);
 				Utilizador u = new Utilizador(utilizadorString); //alterar
 				if (!existeUtilizador(u)) { 
 					listaUtilizadores.add(u);
@@ -182,7 +188,8 @@ public class Diretorio {
 		ObjectOutputStream oos=null;
 		ObjectInputStream ois=null;
 		consultaUtilizadores();  //recarrega a lista de utilizadores no Diretorio
-
+		
+		System.out.println("Quem tem ficheiros com a palavra \"" + keyWord.getPalavraChave()+"\"?");
 		Iterator<Utilizador> iListaUtilizadores = getListaUtilizadores().iterator();
 
 		while (iListaUtilizadores.hasNext()) {
@@ -191,21 +198,24 @@ public class Diretorio {
 			// exclui o próprio (que também é membro do diretório da pesquisa
 			if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
 					&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
-
 				try {
 					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
 					oos = new ObjectOutputStream(s.getOutputStream());
 					ois = new ObjectInputStream(s.getInputStream());
 					oos.flush();
+					System.out.println(utilizadorLista.portoUtilizador() + " tens ficheiros com \"" + keyWord.getPalavraChave() + "\"?");
 					oos.writeObject(keyWord);
 					while (true) {
 						try {
+							System.out.println("À espera da resposta...");
 							ficheiroEncontrado = (FileDetails)ois.readObject();
+							System.out.println("Ficheiro encontrado: " + ficheiroEncontrado.nomeFicheiro() + " pelo utilizador: " + utilizadorLista.portoUtilizador());
 
 							//Verificar se o ficheiro encontrado já existe na nossa lista
 							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
 							ficheiroLista.setUtilizador(utilizadorLista);
 						} catch (EOFException e) {
+							System.out.println("Fim dos ficheiros encontrados pelo utilizador "+utilizadorLista.portoUtilizador());
 							break;
 						}
 					}
@@ -214,7 +224,7 @@ public class Diretorio {
 //					s.close();
 				} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Ligação caiu... "+utilizadorLista.portoUtilizador() + " Diretório - linha 221 - Exception: " + e1.getMessage());
 				}finally {
 					try {
 						oos.close();
@@ -225,9 +235,7 @@ public class Diretorio {
 						e.printStackTrace();
 					}			
 				}
-
 			}
-
 		}
 		return listaFicheirosEncontrados;
 	}

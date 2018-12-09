@@ -198,7 +198,7 @@ public class Download extends Thread{
 				}
 			} catch (NumberFormatException | IOException | ClassNotFoundException | InterruptedException e) {
 				// TODO Auto-generated catch block
-
+				
 				e.printStackTrace();
 			}finally {
 				try {

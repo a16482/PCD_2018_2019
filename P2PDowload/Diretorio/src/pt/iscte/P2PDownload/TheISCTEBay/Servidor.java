@@ -25,9 +25,12 @@ public class Servidor {
 		}
 	}
 
-	private synchronized void adicionaCliente(Cliente c) {
+	private synchronized boolean adicionaCliente(Cliente c) {
 		if (!existeCliente(c)) { 
 			diretorio.add(c);
+			return true;
+		}else {
+			return false;
 		}
 	}
 
@@ -38,6 +41,7 @@ public class Servidor {
 		while ((iDiretorio.hasNext()) && (!encontrado)) {
 			clienteDiretorio = iDiretorio.next();
 			if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
+				System.out.println("CLIENTE REMOVIDO: " + clienteDiretorio.portoCliente());
 				diretorio.remove(clienteDiretorio);
 				encontrado= true;
 			}
@@ -56,42 +60,49 @@ public class Servidor {
 		}
 		return existeCliente;
 	}
-	
+
 	private synchronized boolean confirmaLigacao(Cliente cliente) {
 		boolean isAlive = false;
 		Socket s=null;
 		ObjectOutputStream oos=null;
 		ObjectInputStream ois=null;
 		String msg;
-		System.out.println("A testar se o cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + " está vivo");
 		try {
 			InetAddress addressCiente = InetAddress.getByName(cliente.ipCliente());
-			InetAddress addressServidor =InetAddress.getLocalHost();
-			int portServidor = 8079;
+			//			InetAddress addressServidor =InetAddress.getLocalHost();
 			int portCliente = Integer.parseInt(cliente.portoCliente());
-			s = new Socket(addressCiente, portCliente,addressServidor,portServidor);
-	
-//			s.setSoTimeout(2000);
+			//			int portServidor = portCliente+1000;
+			//			System.out.println("Porto do Diretório: " + portServidor);
+			//			System.out.println("Porto do Cliente: " + portCliente);
+			//			System.out.println("Ligar socket");
+			s = new Socket(addressCiente, portCliente);
+			System.out.println("Socket ligado!");
+			s.setSoTimeout(2000);
 			oos = new ObjectOutputStream(s.getOutputStream());
 			ois = new ObjectInputStream(s.getInputStream());
 			oos.flush();
-			String pergunta = "Servidor de Ficheiros " + cliente.ipCliente() + " : " + cliente.portoCliente() + " estás Vivo?";
+			String pergunta = cliente.portoCliente() + " estás Vivo?";
 			System.out.println("Perguntei ao cliente: " + pergunta);
 			oos.writeObject(pergunta);
 			msg = (String)ois.readObject();
 			System.out.println("Recebi esta resposta: " + msg);
 			isAlive = true;
 		} catch (IOException | ClassNotFoundException e){
-			System.out.println("Primeiro cach: Cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + "está desligado");
+			System.out.println(e.getMessage());
+			System.out.println("Primeiro cach: Cliente " + cliente.portoCliente() + " está desligado");
 			isAlive = false;
 		}
 		finally {
 			try {
 				oos.close();
 				ois.close();
+				System.out.println("A fecher socket");
+				System.out.println("Porto Diretório a libertar: " + s.getLocalPort());
+				System.out.println("Porto do cliente a libertar: " + s.getPort());
 				s.close();
 			} catch (Exception e) {
-				System.out.println("Finally: Cliente " + cliente.ipCliente() + " : " + cliente.portoCliente() + "está desligado");
+				System.out.println(e.getMessage());
+				System.out.println("Finally: Cliente " + cliente.portoCliente() + " está desligado");
 				isAlive = false;
 			}
 		}
@@ -119,7 +130,9 @@ public class Servidor {
 				while (iDiretorio.hasNext()) {
 					cli = iDiretorio.next();
 					if (!confirmaLigacao(cli)) {
+						System.out.println("CLIENTE REMOVIDO: " + cli.portoCliente());
 						iDiretorio.remove();
+						System.out.println("CLIENTE REMOVIDO: " + cli.portoCliente());
 					}else {
 						outStream.writeObject("CLT "+ cli.ipCliente() + " " + cli.portoCliente());
 						System.out.println("CLI " + cli.ipCliente() + " " + cli.portoCliente());
@@ -132,7 +145,7 @@ public class Servidor {
 				try {
 					outStream.close();
 					inStream.close();
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -141,6 +154,7 @@ public class Servidor {
 
 		@Override
 		public void run() {
+			String resposta;
 			try {
 				while(true){
 					System.out.println("à espera...");
@@ -155,9 +169,13 @@ public class Servidor {
 					synchronized (diretorio) {
 						switch (tipoMsg) {
 						case ("INSC"): 
-							adicionaCliente(cliente);
+							if(adicionaCliente(cliente)) {
+								resposta = "ok";
+							}else {
+								resposta = "existe";
+							}
 						outStream.flush();  //limpeza
-						outStream.writeObject(new String("ok"));
+						outStream.writeObject(resposta);
 						outStream.close();
 						break;
 						case ("CLT"):
