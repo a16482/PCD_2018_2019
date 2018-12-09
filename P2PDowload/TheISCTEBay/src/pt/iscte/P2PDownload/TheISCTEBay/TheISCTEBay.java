@@ -12,7 +12,7 @@ import javax.swing.JPopupMenu;
 public class TheISCTEBay {
 
 	public static int tamanhoDosBlocos = 5000;
-	public static int limitePedidos = 3;
+	public static int limitePedidos = 5;
 	private static String enderecoDiretorio;
 	private static int portoDiretorio;
 	private static int portoUtilizador;
