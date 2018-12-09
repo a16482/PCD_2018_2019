@@ -29,14 +29,14 @@ public class WinPopUpConfig extends JPanel {
 		
 		String endIPSrv = TheISCTEBay.devolveEnderecoDirectorio();
 		String portSrv = String.valueOf(TheISCTEBay.devolvePortoDiretorio());
-		String endIPCli = "IP do cliente (localhost)";
+		String endIPCli="";
 		try {
 			endIPCli = InetAddress.getLocalHost().getHostAddress();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String portCli = String.valueOf(TheISCTEBay.devolvePortoUtilizador());
-		String transferCli = "..\\Transfer";
+		String transferCli = TheISCTEBay.pastaTransferencias;
 		
 		// ***************************************************
 		// Definição de Font(s)
@@ -55,10 +55,10 @@ public class WinPopUpConfig extends JPanel {
 		Dimension dimensionPequeno = new Dimension((W -120), (H/10 + 20));
 		
 		// ***************************************************
-		// -------- SERVIDOR --------
-		// Título servidor
+		// -------- DIRETÓRIO --------
+		// Título diretório
 		JLabel lblServer = new JLabel();
-		lblServer.setText("Servidor");
+		lblServer.setText("Diretório");
 		lblServer.setHorizontalAlignment(SwingConstants.LEFT);
 		lblServer.setFont(fontTitulos);
 		lblServer.setHorizontalAlignment(SwingConstants.LEFT);

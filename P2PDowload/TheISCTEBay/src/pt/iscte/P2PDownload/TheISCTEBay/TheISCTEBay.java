@@ -16,7 +16,7 @@ public class TheISCTEBay {
 	private static String enderecoDiretorio;
 	private static int portoDiretorio;
 	private static int portoUtilizador;
-	private static String pastaTransferencias;
+	public static String pastaTransferencias;
 	private static Diretorio d;
 	private static  ServidorFicheiros fileServer;
 	private static void fecharServidor() {

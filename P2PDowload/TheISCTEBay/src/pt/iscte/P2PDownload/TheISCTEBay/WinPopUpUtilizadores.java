@@ -115,8 +115,8 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 						e.printStackTrace();
 					}
 				}
+				
 			}
-			
 			repintaScroller();
 			
 		}
