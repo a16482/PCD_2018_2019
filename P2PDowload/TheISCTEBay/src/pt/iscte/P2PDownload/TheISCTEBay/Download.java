@@ -60,7 +60,7 @@ public class Download extends Thread{
 			u++;
 		}
 
-		String msg = "ficheiro: " + ficheiro.toString() + "\nDescarga completa. \n";
+		String msg = "Ficheiro: " + ficheiro.toString() + "\nDescarga completa. \n";
 		Iterator<User> iUsers = threadUsers.iterator();
 		while(iUsers.hasNext()) {
 			User uThread = iUsers.next();
@@ -194,9 +194,9 @@ public class Download extends Thread{
 					blocosDescarregadosThread++;
 					blocosDescarregados++;
 					w.atualizabarraDeProgresso((blocosDescarregados*100)/numeroTotalBlocos);
-					sleep(100);
+//					sleep(100);
 				}
-			} catch (NumberFormatException | IOException | ClassNotFoundException | InterruptedException e) {
+			} catch (NumberFormatException | IOException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				
 				e.printStackTrace();

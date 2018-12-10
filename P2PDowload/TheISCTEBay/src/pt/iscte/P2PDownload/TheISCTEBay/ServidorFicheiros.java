@@ -17,9 +17,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
 	private TrataPedidos t;
 	private int limitePedidos = TheISCTEBay.limitePedidos;
-	//	private ObjectInputStream inStream=null;
-	//	private ObjectOutputStream outStream = null;
-	//	private Object msg;
 
 
 	//Servidor sempre à escuta
@@ -52,16 +49,16 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				Object msg=inStream.readObject();
 
 				if (msg instanceof String) {
-					String mensagem = (String)msg;
-					System.out.println("Mensagem recebida: " + mensagem);
+//					String mensagem = (String)msg;
+//					System.out.println("Mensagem recebida: " + mensagem);
 					outStream.flush();  //limpeza
 					String resposta = TheISCTEBay.devolvePortoUtilizador() + " Estou vivo!";
 					outStream.writeObject(resposta);
-					System.out.println("A minha resposta: " + resposta);
+//					System.out.println("A minha resposta: " + resposta);
 					outStream.close();
 				} else if (msg instanceof FileBlockRequestMessage) {
 					FileBlockRequestMessage bloco = (FileBlockRequestMessage)msg;
-					System.out.println("Pedido do bloco: " + bloco.getNumeroDoBloco() + " do ficheiro: " + bloco.getFileDetails().nomeFicheiro());
+//					System.out.println("Pedido do bloco: " + bloco.getNumeroDoBloco() + " do ficheiro: " + bloco.getFileDetails().nomeFicheiro());
 					t = new TrataPedidos(bloco, inStream, outStream);
 					pool.execute(t);
 				} else if (msg instanceof WordSearchMessage) {
@@ -81,44 +78,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					e1.printStackTrace();
 				}
 			}
-			//			finally{
-			//				try {
-			//					inStream.close();
-			//				} catch (IOException e) {
-			//					e.printStackTrace();
-			//				}
-			//			}
 		}
 	}
-	//
-	//	private void respondeDiretorio(Socket soc) {
-	//		ObjectInputStream inStream=null;
-	//		ObjectOutputStream outStream = null;
-	//		try {
-	//			inStream = new ObjectInputStream(soc.getInputStream());
-	//			outStream= new ObjectOutputStream(soc.getOutputStream());
-	//
-	//			String mensagem = (String) inStream.readObject();
-	//			System.out.println("Mensagem recebida: " + mensagem);
-	//			outStream.flush();  //limpeza
-	//			String resposta = TheISCTEBay.devolvePortoUtilizador() + " Estou vivo!";
-	//			outStream.writeObject(resposta);
-	//			System.out.println("A minha resposta: " + resposta);
-	//		} catch (ClassNotFoundException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		} catch (IOException e) {
-	//			// Não fazer nada... Leitura acabou
-	//			System.out.println("Ligação caiu.\nTeste do Diretório para saber se o cliente está vivo");
-	//		} finally{
-	//			try {
-	//				outStream.close();
-	//				inStream.close();
-	//			} catch (IOException e) {
-	//				e.printStackTrace();
-	//			}
-	//		}
-	//	}
 
 	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
 	//Parte de um determinado ficheiro da pasta local
@@ -191,11 +152,10 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						byte[] parteFicheiro = parteDoFicheiroPedido(bloco);
 						oos.flush();  //limpeza
 						oos.writeObject(parteFicheiro);
-						System.out.println("Bloco enviado: " + bloco.getNumeroDoBloco());
+//						System.out.println("Bloco enviado: " + bloco.getNumeroDoBloco());
 						// Próximo bloco
 						bloco = (FileBlockRequestMessage)ois.readObject();
 					}
-					//					oos.close();
 				}else if (tipoPedido.equals("PalavraChave")) {
 					oos.flush();  //limpeza
 					listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
@@ -203,18 +163,17 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					while(iListaFicheiros.hasNext()) {
 						FileDetails fd = iListaFicheiros.next();
 						oos.writeObject(fd);
-						System.out.println("Ficheiro encontrado: " + fd.nomeFicheiro());
+//						System.out.println("Ficheiro encontrado: " + fd.nomeFicheiro());
 					}
-					//					oos.close();
 				}
 			} catch (IOException | ClassNotFoundException e){
-				System.out.println("Ligação caiu... - ServidorFicheiros linha 211 - IOException ou ClassNotFoundException: " + e.getMessage());
+				System.out.println("Ligação caiu... - ServidorFicheiros linha 172 - IOException ou ClassNotFoundException: " + e.getMessage());
 			} finally {
 				try {
 					ois.close();
 					oos.close();
 				} catch (IOException e) {
-					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 217 - IOException: " + e.getMessage());
+					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 178 - IOException: " + e.getMessage());
 
 					e.printStackTrace();
 				}
@@ -222,56 +181,3 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		}
 	}
 }
-
-//			try {
-//				while(true){
-//					// RECEÇÃO da MSG:
-//					System.out.println("Há espera de receber o Pedido.");
-//					msg=inStream.readObject();
-//					System.out.println("Pedido Recebido");
-//					if (msg instanceof WordSearchMessage) {
-//						palavraChave=(WordSearchMessage)msg;
-//						System.out.println("Pedido para procurar ficheiros por: " + palavraChave);
-//						outStream.flush();  //limpeza
-//
-//						// Falta chamar método para pesquisar ficheiros
-//						listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
-//						Iterator<FileDetails> iListaFicheiros = listaFicheirosEncontrados.iterator();
-//						while(iListaFicheiros.hasNext()) {
-//							outStream.writeObject(iListaFicheiros.next());
-//						}
-//						outStream.close();
-//					} else if (msg instanceof FileBlockRequestMessage){
-//						System.out.println("Pedido de bloco de ficheiro");
-//						pedidoParteFicheiro = (FileBlockRequestMessage)msg;
-//						byte[] parteFicheiro = parteDoFicheiroPedido(pedidoParteFicheiro);
-//						outStream.writeObject(parteFicheiro);
-//						//System.out.println(this.getName() + " - Bloco: " + pedidoParteFicheiro.getNumeroDoBloco());
-//					}
-//					//					else if (msg instanceof String){
-//					//						String mensagem = (String)msg;
-//					//						System.out.println("Mensagem recebida: " + mensagem);
-//					//						outStream.flush();  //limpeza
-//					//						String resposta = "Eu, " + TheISCTEBay.devolveIPUtilizador() + " : " + 	TheISCTEBay.devolveIPUtilizador() + ", estou vivo e bem vivo!";
-//					//						outStream.writeObject(resposta);
-//					////						System.out.println("A minha resposta: " + resposta);
-//					//					}
-//				}
-//			} catch (ClassNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// Não fazer nada... Leitura acabou
-//				System.out.println("Ligação caiu.\nTeste do Diretório para saber se o cliente está vivo");
-//			} finally{
-//				try {
-//					outStream.close();
-//					inStream.close();
-//					s.close();
-//					//					fileServer.notify();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}
-//}

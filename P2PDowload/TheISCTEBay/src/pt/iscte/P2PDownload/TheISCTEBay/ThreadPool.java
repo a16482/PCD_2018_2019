@@ -13,7 +13,7 @@ public class ThreadPool {
 		workers = new ThreadPoolWorker[nThreads];
 		for(int i=0; i<nThreads; i++) {
 			workers[i]=new ThreadPoolWorker();
-//			clearThreadPoolPosition(t);
+			//			clearThreadPoolPosition(t);
 			workers[i].setName("Tarefa "+ i);
 			workers[i].start();
 		}
@@ -53,30 +53,4 @@ public class ThreadPool {
 			}	
 		}
 	}
-		
-//		public class Task implements Runnable{
-//			private int num;
-//			public Task (int n) {
-//				num = n;
-//			}
-//
-//			public void run() {
-//				System.out.println("Tarefa n. " + num + " está a correr");
-//			}
-//		}
-
-		//
-		//		public void clearThreadPoolPosition (int pos) {
-		//			workers[pos] = new ThreadPoolWorker(pos);
-		//			workers[pos].setName("TP "+pos);
-		//			workers[pos].start();
-		//		}
-		//
-		//		private Runnable getTask() throws InterruptedException {
-		//			return tasks.take();
-		//		}
-		//
-		//		public synchronized void submit (Runnable primeCheckTask) {
-		//			tasks.add(primeCheckTask);
-		//		}
-	}
+}

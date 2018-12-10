@@ -49,7 +49,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 
 	JFrame upperLeftFrame;
 	Container painelPequeno;
-	Diretorio d = TheISCTEBay.devolveDiretorio();
+	Diretorio d;
 	
 	class Task extends SwingWorker<Void, Void> {
 		@Override
@@ -94,7 +94,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		public void run() {
 			synchronized(this) {
 				FlushListaUtilizadores listaLimpa = new FlushListaUtilizadores();
-				listaLimpa.start();			
+				listaLimpa.start();
 				try {
 					listaLimpa.join(); //(3000);
 				} catch (InterruptedException e) {
@@ -108,20 +108,19 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} 
-				while (this.isAlive()) {
-					try {
-						wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				
 			}
 			repintaScroller();
-			
 		}
 		
 		public void repintaScroller() {
+			int totalUtilizadores = d.getTotalUtilizadores();
+			if(totalUtilizadores== 1) {
+				lblTitulo.setText(totalUtilizadores + " Utilizador Ligado");
+			} else {
+				lblTitulo.setText(totalUtilizadores + " Utilizadores Ligados");
+			}
+			painelPequeno.revalidate();
+			painelPequeno.repaint();
 			scrollerListaUtilizadores.revalidate();
 			scrollerListaUtilizadores.repaint();
 			MsgBox.info("Lista de utilizadores recarregada!");
@@ -166,10 +165,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 				return totalElementos;
 			}
 			
-			public int getTotalUtilizadores() {
-				return d.getTotalUtilizadores();
-			}
-			
 			public void init() {
 				new Thread(this, "LoadListaUtilizadores").start();
 			}
@@ -181,6 +176,7 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 	public WinPopUpUtilizadores() {
 		super(new BorderLayout());
 		
+		d = TheISCTEBay.devolveDiretorio();
 		//Fonts
 		Font fontTitulos = new Font("Lucida Sans Serif", Font.BOLD, 12);
 		
