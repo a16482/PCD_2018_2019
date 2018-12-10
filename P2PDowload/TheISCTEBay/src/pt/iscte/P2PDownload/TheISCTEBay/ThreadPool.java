@@ -44,9 +44,7 @@ public class ThreadPool {
 					task = tasks.poll();
 				}
 				try {
-					System.out.println(this.getName() + " Iniciou");
 					task.run();
-					System.out.println(this.getName() + " Terminou");
 				} catch (RuntimeException e) {
 					e.printStackTrace();
 				}

@@ -42,7 +42,7 @@ public class Download extends Thread{
 		estadoBlocos = new char [numeroBlocosCompletos+1];
 		Arrays.fill(estadoBlocos, '0');
 		nrBlocosPorUser = numeroTotalBlocos/numeroDeUsers;
-		System.out.println("Número de Partes: " + numeroTotalBlocos);
+//		System.out.println("Número de Partes: " + numeroTotalBlocos);
 		w=wdw;
 		blocosDescarregados=0;
 	}
@@ -68,14 +68,12 @@ public class Download extends Thread{
 				uThread.join();
 				msg += "Fornecedor [endereco=/" + uThread.getUserIp() + ", porto=" + uThread.getUserPorto() + "]:" + uThread.getNumeroBlocos() + "\n";
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		try {
 			Files.write(Paths.get(TheISCTEBay.devolvePastaTransferencias()+"/"+ficheiro.nomeFicheiro()), ficheiroDescarregado);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		w.atualizabarraDeProgresso(100);
@@ -124,7 +122,6 @@ public class Download extends Thread{
 				if (i >= array.length) i = 0;
 				if (i < 0) i = array.length-1;
 			} while (i != inicio);
-
 			return -1;
 		}
 
@@ -132,8 +129,7 @@ public class Download extends Thread{
 			//se não é o último bloco
 			if (nrBloco < numeroBlocosCompletos) {
 				return new FileBlockRequestMessage(ficheiro, nrBloco*tamanhoDosBlocos, tamanhoDosBlocos, nrBloco);
-
-				//se é o último bloco
+			//se é o último bloco
 			} else {
 				return new FileBlockRequestMessage(ficheiro, nrBloco*tamanhoDosBlocos, tamanhoDoUltimoBloco, nrBloco);
 			}
@@ -190,15 +186,12 @@ public class Download extends Thread{
 						System.arraycopy(parteCarregada, 0, ficheiroDescarregado, pedidoBloco.getOffset(), pedidoBloco.getLength());
 					}
 					estadoBlocos[pedidoBloco.getNumeroDoBloco()] = 'D';
-					System.out.println(this.getName() + " baixou o bloco " + pedidoBloco.getNumeroDoBloco());
+//					System.out.println(this.getName() + " baixou o bloco " + pedidoBloco.getNumeroDoBloco());
 					blocosDescarregadosThread++;
 					blocosDescarregados++;
 					w.atualizabarraDeProgresso((blocosDescarregados*100)/numeroTotalBlocos);
-//					sleep(100);
 				}
 			} catch (NumberFormatException | IOException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				
 				e.printStackTrace();
 			}finally {
 				try {
@@ -206,12 +199,9 @@ public class Download extends Thread{
 					ois.close();
 					s.close();	
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}
-
 	}
 }

@@ -10,14 +10,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-// Classe que recebe os pedidos de Detalhes de todos os Ficheiros a Pasta e pedidos de uma parte de um Ficheiro
+// Classe que recebe os pedidos dos tipos "bloco", "PalavraChave" ou msg do diretório a confirmar se este cliente está vivo
 public class ServidorFicheiros extends Thread implements Runnable {
-
 	private ServerSocket fileServer;
 	private int portoProprio = TheISCTEBay.devolvePortoUtilizador();
 	private TrataPedidos t;
 	private int limitePedidos = TheISCTEBay.limitePedidos;
-
 
 	//Servidor sempre à escuta
 	@Override
@@ -25,10 +23,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		try {
 			fileServer = new ServerSocket(portoProprio);
 			serve();
-			System.out.println("Servidor de Ficheiros iniciado no porto: " + portoProprio);
+//			System.out.println("Servidor de Ficheiros iniciado no porto: " + portoProprio);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
 			e.printStackTrace();
 		}
 	}
@@ -37,12 +33,11 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		Socket s = null;
 		ThreadPool pool = new ThreadPool(limitePedidos);
 		while (true) {
-			System.out.println("Servidor de Ficheiros à escuta no porto: " + portoProprio);
-
+//			System.out.println("Servidor de Ficheiros à escuta no porto: " + portoProprio);
 			try {
 				s = fileServer.accept();
-				int port = s.getPort();
-				System.out.println("Novo Pedido do porto: "+port);
+//				int port = s.getPort();
+//				System.out.println("Novo Pedido do porto: "+port);
 				ObjectInputStream inStream = new ObjectInputStream(s.getInputStream());
 				ObjectOutputStream outStream = new ObjectOutputStream(s.getOutputStream());
 
@@ -63,26 +58,24 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					pool.execute(t);
 				} else if (msg instanceof WordSearchMessage) {
 					WordSearchMessage palavraChave=(WordSearchMessage)msg;
-					System.out.println("Pedido para procurar ficheiros por: " + palavraChave.getPalavraChave());
+//					System.out.println("Pedido para procurar ficheiros por: " + palavraChave.getPalavraChave());
 					t = new TrataPedidos(palavraChave, inStream, outStream);
 					pool.execute(t);
 				}
 
 			}catch (ClassNotFoundException | IOException e) {
-				System.out.println("ServidorFicheiros linha 75 - IOException: " + e.getMessage());
-				System.out.println("ServidorFicheiros vai ser lançado outra vez");
+//				System.out.println("ServidorFicheiros linha 67 - IOException: " + e.getMessage());
+//				System.out.println("ServidorFicheiros vai ser lançado outra vez");
 				try {
 					s.close();
 				} catch (IOException e1) {
-					System.out.println("Socket já estava fechado - ServidorFicheiros linha 80 - IOException: " + e1.getMessage());
+//					System.out.println("Socket já estava fechado - ServidorFicheiros linha 72 - IOException: " + e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
 		}
 	}
 
-	//pedido pode ser Detalhes dos Ficheiros que estão na pasta local ou
-	//Parte de um determinado ficheiro da pasta local
 	private class TrataPedidos implements Runnable {
 		private WordSearchMessage palavraChave=null;
 		private FileBlockRequestMessage bloco=null;
@@ -90,6 +83,7 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		private ObjectOutputStream oos=null;
 		private String tipoPedido=null;
 
+		//Pedido de um bloco de um determinado ficheiro da pasta local
 		public TrataPedidos(FileBlockRequestMessage b, ObjectInputStream inSream, ObjectOutputStream outStream){
 			super();
 			bloco = b;
@@ -97,7 +91,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			oos = outStream;
 			tipoPedido = "Bloco";
 		}
-
+		
+		//pedido de Detalhes dos Ficheiros que estão na pasta local
 		public TrataPedidos(WordSearchMessage pChave, ObjectInputStream inSream, ObjectOutputStream outStream){
 			super();
 			palavraChave = pChave;
@@ -144,7 +139,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		@Override
 		public void run() {
 			ArrayList<FileDetails> listaFicheirosEncontrados;
-			System.out.println("Pedido a ser tratado");
 
 			try {
 				if (tipoPedido.equals("Bloco")) {
@@ -167,14 +161,13 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					}
 				}
 			} catch (IOException | ClassNotFoundException e){
-				System.out.println("Ligação caiu... - ServidorFicheiros linha 172 - IOException ou ClassNotFoundException: " + e.getMessage());
+//				System.out.println("Ligação caiu... - ServidorFicheiros linha 172 - IOException ou ClassNotFoundException: " + e.getMessage());
 			} finally {
 				try {
 					ois.close();
 					oos.close();
 				} catch (IOException e) {
-					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 178 - IOException: " + e.getMessage());
-
+//					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 178 - IOException: " + e.getMessage());
 					e.printStackTrace();
 				}
 			}

@@ -13,7 +13,7 @@ public class Msg {
 		String parte[]= s.split(" ");
 		
 		tipoMsg = parte[0];
-		System.out.println("tipoMsg: " + tipoMsg);
+//		System.out.println("tipoMsg: " + tipoMsg);
 		
 		if(parte.length > 1) {
 			ip = parte[1];

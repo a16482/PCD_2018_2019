@@ -39,7 +39,7 @@ public class TheISCTEBay {
 				try {
 					fecharServidor();
 					d.removeUtilizador();
-					System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
+//					System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				} finally {
@@ -159,14 +159,12 @@ public class TheISCTEBay {
 		//Consulta a lista de utilizadores no Diretório
 		d.consultaUtilizadores();
 
-		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
+//		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
 		
-		System.out.println("Lista de Utilizadores Ligados: ");
+//		System.out.println("Lista de Utilizadores Ligados: ");
 
-		for (Utilizador u : listaUtilizadores) {
-			
-			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
-		}
-
+//		for (Utilizador u : listaUtilizadores) {			
+//			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
+//		}
 	}
 }

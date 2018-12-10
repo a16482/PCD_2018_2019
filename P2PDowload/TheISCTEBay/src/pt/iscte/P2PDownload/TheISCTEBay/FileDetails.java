@@ -41,7 +41,7 @@ public class FileDetails implements Serializable{
 		users.add(u);	
 		return;
 	}
-	
+
 	@Override
 	public String toString() {
 		return nomeFicheiro;
@@ -53,8 +53,7 @@ public class FileDetails implements Serializable{
 
 	public ArrayList <Utilizador> getUtilizadors() {
 		return users;
-	}
-	
+	}	
 }
 
 

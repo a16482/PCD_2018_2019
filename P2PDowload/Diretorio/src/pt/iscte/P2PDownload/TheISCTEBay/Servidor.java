@@ -16,11 +16,10 @@ public class Servidor {
 
 	private void serve() throws IOException{
 		while(true){
-			System.out.println("Servidor iniciado:" + portoDiretorio);
-
+//			System.out.println("Servidor iniciado:" + portoDiretorio);
 			Socket s=server.accept();
-			System.out.println("Ligação efetuada");
-			System.out.println(s.getPort());
+//			System.out.println("Ligação efetuada");
+//			System.out.println(s.getPort());
 			new TrataMsg(s.getInputStream(), s.getOutputStream()).start();
 		}
 	}
@@ -41,7 +40,7 @@ public class Servidor {
 		while ((iDiretorio.hasNext()) && (!encontrado)) {
 			clienteDiretorio = iDiretorio.next();
 			if(clienteDiretorio.ipCliente().equals(c.ipCliente()) && clienteDiretorio.portoCliente().equals(c.portoCliente())) {
-				System.out.println("CLIENTE REMOVIDO: " + clienteDiretorio.portoCliente());
+//				System.out.println("CLIENTE REMOVIDO: " + clienteDiretorio.portoCliente());
 				diretorio.remove(clienteDiretorio);
 				encontrado= true;
 			}
@@ -69,40 +68,35 @@ public class Servidor {
 		String msg;
 		try {
 			InetAddress addressCiente = InetAddress.getByName(cliente.ipCliente());
-			//			InetAddress addressServidor =InetAddress.getLocalHost();
 			int portCliente = Integer.parseInt(cliente.portoCliente());
-			//			int portServidor = portCliente+1000;
-			//			System.out.println("Porto do Diretório: " + portServidor);
-			//			System.out.println("Porto do Cliente: " + portCliente);
-			//			System.out.println("Ligar socket");
 			s = new Socket(addressCiente, portCliente);
-			System.out.println("Socket ligado!");
+//			System.out.println("Socket ligado!");
 			s.setSoTimeout(2000);
 			oos = new ObjectOutputStream(s.getOutputStream());
 			ois = new ObjectInputStream(s.getInputStream());
 			oos.flush();
 			String pergunta = cliente.portoCliente() + " estás Vivo?";
-			System.out.println("Perguntei ao cliente: " + pergunta);
+//			System.out.println("Perguntei ao cliente: " + pergunta);
 			oos.writeObject(pergunta);
 			msg = (String)ois.readObject();
-			System.out.println("Recebi esta resposta: " + msg);
+//			System.out.println("Recebi esta resposta: " + msg);
 			isAlive = true;
 		} catch (IOException | ClassNotFoundException e){
-			System.out.println(e.getMessage());
-			System.out.println("Primeiro cach: Cliente " + cliente.portoCliente() + " está desligado");
+//			System.out.println(e.getMessage());
+//			System.out.println("Primeiro cach: Cliente " + cliente.portoCliente() + " está desligado");
 			isAlive = false;
 		}
 		finally {
 			try {
 				oos.close();
 				ois.close();
-				System.out.println("A fecher socket");
-				System.out.println("Porto Diretório a libertar: " + s.getLocalPort());
-				System.out.println("Porto do cliente a libertar: " + s.getPort());
+//				System.out.println("A fecher socket");
+//				System.out.println("Porto Diretório a libertar: " + s.getLocalPort());
+//				System.out.println("Porto do cliente a libertar: " + s.getPort());
 				s.close();
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				System.out.println("Finally: Cliente " + cliente.portoCliente() + " está desligado");
+//				System.out.println(e.getMessage());
+//				System.out.println("Finally: Cliente " + cliente.portoCliente() + " está desligado");
 				isAlive = false;
 			}
 		}
@@ -130,12 +124,11 @@ public class Servidor {
 				while (iDiretorio.hasNext()) {
 					cli = iDiretorio.next();
 					if (!confirmaLigacao(cli)) {
-						System.out.println("CLIENTE REMOVIDO: " + cli.portoCliente());
 						iDiretorio.remove();
-						System.out.println("CLIENTE REMOVIDO: " + cli.portoCliente());
+//						System.out.println("CLIENTE REMOVIDO: " + cli.portoCliente());
 					}else {
 						outStream.writeObject("CLT "+ cli.ipCliente() + " " + cli.portoCliente());
-						System.out.println("CLI " + cli.ipCliente() + " " + cli.portoCliente());
+//						System.out.println("CLI " + cli.ipCliente() + " " + cli.portoCliente());
 					}
 				}
 				outStream.writeObject("END");
@@ -157,7 +150,7 @@ public class Servidor {
 			String resposta;
 			try {
 				while(true){
-					System.out.println("à espera...");
+//					System.out.println("à espera...");
 
 					// RECEÇÃO da MSG:
 					String msg=(String)inStream.readObject();
@@ -168,40 +161,39 @@ public class Servidor {
 					cliente = m.getClienteMsg();
 					synchronized (diretorio) {
 						switch (tipoMsg) {
-						case ("INSC"): 
-							if(adicionaCliente(cliente)) {
-								resposta = "ok";
-							}else {
-								resposta = "existe";
-							}
-						outStream.flush();  //limpeza
-						outStream.writeObject(resposta);
-						outStream.close();
-						break;
-						case ("CLT"):
-							informaDiretorio();
-						break;
-						case ("RMV"):
-							removeCliente(cliente);
-						outStream.flush();  //limpeza
-						outStream.writeObject(new String("ok"));
-						outStream.close();
-						break;
-						default:
-							outStream.flush();
-							outStream.writeObject(new String("Mensagem com formato desconhecido"));
-							outStream.close();
-							System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
-							break;
+							case ("INSC"): 
+								if(adicionaCliente(cliente)) {
+									resposta = "ok";
+								}else {
+									resposta = "existe";
+								}
+								outStream.flush();  //limpeza
+								outStream.writeObject(resposta);
+								outStream.close();
+								break;
+							case ("CLT"):
+								informaDiretorio();
+								break;
+							case ("RMV"):
+								removeCliente(cliente);
+								outStream.flush();  //limpeza
+								outStream.writeObject(new String("ok"));
+								outStream.close();
+								break;
+							default:
+								outStream.flush();
+								outStream.writeObject(new String("Mensagem com formato desconhecido"));
+								outStream.close();
+//								System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
+								break;
 						}
 					}
-					System.out.println("....................");
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// Não fazer nada... Leitura acabou
-				System.out.println("Cliente desligou-se.");
+//				System.out.println("Cliente desligou-se.");
 			} finally{
 				try {
 					inStream.close();
@@ -223,8 +215,8 @@ public class Servidor {
 			s.init();
 			s.serve();
 		} catch (IOException e) {
-			System.out.println("Erro no lançamento do Servidor: " + e.getMessage());
-			System.out.println("Lançamento do Servidor cancelado.");
+//			System.out.println("Erro no lançamento do Servidor: " + e.getMessage());
+//			System.out.println("Lançamento do Servidor cancelado.");
 			System.exit(1);
 		}
 	}

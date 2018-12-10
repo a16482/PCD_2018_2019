@@ -64,7 +64,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		//---------------------------------------------------
 		@Override
 		public void done() { 		
-//			Toolkit.getDefaultToolkit().beep();
 			setCursor(null); //desliga o wait do cursor
 		}
 	}
@@ -254,7 +253,6 @@ public class WinPopUpUtilizadores extends JPanel implements ActionListener, Prop
 		if ("progress" == evt.getPropertyName()) {
 			@SuppressWarnings("unused")
 			int progress = (Integer) evt.getNewValue();
-			//barraDeProgresso.setValue(progress);
 		}
 	}
 

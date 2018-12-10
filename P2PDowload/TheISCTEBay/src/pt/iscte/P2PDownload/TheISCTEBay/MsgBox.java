@@ -7,7 +7,9 @@ import javax.swing.JOptionPane;
 
 public final class MsgBox
 {
-		
+    private static final Toolkit AWT_TOOLKIT = Toolkit.getDefaultToolkit();
+    private static final Clipboard CLIPBOARD = AWT_TOOLKIT.getSystemClipboard();
+	
     public static void info(String message) {
         info(message, oNomeDoMetodoQueMeChamou());
     }
@@ -34,10 +36,5 @@ public final class MsgBox
 
     public static void setClipboard(String message) {
         CLIPBOARD.setContents(new StringSelection(message), null);
-    }
-    private static final Toolkit AWT_TOOLKIT = Toolkit.getDefaultToolkit();
-    private static final Clipboard CLIPBOARD = AWT_TOOLKIT.getSystemClipboard();
-
+    }    
 }
-
-
