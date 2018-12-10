@@ -49,7 +49,6 @@ public class Download extends Thread{
 
 	@Override
 	public void run() {
-		//		int contadorPartes=0;
 		int u=0;
 
 		//Cria uma nova thread por cada User que tenha o ficheiro
@@ -68,14 +67,12 @@ public class Download extends Thread{
 				uThread.join();
 				msg += "Fornecedor [endereco=/" + uThread.getUserIp() + ", porto=" + uThread.getUserPorto() + "]:" + uThread.getNumeroBlocos() + "\n";
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		try {
 			Files.write(Paths.get(TheISCTEBay.devolvePastaTransferencias()+"/"+ficheiro.nomeFicheiro()), ficheiroDescarregado);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		w.atualizabarraDeProgresso(100);
@@ -124,7 +121,6 @@ public class Download extends Thread{
 				if (i >= array.length) i = 0;
 				if (i < 0) i = array.length-1;
 			} while (i != inicio);
-
 			return -1;
 		}
 
@@ -194,11 +190,8 @@ public class Download extends Thread{
 					blocosDescarregadosThread++;
 					blocosDescarregados++;
 					w.atualizabarraDeProgresso((blocosDescarregados*100)/numeroTotalBlocos);
-//					sleep(100);
 				}
 			} catch (NumberFormatException | IOException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				
 				e.printStackTrace();
 			}finally {
 				try {
@@ -206,12 +199,9 @@ public class Download extends Thread{
 					ois.close();
 					s.close();	
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}
-
 	}
 }

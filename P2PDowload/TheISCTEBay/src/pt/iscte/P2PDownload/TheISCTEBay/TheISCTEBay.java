@@ -163,8 +163,7 @@ public class TheISCTEBay {
 		
 		System.out.println("Lista de Utilizadores Ligados: ");
 
-		for (Utilizador u : listaUtilizadores) {
-			
+		for (Utilizador u : listaUtilizadores) {	
 			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
 		}
 

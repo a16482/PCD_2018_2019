@@ -69,12 +69,8 @@ public class Servidor {
 		String msg;
 		try {
 			InetAddress addressCiente = InetAddress.getByName(cliente.ipCliente());
-			//			InetAddress addressServidor =InetAddress.getLocalHost();
 			int portCliente = Integer.parseInt(cliente.portoCliente());
-			//			int portServidor = portCliente+1000;
-			//			System.out.println("Porto do Diretório: " + portServidor);
-			//			System.out.println("Porto do Cliente: " + portCliente);
-			//			System.out.println("Ligar socket");
+
 			s = new Socket(addressCiente, portCliente);
 			System.out.println("Socket ligado!");
 			s.setSoTimeout(2000);
@@ -145,7 +141,6 @@ public class Servidor {
 				try {
 					outStream.close();
 					inStream.close();
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -168,34 +163,33 @@ public class Servidor {
 					cliente = m.getClienteMsg();
 					synchronized (diretorio) {
 						switch (tipoMsg) {
-						case ("INSC"): 
-							if(adicionaCliente(cliente)) {
-								resposta = "ok";
-							}else {
-								resposta = "existe";
-							}
-						outStream.flush();  //limpeza
-						outStream.writeObject(resposta);
-						outStream.close();
-						break;
-						case ("CLT"):
-							informaDiretorio();
-						break;
-						case ("RMV"):
-							removeCliente(cliente);
-						outStream.flush();  //limpeza
-						outStream.writeObject(new String("ok"));
-						outStream.close();
-						break;
-						default:
-							outStream.flush();
-							outStream.writeObject(new String("Mensagem com formato desconhecido"));
-							outStream.close();
-							System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
-							break;
+							case ("INSC"): 
+								if(adicionaCliente(cliente)) {
+									resposta = "ok";
+								}else {
+									resposta = "existe";
+								}
+								outStream.flush();  //limpeza
+								outStream.writeObject(resposta);
+								outStream.close();
+								break;
+							case ("CLT"):
+								informaDiretorio();
+								break;
+							case ("RMV"):
+								removeCliente(cliente);
+								outStream.flush();  //limpeza
+								outStream.writeObject(new String("ok"));
+								outStream.close();
+								break;
+							default:
+								outStream.flush();
+								outStream.writeObject(new String("Mensagem com formato desconhecido"));
+								outStream.close();
+								System.out.println("Recebida a seguinte mensagem com formato desconhecido:\n" + msg);
+								break;
 						}
 					}
-					System.out.println("....................");
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

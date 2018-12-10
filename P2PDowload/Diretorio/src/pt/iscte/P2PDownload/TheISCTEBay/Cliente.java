@@ -1,6 +1,5 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
-
 public class Cliente {
 	private String enderecoIP;
 	private String porto;
@@ -17,6 +16,4 @@ public class Cliente {
 	public String portoCliente() {
 		return porto;
 	}
-	
-
 }

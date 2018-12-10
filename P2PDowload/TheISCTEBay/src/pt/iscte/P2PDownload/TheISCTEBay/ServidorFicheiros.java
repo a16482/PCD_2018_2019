@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-// Classe que recebe os pedidos de Detalhes de todos os Ficheiros a Pasta e pedidos de uma parte de um Ficheiro
+// Recebe os pedidos dos tipos "bloco", "PalavraChave" ou uma String do Diretório para saber se este Cliente está vivo
 public class ServidorFicheiros extends Thread implements Runnable {
 
 	private ServerSocket fileServer;
@@ -27,8 +27,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			serve();
 			System.out.println("Servidor de Ficheiros iniciado no porto: " + portoProprio);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
 			e.printStackTrace();
 		}
 	}
@@ -47,7 +45,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				ObjectOutputStream outStream = new ObjectOutputStream(s.getOutputStream());
 
 				Object msg=inStream.readObject();
-
+				
+				//Msg do Diretório para saber de este cliente está vivo e responde a pedidos
 				if (msg instanceof String) {
 //					String mensagem = (String)msg;
 //					System.out.println("Mensagem recebida: " + mensagem);
@@ -56,11 +55,15 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					outStream.writeObject(resposta);
 //					System.out.println("A minha resposta: " + resposta);
 					outStream.close();
+					
+				//Pedido do tipo "bloco" - pede o envio de um bloco de um determinado ficheiro
 				} else if (msg instanceof FileBlockRequestMessage) {
 					FileBlockRequestMessage bloco = (FileBlockRequestMessage)msg;
 //					System.out.println("Pedido do bloco: " + bloco.getNumeroDoBloco() + " do ficheiro: " + bloco.getFileDetails().nomeFicheiro());
 					t = new TrataPedidos(bloco, inStream, outStream);
 					pool.execute(t);
+					
+				//Pedido de pesquisa de ficheiros que contenham uma determinada palavra chave
 				} else if (msg instanceof WordSearchMessage) {
 					WordSearchMessage palavraChave=(WordSearchMessage)msg;
 					System.out.println("Pedido para procurar ficheiros por: " + palavraChave.getPalavraChave());
@@ -89,7 +92,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		private ObjectInputStream ois=null;
 		private ObjectOutputStream oos=null;
 		private String tipoPedido=null;
-
+		
+		//Pedido do tipo "bloco" - pede o envio de um bloco de um determinado ficheiro
 		public TrataPedidos(FileBlockRequestMessage b, ObjectInputStream inSream, ObjectOutputStream outStream){
 			super();
 			bloco = b;
@@ -97,7 +101,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 			oos = outStream;
 			tipoPedido = "Bloco";
 		}
-
+		
+		//Pedido de pesquisa de ficheiros que contenham uma determinada palavra chave
 		public TrataPedidos(WordSearchMessage pChave, ObjectInputStream inSream, ObjectOutputStream outStream){
 			super();
 			palavraChave = pChave;
@@ -134,19 +139,18 @@ public class ServidorFicheiros extends Thread implements Runnable {
 				rf.read(parteFicheiroPedido);
 				rf.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			return parteFicheiroPedido;
 		}
 
 		@Override
 		public void run() {
 			ArrayList<FileDetails> listaFicheirosEncontrados;
-			System.out.println("Pedido a ser tratado");
 
 			try {
+				
+				//Pedido do tipo "bloco" - pede o envio de um bloco de um determinado ficheiro
 				if (tipoPedido.equals("Bloco")) {
 					while(true) {
 						byte[] parteFicheiro = parteDoFicheiroPedido(bloco);
@@ -156,6 +160,8 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						// Próximo bloco
 						bloco = (FileBlockRequestMessage)ois.readObject();
 					}
+					
+				//Pedido de pesquisa de ficheiros que contenham uma determinada palavra chave
 				}else if (tipoPedido.equals("PalavraChave")) {
 					oos.flush();  //limpeza
 					listaFicheirosEncontrados = procuraFicheirosLocais(palavraChave);
@@ -167,14 +173,13 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					}
 				}
 			} catch (IOException | ClassNotFoundException e){
-				System.out.println("Ligação caiu... - ServidorFicheiros linha 172 - IOException ou ClassNotFoundException: " + e.getMessage());
+				System.out.println("Ligação caiu... - ServidorFicheiros linha 176 - IOException ou ClassNotFoundException: " + e.getMessage());
 			} finally {
 				try {
 					ois.close();
 					oos.close();
 				} catch (IOException e) {
-					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 178 - IOException: " + e.getMessage());
-
+					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 182 - IOException: " + e.getMessage());
 					e.printStackTrace();
 				}
 			}

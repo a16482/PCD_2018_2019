@@ -222,5 +222,4 @@ public class WinPopUpConfig extends JPanel {
 		add(painelServidor, BorderLayout.NORTH);
 		add(painelCliente, BorderLayout.WEST);
 	}
-
 }

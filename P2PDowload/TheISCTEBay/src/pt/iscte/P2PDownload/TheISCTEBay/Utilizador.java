@@ -25,5 +25,4 @@ public class Utilizador implements Serializable{
 	public String portoUtilizador() {
 		return porto;
 	}
-
 }

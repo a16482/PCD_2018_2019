@@ -343,7 +343,6 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 		listaFilesScroller.repaint();
 	}
 
-
 	// ------------------------------------------------------------------------
 	// Invocado sempre que a propriedade de progresso da tarefa é alterada
 	// ------------------------------------------------------------------------
@@ -351,11 +350,6 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println(evt.getPropertyName());
 		MsgBox.info("Evento: " + evt.getPropertyName() + "\nToString: " + evt.toString());
-		
-//		if ("progress" == evt.getPropertyName()) {
-//			int progress = (Integer) evt.getNewValue();
-//			barraDeProgresso.setValue(progress);
-//		}
 	}
 	
 	public void atualizabarraDeProgresso(int p) {
@@ -364,7 +358,5 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -1,8 +1,6 @@
 package pt.iscte.P2PDownload.TheISCTEBay;
 
 public class Msg {
-	//private String msg;
-
 	private String tipoMsg;
 	private String ip;
 	private String porto;

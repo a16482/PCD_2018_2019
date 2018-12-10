@@ -54,7 +54,4 @@ public class FileDetails implements Serializable{
 	public ArrayList <Utilizador> getUtilizadors() {
 		return users;
 	}
-	
 }
-
-

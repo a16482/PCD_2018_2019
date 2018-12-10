@@ -18,9 +18,7 @@ public class Diretorio {
 	private int portoDiretorio;
 	private String enderecoUtilizador;
 	private int portoUtilizador;
-
 	private List<Utilizador> listaUtilizadores = new ArrayList<>();
-
 	private String msgInfo;
 	private String msgErro;
 
@@ -68,7 +66,6 @@ public class Diretorio {
 			MsgBox.erro(msgErro);
 		}
 	}
-
 
 	//Registo no diretorio
 	public void registoDiretorio() {
@@ -176,7 +173,6 @@ public class Diretorio {
 			i++;
 		}
 		listaFicheirosEncontrados.addElement(f);
-
 		return f;
 	}
 
@@ -219,9 +215,6 @@ public class Diretorio {
 							break;
 						}
 					}
-//					oos.close();
-//					ois.close();
-//					s.close();
 				} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Ligação caiu... "+utilizadorLista.portoUtilizador() + " Diretório - linha 221 - Exception: " + e1.getMessage());
@@ -231,7 +224,6 @@ public class Diretorio {
 						ois.close();
 						s.close();	
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}			
 				}
@@ -240,4 +232,3 @@ public class Diretorio {
 		return listaFicheirosEncontrados;
 	}
 }
-

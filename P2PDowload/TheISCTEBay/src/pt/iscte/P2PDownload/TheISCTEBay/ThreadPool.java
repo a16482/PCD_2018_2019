@@ -13,7 +13,6 @@ public class ThreadPool {
 		workers = new ThreadPoolWorker[nThreads];
 		for(int i=0; i<nThreads; i++) {
 			workers[i]=new ThreadPoolWorker();
-			//			clearThreadPoolPosition(t);
 			workers[i].setName("Tarefa "+ i);
 			workers[i].start();
 		}
@@ -44,9 +43,7 @@ public class ThreadPool {
 					task = tasks.poll();
 				}
 				try {
-					System.out.println(this.getName() + " Iniciou");
 					task.run();
-					System.out.println(this.getName() + " Terminou");
 				} catch (RuntimeException e) {
 					e.printStackTrace();
 				}
