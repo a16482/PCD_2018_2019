@@ -108,7 +108,6 @@ public class TheISCTEBay {
 		if (!f.isDirectory()) {
 			MsgBox.info("A pasta de transferências indicada não existe atualmente." + "\n" 
 					+ " A aplicação TheISCTEBay vai criar a pasta " + pasta +  " automaticamente.");
-			pasta = pastaDefault;
 			f.mkdir();
 		} 
 
