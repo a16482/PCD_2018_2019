@@ -262,6 +262,8 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 						botaoProcurar.setEnabled(false);
 						botaoDescarregar.setEnabled(false);
 						descarregaFicheiro(f);
+						botaoProcurar.setEnabled(true);
+						botaoDescarregar.setEnabled(true);
 					}
 				}
 			}
@@ -349,7 +351,6 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	// ------------------------------------------------------------------------
 //	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-//		System.out.println(evt.getPropertyName());
 		MsgBox.info("Evento: " + evt.getPropertyName() + "\nToString: " + evt.toString());
 	}
 	

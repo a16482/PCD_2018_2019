@@ -9,7 +9,6 @@ public class PopUpActionListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-//		System.out.println("Selected: " + evt.getActionCommand());
 	
 		switch(evt.getActionCommand()) {
 			case ("Utilizadores"):

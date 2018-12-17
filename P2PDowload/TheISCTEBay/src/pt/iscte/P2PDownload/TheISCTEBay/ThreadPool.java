@@ -13,7 +13,6 @@ public class ThreadPool {
 		workers = new ThreadPoolWorker[nThreads];
 		for(int i=0; i<nThreads; i++) {
 			workers[i]=new ThreadPoolWorker();
-			//			clearThreadPoolPosition(t);
 			workers[i].setName("Tarefa "+ i);
 			workers[i].start();
 		}

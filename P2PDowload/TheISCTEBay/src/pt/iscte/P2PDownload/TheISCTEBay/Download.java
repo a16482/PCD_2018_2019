@@ -42,14 +42,12 @@ public class Download extends Thread{
 		estadoBlocos = new char [numeroBlocosCompletos+1];
 		Arrays.fill(estadoBlocos, '0');
 		nrBlocosPorUser = numeroTotalBlocos/numeroDeUsers;
-//		System.out.println("Número de Partes: " + numeroTotalBlocos);
 		w=wdw;
 		blocosDescarregados=0;
 	}
 
 	@Override
 	public void run() {
-		//		int contadorPartes=0;
 		int u=0;
 
 		//Cria uma nova thread por cada User que tenha o ficheiro
@@ -186,7 +184,6 @@ public class Download extends Thread{
 						System.arraycopy(parteCarregada, 0, ficheiroDescarregado, pedidoBloco.getOffset(), pedidoBloco.getLength());
 					}
 					estadoBlocos[pedidoBloco.getNumeroDoBloco()] = 'D';
-//					System.out.println(this.getName() + " baixou o bloco " + pedidoBloco.getNumeroDoBloco());
 					blocosDescarregadosThread++;
 					blocosDescarregados++;
 					w.atualizabarraDeProgresso((blocosDescarregados*100)/numeroTotalBlocos);

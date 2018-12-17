@@ -2,7 +2,6 @@ package pt.iscte.P2PDownload.TheISCTEBay;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -19,9 +18,7 @@ public class TheISCTEBay {
 	public static String pastaTransferencias;
 	private static Diretorio d;
 	private static  ServidorFicheiros fileServer;
-	private static void fecharServidor() {
-		// TODO: fechar o servidor
-	}
+	
 	// ------------------------------------------------------------------------
 	// Criação do GUI e colocação em funcionamento.
 	// Corre no evento que despacha a thread.
@@ -37,9 +34,7 @@ public class TheISCTEBay {
 			public void windowClosing(java.awt.event.WindowEvent e) {	
 				//Remove um utilizador do Diretório
 				try {
-					fecharServidor();
 					d.removeUtilizador();
-//					System.out.println("O Utlizador " + idUtilizador + " desligou-se e foi removido do Diretório.");
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				} finally {
@@ -131,10 +126,6 @@ public class TheISCTEBay {
 		portoUtilizador = Integer.parseInt(args[2]);
 		pastaTransferencias = verificaPastaDeTransferencias(args[3]);
 
-		//Mostra os argumentos recebidos na consola
-//		System.out.println("IP do Diretório: " + enderecoDiretorio + "\nPorto do Diretorio: " + portoDiretorio
-//				+ "\nPorto do Utilizador: " + portoUtilizador + "\nPasta para transferências: " + pastaTransferencias);
-
 		//Instancia um diretório
 		d = new Diretorio (enderecoDiretorio, portoDiretorio, portoUtilizador);
 
@@ -157,13 +148,5 @@ public class TheISCTEBay {
 
 		//Consulta a lista de utilizadores no Diretório
 		d.consultaUtilizadores();
-
-//		List<Utilizador> listaUtilizadores = d.getListaUtilizadores();
-		
-//		System.out.println("Lista de Utilizadores Ligados: ");
-
-//		for (Utilizador u : listaUtilizadores) {			
-//			System.out.println(u.ipUtilizador() + " " + u.portoUtilizador());
-//		}
 	}
 }

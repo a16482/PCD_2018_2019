@@ -23,7 +23,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		try {
 			fileServer = new ServerSocket(portoProprio);
 			serve();
-//			System.out.println("Servidor de Ficheiros iniciado no porto: " + portoProprio);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,43 +32,32 @@ public class ServidorFicheiros extends Thread implements Runnable {
 		Socket s = null;
 		ThreadPool pool = new ThreadPool(limitePedidos);
 		while (true) {
-//			System.out.println("Servidor de Ficheiros à escuta no porto: " + portoProprio);
 			try {
 				s = fileServer.accept();
-//				int port = s.getPort();
-//				System.out.println("Novo Pedido do porto: "+port);
 				ObjectInputStream inStream = new ObjectInputStream(s.getInputStream());
 				ObjectOutputStream outStream = new ObjectOutputStream(s.getOutputStream());
 
 				Object msg=inStream.readObject();
 
 				if (msg instanceof String) {
-//					String mensagem = (String)msg;
-//					System.out.println("Mensagem recebida: " + mensagem);
 					outStream.flush();  //limpeza
 					String resposta = TheISCTEBay.devolvePortoUtilizador() + " Estou vivo!";
 					outStream.writeObject(resposta);
-//					System.out.println("A minha resposta: " + resposta);
 					outStream.close();
 				} else if (msg instanceof FileBlockRequestMessage) {
 					FileBlockRequestMessage bloco = (FileBlockRequestMessage)msg;
-//					System.out.println("Pedido do bloco: " + bloco.getNumeroDoBloco() + " do ficheiro: " + bloco.getFileDetails().nomeFicheiro());
 					t = new TrataPedidos(bloco, inStream, outStream);
 					pool.execute(t);
 				} else if (msg instanceof WordSearchMessage) {
 					WordSearchMessage palavraChave=(WordSearchMessage)msg;
-//					System.out.println("Pedido para procurar ficheiros por: " + palavraChave.getPalavraChave());
 					t = new TrataPedidos(palavraChave, inStream, outStream);
 					pool.execute(t);
 				}
 
 			}catch (ClassNotFoundException | IOException e) {
-//				System.out.println("ServidorFicheiros linha 67 - IOException: " + e.getMessage());
-//				System.out.println("ServidorFicheiros vai ser lançado outra vez");
 				try {
 					s.close();
 				} catch (IOException e1) {
-//					System.out.println("Socket já estava fechado - ServidorFicheiros linha 72 - IOException: " + e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -146,7 +134,6 @@ public class ServidorFicheiros extends Thread implements Runnable {
 						byte[] parteFicheiro = parteDoFicheiroPedido(bloco);
 						oos.flush();  //limpeza
 						oos.writeObject(parteFicheiro);
-//						System.out.println("Bloco enviado: " + bloco.getNumeroDoBloco());
 						// Próximo bloco
 						bloco = (FileBlockRequestMessage)ois.readObject();
 					}
@@ -157,17 +144,16 @@ public class ServidorFicheiros extends Thread implements Runnable {
 					while(iListaFicheiros.hasNext()) {
 						FileDetails fd = iListaFicheiros.next();
 						oos.writeObject(fd);
-//						System.out.println("Ficheiro encontrado: " + fd.nomeFicheiro());
+						// "Ficheiro encontrado: " + fd.nomeFicheiro();
 					}
 				}
 			} catch (IOException | ClassNotFoundException e){
-//				System.out.println("Ligação caiu... - ServidorFicheiros linha 172 - IOException ou ClassNotFoundException: " + e.getMessage());
+				//NOTHING TO DO
 			} finally {
 				try {
 					ois.close();
 					oos.close();
 				} catch (IOException e) {
-//					System.out.println("Streams já estavam fechados - ServidorFicheiros linha 178 - IOException: " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
