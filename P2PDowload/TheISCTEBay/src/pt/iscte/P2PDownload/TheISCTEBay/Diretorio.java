@@ -146,33 +146,32 @@ public class Diretorio {
 		return this.listaUtilizadores.get(n);
 	}
 
-	private FileDetails adicionaListaFicheirosEncontrados(FileDetails f) {
+	private synchronized FileDetails adicionaListaFicheirosEncontrados(FileDetails f) {
 		FileDetails ficheiroDaLista;
 		int i=0;
 
-		//Ciclo para veridicar se o FileDetails "f" já existe em "listaFicheirosEncontrados"
-		while (i< listaFicheirosEncontrados.size()) {
-			ficheiroDaLista = listaFicheirosEncontrados.getElementAt(i);
-			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
-			Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
-			// se o ficheiro já existir na lista de encontrados, devolve o objeto = objeto procurado que está na lista
-			if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
-				return ficheiroDaLista;
+		synchronized (listaFicheirosEncontrados) {
+			//Ciclo para veridicar se o FileDetails "f" já existe em "listaFicheirosEncontrados"
+			while (i< listaFicheirosEncontrados.size()) {
+				ficheiroDaLista = listaFicheirosEncontrados.getElementAt(i);
+				String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
+				Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
+				// se o ficheiro já existir na lista de encontrados, devolve o objeto = objeto procurado que está na lista
+				if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
+					return ficheiroDaLista;
+				}
+				i++;
 			}
-			i++;
+			listaFicheirosEncontrados.addElement(f);
 		}
-		listaFicheirosEncontrados.addElement(f);
-
 		return f;
 	}
 
 	public DefaultListModel<FileDetails> procuraFicheirosPorPalavraChave (WordSearchMessage keyWord)  {
 		Utilizador utilizadorLista;
-		FileDetails ficheiroEncontrado;
 		listaFicheirosEncontrados.removeAllElements();
-		Socket s=null;
-		ObjectOutputStream oos=null;
-		ObjectInputStream ois=null;
+		ArrayList<ThreadUtilizador> tUtilizadores = new ArrayList<ThreadUtilizador>();
+
 		consultaUtilizadores();  //recarrega a lista de utilizadores no Diretorio
 
 		Iterator<Utilizador> iListaUtilizadores = getListaUtilizadores().iterator();
@@ -183,39 +182,72 @@ public class Diretorio {
 			// exclui o próprio (que também é membro do diretório da pesquisa
 			if (!(utilizadorLista.ipUtilizador().equals(TheISCTEBay.devolveIPUtilizador()) 
 					&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
-				try {
-					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
-					//se não houver resposta, sai com IOEXception e passa ao próximo utilizador.
-					oos = new ObjectOutputStream(s.getOutputStream());
-					ois = new ObjectInputStream(s.getInputStream());
-					oos.flush();
-					s.setSoTimeout(2000);
-					oos.writeObject(keyWord);
-					while (true) {
-						try {
-							ficheiroEncontrado = (FileDetails)ois.readObject();
-							//Verificar se o ficheiro encontrado já existe na nossa lista
-							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
-							//adiciona utilizador iterado à lista de utilizadores detentores do ficheiro no objeto FileDetails:
-							ficheiroLista.setUtilizador(utilizadorLista);
-						} catch (EOFException e) {
-							break;
-						}
-					}
-				} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
-					//NOTHING TO DO - vai para o próximo registo
-				}finally {
-					try {
-						oos.close();
-						ois.close();
-						s.close();	
-					} catch (IOException e) {
-						e.printStackTrace();
-					}			
-				}
+				ThreadUtilizador tu = new ThreadUtilizador (keyWord, utilizadorLista);
+				tu.setName("User Porto "+ utilizadorLista.portoUtilizador());
+				tUtilizadores.add(tu);
+				tu.start();
+			}			
+		}
+		
+		Iterator <ThreadUtilizador> iUtilizador = tUtilizadores.iterator();
+		while (iUtilizador.hasNext()) {
+			ThreadUtilizador threadU = iUtilizador.next();
+			try {
+				threadU.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
+		
+		
 		return listaFicheirosEncontrados;
 	}
-}
 
+	private class ThreadUtilizador extends Thread {
+		private WordSearchMessage word;
+		private Utilizador user;
+		private FileDetails ficheiroEncontrado;
+		private Socket s=null;
+		private ObjectOutputStream oos=null;
+		private ObjectInputStream ois=null;
+
+		public ThreadUtilizador (WordSearchMessage w, Utilizador u) {
+			word = w;
+			user = u;
+		}
+
+		public void run () {
+			try {
+				s = new Socket(user.ipUtilizador(), Integer.parseInt(user.portoUtilizador()));
+				//se não houver resposta, sai com IOEXception e passa ao próximo utilizador.
+				oos = new ObjectOutputStream(s.getOutputStream());
+				ois = new ObjectInputStream(s.getInputStream());
+				oos.flush();
+				s.setSoTimeout(2000);
+				oos.writeObject(word);
+				while (true) {
+					try {
+						ficheiroEncontrado = (FileDetails)ois.readObject();
+						//Verificar se o ficheiro encontrado já existe na nossa lista
+						FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
+						//adiciona utilizador iterado à lista de utilizadores detentores do ficheiro no objeto FileDetails:
+						ficheiroLista.setUtilizador(user);
+
+					} catch (EOFException e) {
+						break;
+					}
+				}
+			} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
+				//NOTHING TO DO - vai para o próximo registo
+			}finally {
+				try {
+					oos.close();
+					ois.close();
+					s.close();	
+				} catch (IOException e) {
+					e.printStackTrace();
+				}			
+			}
+		}
+	}
+}
