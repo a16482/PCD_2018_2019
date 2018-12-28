@@ -155,7 +155,7 @@ public class Diretorio {
 			ficheiroDaLista = listaFicheirosEncontrados.getElementAt(i);
 			String nomeFicheiroLista = ficheiroDaLista.nomeFicheiro();
 			Long bytesFicheiroLista = ficheiroDaLista.bytesFicheiro();
-
+			// se o ficheiro já existir na lista de encontrados, devolve o objeto = objeto procurado que está na lista
 			if(f.nomeFicheiro().equals(nomeFicheiroLista) && f.bytesFicheiro() == bytesFicheiroLista) {
 				return ficheiroDaLista;
 			}
@@ -185,22 +185,25 @@ public class Diretorio {
 					&& utilizadorLista.portoUtilizador().equals(String.valueOf(TheISCTEBay.devolvePortoUtilizador())))){
 				try {
 					s = new Socket(utilizadorLista.ipUtilizador(), Integer.parseInt(utilizadorLista.portoUtilizador()));
+					//se não houver resposta, sai com IOEXception e passa ao próximo utilizador.
 					oos = new ObjectOutputStream(s.getOutputStream());
 					ois = new ObjectInputStream(s.getInputStream());
 					oos.flush();
+					s.setSoTimeout(2000);
 					oos.writeObject(keyWord);
 					while (true) {
 						try {
 							ficheiroEncontrado = (FileDetails)ois.readObject();
 							//Verificar se o ficheiro encontrado já existe na nossa lista
 							FileDetails ficheiroLista = adicionaListaFicheirosEncontrados(ficheiroEncontrado);
+							//adiciona utilizador iterado à lista de utilizadores detentores do ficheiro no objeto FileDetails:
 							ficheiroLista.setUtilizador(utilizadorLista);
 						} catch (EOFException e) {
 							break;
 						}
 					}
 				} catch (NumberFormatException | IOException | ClassNotFoundException e1) {
-					//NOTHING TO DO
+					//NOTHING TO DO - vai para o próximo registo
 				}finally {
 					try {
 						oos.close();

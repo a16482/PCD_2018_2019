@@ -68,10 +68,11 @@ public class Servidor {
 			int portCliente = Integer.parseInt(cliente.portoCliente());
 			s = new Socket(addressCiente, portCliente);
 			//System.out.println("Socket ligado!");
-			s.setSoTimeout(2000);
+			
 			oos = new ObjectOutputStream(s.getOutputStream());
 			ois = new ObjectInputStream(s.getInputStream());
 			oos.flush();
+			s.setSoTimeout(2000);
 			String pergunta = cliente.portoCliente() + " estás Vivo?";
 			oos.writeObject(pergunta);
 			msg = (String)ois.readObject();

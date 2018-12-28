@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -65,24 +64,24 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 
 		@Override
 		public Void doInBackground() {
-			//--------------------------------------
-			Random random = new Random();  //--> ALTERAR!
-			//--------------------------------------
-
-			int progresso = 0;
-			//Inicializa a propriedade "progress".
-			setProgress(0);
-			while (progresso < 100) {
-				//Sleep até 1 segundo.
-				try {
-					Thread.sleep(random.nextInt(1000));
-				} catch (InterruptedException ignore) {}
-				//--> ALTERAR ISTO!
-				//Torna o progresso random.
-				progresso += random.nextInt(10);
-				setProgress(Math.min(progresso, 100));
-			}
-			return null;
+//			//--------------------------------------
+//			Random random = new Random();  //--> ALTERAR!
+//			//--------------------------------------
+//
+//			int progresso = 0;
+//			//Inicializa a propriedade "progress".
+//			setProgress(0);
+//			while (progresso < 100) {
+//				//Sleep até 1 segundo.
+//				try {
+//					Thread.sleep(random.nextInt(1000));
+//				} catch (InterruptedException ignore) {}
+//				//--> ALTERAR ISTO!
+//				//Torna o progresso random.
+//				progresso += random.nextInt(10);
+//				setProgress(Math.min(progresso, 100));
+//			}
+		return null;
 		}
 
 		//---------------------------------------------------
@@ -349,7 +348,7 @@ public class WinDownload extends JPanel implements ActionListener, PropertyChang
 	// ------------------------------------------------------------------------
 	// Invocado sempre que a propriedade de progresso da tarefa é alterada
 	// ------------------------------------------------------------------------
-//	@Override
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		MsgBox.info("Evento: " + evt.getPropertyName() + "\nToString: " + evt.toString());
 	}

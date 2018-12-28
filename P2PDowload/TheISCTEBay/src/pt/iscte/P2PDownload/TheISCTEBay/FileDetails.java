@@ -51,7 +51,7 @@ public class FileDetails implements Serializable{
 		return String.valueOf(bytesFicheiro);
 	}
 
-	public ArrayList <Utilizador> getUtilizadors() {
+	public ArrayList <Utilizador> getUtilizadores() {
 		return users;
 	}	
 }
